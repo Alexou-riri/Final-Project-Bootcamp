@@ -34,11 +34,17 @@
 .title a:active {
   text-decoration: underline;
 }
+.welcome {
+  padding-top: 32px;
+}
 
+.welcome,
 .title {
   margin: 0;
+  margin-bottom: 34px;
   line-height: 1.15;
   font-size: 4rem;
+  /* text-shadow: 1px 0px 1px black; */
 }
 
 .title,
@@ -57,15 +63,14 @@
   border-radius: 5px;
   padding: 0.75rem;
   font-size: 1.1rem;
-  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-    Bitstream Vera Sans Mono, Courier New, monospace;
 }
 
 .grid {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
+  flex-direction: column;
   max-width: 800px;
 }
 
@@ -84,8 +89,8 @@
 .card:hover,
 .card:focus,
 .card:active {
-  color: #0070f3;
-  border-color: #0070f3;
+  color: #262999;
+  border-color: #262999;
 }
 
 .card h2 {
@@ -97,11 +102,6 @@
   margin: 0;
   font-size: 1.25rem;
   line-height: 1.5;
-}
-
-.logo {
-  height: 1em;
-  margin-left: 0.5rem;
 }
 
 @media (max-width: 600px) {

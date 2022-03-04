@@ -4,10 +4,24 @@ import Header from './Header';
 import { css } from '@emotion/react';
 
 const pageContainer = css`
-  /* min-height: 100vh;
-  display: flex;
-  flex-direction: column; */
+  background-color: white;
+  margin-top: 100px;
 `;
+
+// const sticky = css`
+//   .is-sticky {
+//     position: fixed;
+//     top: 0;
+//     left: 0;
+//     width: 100%;
+//     z-index: 999;
+//     box-shadow: 0 2px 24px 0 rgb(0 0 0 / 15%);
+//     background-color: #ffffff !important;
+//     animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
+//     padding-top: 0px;
+//     padding-bottom: 0px;
+//   }
+// `;
 
 export default function Layout(props) {
   return (

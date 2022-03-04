@@ -2,7 +2,7 @@
 import { css } from '@emotion/react';
 
 const footer = css`
-  background: rgba(49, 27, 1, 0.31);
+  background: #e6eef2;
   text-align: center;
   padding-top: 4px;
   /* position: absolute; */
@@ -34,7 +34,7 @@ export default function Footer() {
     <footer css={footer}>
       <div>
         <div>
-          <h4>House of castles</h4>
+          <h4>PalChange</h4>
           <h5>All right not reserved</h5>
         </div>
         <hr />
