@@ -1,5 +1,3 @@
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import Head from 'next/head';
 import Layout from '../components/Layout';
 

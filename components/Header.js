@@ -147,7 +147,7 @@ export default function Header() {
         <Link href="/login">
           <a css={login}>Login</a>
         </Link>
-        <Link href="/sign_up">
+        <Link href="/signup">
           <a css={sign}> Sign Up</a>
         </Link>
 

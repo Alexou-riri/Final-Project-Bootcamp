@@ -1,5 +1,6 @@
 // import Link from 'next/link'
 import { css } from '@emotion/react';
+import Head from 'next/head';
 import Layout from '../components/Layout';
 import styles from '../styles/Home.module.css';
 
@@ -17,11 +18,15 @@ const label = css`
 export default function Login() {
   return (
     <Layout>
+      <Head>
+        <title>Login</title>
+        <meta name="description" content="Login on this website" />
+      </Head>
       <div className={styles.main}>
         <div>
           <div>
             <form id="form_id" method="post" name="myform">
-              <label css={label} name="user_name" htmlFor="username">
+              <label css={label} htmlFor="username">
                 User Name :
                 <input name="username" id="username" />
               </label>
