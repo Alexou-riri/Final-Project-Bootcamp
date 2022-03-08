@@ -1,1 +1,75 @@
-export default function Login() {}
+import { NextApiRequest, NextApiResponse } from 'next';
+import bcrypt from 'bcrypt';
+import {
+  createUser,
+  getUserByUsername,
+  getUserWithPasswordHashByUsername,
+} from '../../util/database';
+
+export default async function loginHandler(
+  request: NextApiRequest,
+  response: NextApiResponse,
+) {
+  if (request.method === 'POST') {
+    if (
+      typeof request.body.username !== 'string' ||
+      !request.body.username ||
+      typeof request.body.password !== 'string' ||
+      !request.body.password
+    ) {
+      response.status(400).json({
+        errors: [
+          {
+            message:
+              'Username or password missing. Please provide one. thanks.',
+          },
+        ],
+      });
+      return;
+    }
+
+    const userWithPasswordHash = await getUserWithPasswordHashByUsername(
+      request.body.username,
+    );
+
+    if (!userWithPasswordHash) {
+      response.status(401).json({
+        errors: [
+          {
+            message: 'Username doesnt match existing user',
+          },
+        ],
+      });
+      return;
+    }
+    const passwordMatches = await bcrypt.compare(
+      request.body.password,
+      userWithPasswordHash.passwordHash,
+    );
+    if (!passwordMatches) {
+      response.status(401).json({
+        errors: [
+          {
+            message: 'Password is wrong. try again ',
+          },
+        ],
+      });
+      return;
+    }
+
+    // const user = await createUser(
+    //   request.body.username,
+    //   passwordHash,
+    //   request.body.company,
+    // );
+    response.status(201).json({ user: { id: userWithPasswordHash.id } });
+    return;
+  }
+  response.status(405).json({
+    errors: [
+      {
+        message: 'incorrect method',
+      },
+    ],
+  });
+}

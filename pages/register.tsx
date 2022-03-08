@@ -2,8 +2,9 @@
 import { css } from '@emotion/react';
 import Layout from '../components/Layout';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { useState } from 'react';
+import { loadDefaultErrorComponents } from 'next/dist/server/load-components';
 // import { responseBody } from './api/signup';
 
 // const label = css``;
@@ -23,10 +24,14 @@ const label = css`
 //   border: 1px solid black;
 // `;
 
+type Errors = { message: string }[];
+
 export default function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [company, setCompany] = useState('');
+  const [errors, setErrors] = useState<Errors>([]);
+  const router = Router;
 
   return (
     <Layout>
@@ -36,10 +41,9 @@ export default function Register() {
       </Head>
 
       <form
-        onSubmit={(event) => {
+        onSubmit={async (event) => {
           event.preventDefault();
-
-          fetch('/api/register', {
+          const createUserResponse = await fetch('/api/register', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -50,6 +54,13 @@ export default function Register() {
               company: company,
             }),
           });
+
+          const createUserResponseBody = await createUserResponse.json();
+          if ('errors' in createUserResponseBody) {
+            setErrors(createUserResponseBody.errors);
+            return;
+          }
+          await router.push('/');
         }}
       >
         <label css={label}>
@@ -59,6 +70,11 @@ export default function Register() {
             onChange={(event) => setUsername(event.currentTarget.value)}
           />
         </label>
+        <div>
+          {errors.map((error) => {
+            return <div key={`error-${error.message}`}>{error.message};</div>;
+          })}
+        </div>
 
         <label css={label}>
           Password :

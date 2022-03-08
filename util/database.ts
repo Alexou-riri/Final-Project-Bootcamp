@@ -36,6 +36,28 @@ type User = {
   company: string;
 };
 
+type UserWithPasswordHash = User & {
+  passwordHash: string;
+};
+
+export async function getUserByUsername(username: string) {
+  const [user] = await sql<[{ id: number } | undefined]>`
+    SELECT id from users where username = ${username}
+    `;
+  return user && camelcaseKeys(user);
+}
+export async function getUserWithPasswordHashByUsername(username: string) {
+  const [user] = await sql<[UserWithPasswordHash | undefined]>`
+    SELECT id,
+    username,
+    password_hash
+    from
+    users
+    where username = ${username}
+    `;
+  return user && camelcaseKeys(user);
+}
+
 export async function createUser(
   username: string,
   passwordHash: string,
