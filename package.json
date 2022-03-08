@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.17.0",
+    "@emotion/babel-plugin": "^11.7.2",
     "@next/eslint-plugin-next": "^12.1.0",
     "@types/bcrypt": "^5.0.0",
     "@types/dotenv-safe": "^8.1.2",

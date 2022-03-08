@@ -12,14 +12,12 @@ export default async function registerHandler(
 
     const user = await createUser(
       request.body.username,
+
       passwordHash,
       request.body.company,
     );
 
     response.status(201).json({ user: user });
-
-    response.json;
-    ({ z: 'x' });
     return;
   }
   response.status(405).json({

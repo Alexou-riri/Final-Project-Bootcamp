@@ -7,7 +7,7 @@ import { css } from '@emotion/react';
 // import logoipsum from ' ./public/Images/logoipsum.svg';
 
 const headerStyles = css`
-  background: #e6eef2;
+  /* background: #e6eef2; */
   padding: 10px;
   /* padding-right: 30em; */
   display: flex;
@@ -22,7 +22,7 @@ const headerStyles = css`
   width: 100vw;
   z-index: 2;
   box-shadow: 0 2px 24px 0 rgb(0 0 0 / 15%);
-  background-color: #ffffff !important;
+  background-color: #ffffff;
   animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
   /* padding-top: 0px;
   padding-bottom: 0px; */
@@ -50,12 +50,12 @@ const link = css`
   padding: 15px 20px;
   position: relative;
 
-  a + a {
+  /* a + a {
     margin-left: 20px;
     cursor: pointer;
     transition: transform 0.2s ease-out;
-  }
-  a:after {
+  } */
+  /* a:after {
     background: none repeat scroll 0 0 transparent;
     bottom: 0;
     content: '';
@@ -66,18 +66,19 @@ const link = css`
     background: red;
     transition: width 0.3s ease 0s, left 0.3s ease 0s;
     width: 0;
-  }
-  a:hover:after {
+  } */
+  /* a:hover:after {
     width: 100%;
     left: 0;
-  }
+  } */
 `;
 
 const sign = css`
   cursor: pointer;
   border: 0;
   border-radius: 4px;
-
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
   margin: 0 10px;
   width: 100px;
   padding: 10px 30px;
@@ -85,13 +86,17 @@ const sign = css`
   transition: 0.4s;
   color: white;
   background-color: #262999;
+
+  &:hover {
+  }
 `;
 
 const login = css`
   cursor: pointer;
   border: 0;
   border-radius: 4px;
-
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
   margin: 0 10px;
   width: 100px;
   padding: 10px 30px;
@@ -101,10 +106,10 @@ const login = css`
   background-color: rgba(255, 255, 255, 1);
   border: 1px solid rgba(104, 85, 224, 1);
 
-  a:hover {
+  &:hover {
     color: white;
     box-shadow: 0 0 20px rgba(104, 85, 224, 0.6);
-    background-color: red;
+    background-color: #262999;
   }
 `;
 
@@ -147,7 +152,7 @@ export default function Header() {
         <Link href="/login">
           <a css={login}>Login</a>
         </Link>
-        <Link href="/signup">
+        <Link href="/register">
           <a css={sign}> Sign Up</a>
         </Link>
 

@@ -4,6 +4,7 @@ import Layout from '../components/Layout';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+// import { responseBody } from './api/signup';
 
 // const label = css``;
 /* .tel {
@@ -22,7 +23,7 @@ const label = css`
 //   border: 1px solid black;
 // `;
 
-export default function SignUp() {
+export default function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [company, setCompany] = useState('');
@@ -35,10 +36,10 @@ export default function SignUp() {
       </Head>
 
       <form
-        onSubmit={async (event) => {
+        onSubmit={(event) => {
           event.preventDefault();
 
-          const signupResponse = await fetch('/api/signup', {
+          fetch('/api/register', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -51,30 +52,27 @@ export default function SignUp() {
           });
         }}
       >
-        <label css={label} htmlFor="username">
+        <label css={label}>
           User Name :
           <input
             value={username}
-            id="username"
             onChange={(event) => setUsername(event.currentTarget.value)}
           />
         </label>
 
-        <label css={label} htmlFor="password">
+        <label css={label}>
           Password :
           <input
             type="password"
             value={password}
-            id="password"
             onChange={(event) => setPassword(event.currentTarget.value)}
           />
         </label>
 
-        <label css={label} htmlFor="company">
+        <label css={label}>
           Company:
           <input
             value={company}
-            id="company"
             onChange={(event) => setCompany(event.currentTarget.value)}
           />
         </label>
