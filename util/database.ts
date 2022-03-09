@@ -104,6 +104,44 @@ export async function createSession(token: string, userId: number) {
       id,
       token
   `;
+  await deleteExpiredSessions();
 
   return camelcaseKeys(session);
+}
+
+export async function deleteSessionByToken(token: string) {
+  const [session] = await sql<[Session | undefined]>`
+    DELETE FROM
+      sessions
+    WHERE
+      token = ${token}
+    RETURNING *
+  `;
+  return session && camelcaseKeys(session);
+}
+
+export async function deleteExpiredSessions() {
+  const sessions = await sql<Session[]>`
+    DELETE FROM
+      sessions
+    WHERE
+      expiry_timestamp < NOW()
+    RETURNING *
+  `;
+
+  return sessions.map((session) => camelcaseKeys(session));
+}
+
+export async function getValidSessionByToken(token: string) {
+  const [session] = await sql<[Session | undefined]>`
+    SELECT
+    *
+    from
+    sessions
+    where
+    token = ${token}
+    `;
+
+  await deleteExpiredSessions();
+  return session && camelcaseKeys(session);
 }

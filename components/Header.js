@@ -149,6 +149,9 @@ export default function Header() {
         </a>
       </Link>
       <p>
+        <Link href="/logout">
+          <a> Log Out</a>
+        </Link>
         <Link href="/login">
           <a css={login}>Login</a>
         </Link>

@@ -60,7 +60,7 @@ export default function Register() {
             setErrors(createUserResponseBody.errors);
             return;
           }
-          await router.push('/');
+          await router.push('/login');
         }}
       >
         <label css={label}>
