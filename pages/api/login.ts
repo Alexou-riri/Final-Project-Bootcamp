@@ -1,10 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import bcrypt from 'bcrypt';
 import {
+  createSession,
   createUser,
   getUserByUsername,
   getUserWithPasswordHashByUsername,
 } from '../../util/database';
+import crypto from 'node:crypto';
 
 export default async function loginHandler(
   request: NextApiRequest,
@@ -56,13 +58,27 @@ export default async function loginHandler(
       });
       return;
     }
+    // 1. create unique token
+    const sessionToken = crypto.randomBytes(64).toString('base64');
+
+    // create session
+    const session = await createSession(sessionToken, userWithPasswordHash.id);
+
+    console.log(session);
+
+    //2 serialize the cookie
+    //3 add cookie to the header resp
 
     // const user = await createUser(
     //   request.body.username,
     //   passwordHash,
     //   request.body.company,
     // );
-    response.status(201).json({ user: { id: userWithPasswordHash.id } });
+    response.status(201).json({
+      user: {
+        id: userWithPasswordHash.id,
+      },
+    });
     return;
   }
   response.status(405).json({

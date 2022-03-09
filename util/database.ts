@@ -30,15 +30,27 @@ config();
 
 const sql = postgres();
 
-type User = {
+export type User = {
   id: number;
   username: string;
   company: string;
 };
 
-type UserWithPasswordHash = User & {
+export type UserWithPasswordHash = User & {
   passwordHash: string;
 };
+
+export async function getUserById(id: number) {
+  const [user] = await sql<[User | undefined]>`
+    SELECT id,
+    username,
+    company
+    from
+    users
+    where id = ${id}
+    `;
+  return user && camelcaseKeys(user);
+}
 
 export async function getUserByUsername(username: string) {
   const [user] = await sql<[{ id: number } | undefined]>`
@@ -74,4 +86,24 @@ export async function createUser(
       company
   `;
   return camelcaseKeys(user);
+}
+
+type Session = {
+  id: number;
+  token: string;
+  userId: number;
+};
+
+export async function createSession(token: string, userId: number) {
+  const [session] = await sql<[Session]>`
+    INSERT INTO sessions
+      (token, user_id)
+    VALUES
+      (${token}, ${userId})
+    RETURNING
+      id,
+      token
+  `;
+
+  return camelcaseKeys(session);
 }

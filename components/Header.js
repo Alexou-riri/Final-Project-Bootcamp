@@ -145,7 +145,7 @@ export default function Header() {
     <header css={headerStyles}>
       <Link href="/">
         <a>
-          <img src="icon-192.png" alt="Logo" height={80} width={80} />
+          <img src="/icon-192.png" alt="Logo" height={80} width={80} />
         </a>
       </Link>
       <p>

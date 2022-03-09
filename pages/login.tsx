@@ -50,7 +50,11 @@ export default function Login() {
             setErrors(loginResponseBody.errors);
             return;
           }
-          await router.push('/dashboard');
+
+          // redirect to dashboard when login complete and without errors
+          // clear the errors message
+          setErrors([]);
+          await router.push(`/users/${loginResponseBody.user.id}`);
         }}
       >
         <label css={label}>
