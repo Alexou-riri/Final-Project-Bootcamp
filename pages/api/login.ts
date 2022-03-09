@@ -7,6 +7,7 @@ import {
   getUserWithPasswordHashByUsername,
 } from '../../util/database';
 import crypto from 'node:crypto';
+import { createSerializedRegisterSessionTokenCookie } from '../../util/cookies';
 
 export default async function loginHandler(
   request: NextApiRequest,
@@ -67,18 +68,25 @@ export default async function loginHandler(
     console.log(session);
 
     //2 serialize the cookie
-    //3 add cookie to the header resp
+    const serializedCookie = await createSerializedRegisterSessionTokenCookie(
+      sessionToken,
+    );
 
     // const user = await createUser(
     //   request.body.username,
     //   passwordHash,
     //   request.body.company,
     // );
-    response.status(201).json({
-      user: {
-        id: userWithPasswordHash.id,
-      },
-    });
+
+    //3 add cookie to the header resp
+    response
+      .status(201)
+      .setHeader('Set-cookie', serializedCookie)
+      .json({
+        user: {
+          id: userWithPasswordHash.id,
+        },
+      });
     return;
   }
   response.status(405).json({

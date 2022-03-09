@@ -17,7 +17,6 @@ export default function Contact() {
 
         <h1>Dont hesitate to contact us</h1>
       </div>
-      <div></div>
     </Layout>
   );
 }
