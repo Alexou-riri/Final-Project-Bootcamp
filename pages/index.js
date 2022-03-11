@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Layout from '../components/Layout';
 import styles from '../styles/Home.module.css';
 import { css } from '@emotion/react';
+import { useEffect } from 'react';
 
 const color = css`
   color: #00a4e8;
@@ -14,6 +15,10 @@ const image = css`
 `;
 
 export default function Home() {
+  // useEffect(() => {
+  //   props.refreshUserProfile();
+  // }, [props]);
+
   return (
     <div className={styles.container}>
       <Head>

@@ -1,7 +1,13 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
 import Layout from '../../components/Layout';
-import { getUserById, User } from '../../util/database';
+import {
+  getUserById,
+  getValidSessionByToken,
+  User,
+  Session,
+} from '../../util/database';
 
 type Props = {
   user?: User;
@@ -40,13 +46,18 @@ export default function UserDetail(props: Props) {
         {props.user.username} from {props.user.company}
       </h1>
       <div>id: {props.user.id}</div>
+      <div>
+        <Link href="/users/dashboard">
+          <a>To your dashboard -</a>
+        </Link>{' '}
+      </div>
     </Layout>
   );
 }
 
 export async function getServerSideProps(
   context: GetServerSidePropsContext,
-): Promise<GetServerSidePropsResult<{ user?: User }>> {
+): Promise<GetServerSidePropsResult<{ user?: User; session?: Session }>> {
   const userId = context.query.userId;
 
   // User id is not correct type
@@ -63,6 +74,27 @@ export async function getServerSideProps(
       props: {},
     };
   }
+  // // 1. check if there is a token and is valid from the cookie
+  // const token = context.req.cookies.sessionToken;
+
+  // if (token) {
+  //   // 2. check if the token is valid and redirect
+  //   const session = await getValidSessionByToken(token);
+
+  //   if (session) {
+  //     console.log(session);
+  //     return {
+  //       props: { user: user, session: session },
+  //     };
+  //   }
+  //   return {
+  //     redirect: {
+  //       destination: '/login',
+  //       permanent: false,
+  //     },
+  //   };
+  // }
+  // // 3. Otherwise, generate CSRF token and render the page
 
   return {
     props: {

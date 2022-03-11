@@ -1,9 +1,14 @@
 import { serialize } from 'cookie';
 import { GetServerSidePropsContext } from 'next';
+import { useEffect } from 'react';
 import { deleteSessionByToken } from '../util/database';
+import { Props } from './login';
 
 export default function Logout() {
-  return null;
+  // useEffect(() => {
+  //   props.refreshUserProfile();
+  // }, [props]);
+  return 'Logged out';
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {

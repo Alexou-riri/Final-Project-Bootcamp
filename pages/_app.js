@@ -1,8 +1,28 @@
 import { css, Global } from '@emotion/react';
 import Head from 'next/head';
+import { useCallback, useEffect, useState } from 'react';
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }) {
+  // const [user, setUser] = useState();
+
+  // const refreshUserProfile = useCallback(async () => {
+  //   const response = await fetch('/api/profile');
+  //   const data = await response.json();
+  //   console.log(data);
+
+  //   if ('errors' in data) {
+  //     console.log(data.errors);
+  //     setUser(undefined);
+  //     return;
+  //   }
+  //   setUser(data.user);
+  // }, []);
+
+  // useEffect(() => {
+  //   refreshUserProfile().catch(() => {});
+  // }, [refreshUserProfile]);
+
   return (
     <>
       <Head>
@@ -20,7 +40,11 @@ function MyApp({ Component, pageProps }) {
           }
         `}
       />
-      <Component {...pageProps} />
+      <Component
+        {...pageProps}
+        // userObject={user}
+        // refreshUserProfile={refreshUserProfile}
+      />
     </>
   );
 }

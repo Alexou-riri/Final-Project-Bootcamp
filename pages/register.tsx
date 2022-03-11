@@ -5,6 +5,9 @@ import Head from 'next/head';
 import Router, { useRouter } from 'next/router';
 import { useState } from 'react';
 import { loadDefaultErrorComponents } from 'next/dist/server/load-components';
+import { Props } from './login';
+import { getValidSessionByToken } from '../util/database';
+import { GetServerSidePropsContext } from 'next';
 // import { responseBody } from './api/signup';
 
 // const label = css``;
@@ -26,7 +29,7 @@ const label = css`
 
 type Errors = { message: string }[];
 
-export default function Register() {
+export default function Register(props: Props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [company, setCompany] = useState('');
@@ -60,6 +63,7 @@ export default function Register() {
             setErrors(createUserResponseBody.errors);
             return;
           }
+          // props.refreshUserProfile();
           await router.push('/login');
         }}
       >
@@ -96,4 +100,29 @@ export default function Register() {
       </form>
     </Layout>
   );
+}
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  // 1. check if there is a token and is valid from the cookie
+  const token = context.req.cookies.sessionToken;
+
+  if (token) {
+    // 2. check if the token its valid and redirect
+    const session = await getValidSessionByToken(token);
+
+    if (session) {
+      console.log(session);
+      return {
+        redirect: {
+          destination: '/login',
+          permanent: false,
+        },
+      };
+    }
+  }
+
+  // 3. otherwise render the page
+
+  return {
+    props: {},
+  };
 }

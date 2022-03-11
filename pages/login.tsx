@@ -21,7 +21,12 @@ const label = css`
 
 type Errors = { message: string }[];
 
-export default function Login() {
+export type Props = {
+  refreshUserProfile: () => void;
+  userObject: { username: string };
+};
+
+export default function Login(props: Props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [company, setCompany] = useState('');
@@ -56,6 +61,8 @@ export default function Login() {
           // redirect to dashboard when login complete and without errors
           // clear the errors message
           setErrors([]);
+
+          // props.refreshUserProfile();
           await router.push(`/users/${loginResponseBody.user.id}`);
         }}
       >
@@ -114,6 +121,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         redirect: {
           destination: '/',
           permanent: false,
+          props: { message: `You are already registered !` },
         },
       };
     }

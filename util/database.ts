@@ -88,7 +88,7 @@ export async function createUser(
   return camelcaseKeys(user);
 }
 
-type Session = {
+export type Session = {
   id: number;
   token: string;
   userId: number;
