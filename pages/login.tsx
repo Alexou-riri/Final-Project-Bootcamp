@@ -119,7 +119,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       console.log(session);
       return {
         redirect: {
-          destination: '/',
+          // À changer
+          destination: `/users/dashboard`,
           permanent: false,
           props: { message: `You are already registered !` },
         },

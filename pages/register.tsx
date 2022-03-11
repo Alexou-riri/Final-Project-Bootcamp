@@ -113,7 +113,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       console.log(session);
       return {
         redirect: {
-          destination: '/login',
+          // À Changer
+          destination: `/users/dashboard`,
           permanent: false,
         },
       };
