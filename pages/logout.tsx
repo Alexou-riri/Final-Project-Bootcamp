@@ -4,10 +4,10 @@ import { useEffect } from 'react';
 import { deleteSessionByToken } from '../util/database';
 import { Props } from './login';
 
-export default function Logout() {
-  // useEffect(() => {
-  //   props.refreshUserProfile();
-  // }, [props]);
+export default function Logout(props: Props) {
+  useEffect(() => {
+    props.refreshUserProfile();
+  }, [props]);
   return 'Logged out';
 }
 

@@ -4,24 +4,24 @@ import { useCallback, useEffect, useState } from 'react';
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }) {
-  // const [user, setUser] = useState();
+  const [user, setUser] = useState();
 
-  // const refreshUserProfile = useCallback(async () => {
-  //   const response = await fetch('/api/profile');
-  //   const data = await response.json();
-  //   console.log(data);
+  const refreshUserProfile = useCallback(async () => {
+    const response = await fetch('/api/profile');
+    const data = await response.json();
+    console.log(data);
 
-  //   if ('errors' in data) {
-  //     console.log(data.errors);
-  //     setUser(undefined);
-  //     return;
-  //   }
-  //   setUser(data.user);
-  // }, []);
+    if ('errors' in data) {
+      console.log(data.errors);
+      setUser(undefined);
+      return;
+    }
+    setUser(data.user);
+  }, []);
 
-  // useEffect(() => {
-  //   refreshUserProfile().catch(() => {});
-  // }, [refreshUserProfile]);
+  useEffect(() => {
+    refreshUserProfile().catch(() => {});
+  }, [refreshUserProfile]);
 
   return (
     <>
@@ -42,8 +42,8 @@ function MyApp({ Component, pageProps }) {
       />
       <Component
         {...pageProps}
-        // userObject={user}
-        // refreshUserProfile={refreshUserProfile}
+        userObject={user}
+        refreshUserProfile={refreshUserProfile}
       />
     </>
   );

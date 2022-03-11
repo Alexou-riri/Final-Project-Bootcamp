@@ -120,7 +120,7 @@ const login = css`
 
 // const { cart } = useState;
 
-export default function Header() {
+export default function Header(props) {
   // const cookieValue = getParsedCookie('cart') || [];
   // console.log('CookieValue', cookieValue);
   // const totalQuantity = cookieValue.reduce((previousValue, currentValue) => {
@@ -152,6 +152,7 @@ export default function Header() {
         <Link href="/logout">
           <a> Log Out</a>
         </Link>
+        {props.userObject && <div>{props.userObject.username}</div>}
         <Link href="/login">
           <a css={login}>Login</a>
         </Link>

@@ -33,7 +33,7 @@ export default function Login(props: Props) {
   const [errors, setErrors] = useState<Errors>([]);
   const router = Router;
   return (
-    <Layout>
+    <Layout userObject={props.userObject}>
       <Head>
         <title>Login</title>
         <meta name="description" content="Login on this website" />
@@ -62,7 +62,7 @@ export default function Login(props: Props) {
           // clear the errors message
           setErrors([]);
 
-          // props.refreshUserProfile();
+          props.refreshUserProfile();
           await router.push(`/users/${loginResponseBody.user.id}`);
         }}
       >

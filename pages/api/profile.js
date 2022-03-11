@@ -1,24 +1,14 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { getUserByValidSessionToken } from '../../util/database';
+import { getUserById, getValidSessionByToken } from '../../util/database';
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     const token = req.cookies.sessionToken;
 
-    if (!token) {
-      res.status(400).json({
-        errors: [
-          {
-            message: 'No session token passed',
-          },
-        ],
-      });
-      return;
-    }
+    if (token) {
+      const session = await getValidSessionByToken(token);
 
-    const user = await getUserByValidSessionToken(token);
+      const user = await getUserById(session.userId);
 
-    if (user) {
       res.status(200).json({
         user: user,
       });
@@ -28,7 +18,7 @@ export default async function handler(req, res) {
     res.status(404).json({
       errors: [
         {
-          message: 'User not found or session token not valid',
+          message: 'Session Token No Found',
         },
       ],
     });

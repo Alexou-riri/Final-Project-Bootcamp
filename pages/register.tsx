@@ -37,7 +37,7 @@ export default function Register(props: Props) {
   const router = Router;
 
   return (
-    <Layout>
+    <Layout userObject={props.userObject}>
       <Head>
         <title>Register</title>
         <meta name="description" content="Register on this website" />
@@ -63,7 +63,7 @@ export default function Register(props: Props) {
             setErrors(createUserResponseBody.errors);
             return;
           }
-          // props.refreshUserProfile();
+          props.refreshUserProfile();
           await router.push('/login');
         }}
       >

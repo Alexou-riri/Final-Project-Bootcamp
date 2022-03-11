@@ -1,16 +1,15 @@
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
+import Layout from '../components/Layout';
 
-export default function About() {
+export default function About(props) {
   return (
-    <>
+    <Layout userObject={props.userObject}>
       <div>
         <Head>
           <title>House Of Castles</title>
         </Head>
-        <Header />
+
         <div className={styles.main}>
           <h1>About us </h1>
           <h3>
@@ -34,9 +33,6 @@ export default function About() {
           />
         </div>
       </div>
-      <div>
-        <Footer />
-      </div>
-    </>
+    </Layout>
   );
 }

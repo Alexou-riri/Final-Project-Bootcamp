@@ -1,9 +1,9 @@
 import Head from 'next/head';
 import Layout from '../components/Layout';
 
-export default function Contact() {
+export default function Contact(props) {
   return (
-    <Layout>
+    <Layout userObject={props.userObject}>
       <div>
         <Head>
           <title>House Of Castles</title>

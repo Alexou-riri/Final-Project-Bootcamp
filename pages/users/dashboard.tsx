@@ -8,7 +8,7 @@ type Props = {
 
 export default function ProtectedDashboard(props: Props) {
   return (
-    <Layout>
+    <Layout {...props.user.username}>
       <h1> Here is your dashboard {props.user.username} </h1>
     </Layout>
   );

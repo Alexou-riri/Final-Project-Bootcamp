@@ -5,7 +5,7 @@ import { css } from '@emotion/react';
 
 const pageContainer = css`
   background-color: white;
-  margin-top: 100px;
+  margin-top: 200px;
 `;
 
 // const sticky = css`
@@ -29,7 +29,7 @@ export default function Layout(props) {
       <Head>
         <title />
       </Head>
-      <Header />
+      <Header userObject={props.userObject} />
       <main css={pageContainer}>{props.children}</main>
 
       <Footer />
