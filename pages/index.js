@@ -4,15 +4,57 @@ import Layout from '../components/Layout';
 import styles from '../styles/Home.module.css';
 import { css } from '@emotion/react';
 import { useEffect } from 'react';
+import Link from 'next/link';
 // import { useEffect } from 'react';
+import { AiOutlineCloudUpload } from 'react-icons/ai';
 
 const color = css`
-  color: #00a4e8;
+  color: #00b8c2;
+  text-shadow: #00828c 1px 1px 1px;
+  font-family: 'Oxygen';
 `;
 
 const image = css`
   border: 1px solid black;
   margin-top: 34px;
+  background: #ffffff;
+  box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+`;
+
+const feature3 = css`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20vw;
+  margin-top: 100px;
+  /* width: 100vp; */
+`;
+
+const feature2 = css`
+  display: flex;
+  flex-direction: row;
+  /* justify-content: flex-end; */
+  align-items: center;
+  gap: 20vw;
+
+  /* width: 60vp; */
+  margin-top: 100px;
+`;
+
+const feature1 = css`
+  display: flex;
+  margin-top: 100px;
+`;
+
+const line1 = css`
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    rgba(179, 132, 201, 0.4),
+    rgba(179, 132, 201, 0)
+  );
 `;
 
 export default function Home(props) {
@@ -42,36 +84,51 @@ export default function Home(props) {
             css={image}
           />
           <div className={styles.grid}>
-            <a href="https://nextjs.org/docs" className={styles.card}>
-              <h2>Documentation </h2>
-              <p>Save the delivery note as proof</p>
-            </a>
-
-            <a
-              href="https://github.com/vercel/next.js/tree/canary/examples"
-              className={styles.card}
-            >
-              <h2>Tracking </h2>
-              <p>Follow up in real time how many pallets you have in stock</p>
-            </a>
-
-            <a
-              href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              className={styles.card}
-            >
-              <h2>Driver contact </h2>
-              <p>Possibility to send sms directly to the driver.</p>
-            </a>
+            <div css={feature1}>
+              <Link href="/register">
+                <a className={styles.card}>
+                  <h2>Documentation </h2>
+                  <p>
+                    Save the delivery note as proof <AiOutlineCloudUpload />
+                  </p>
+                </a>
+              </Link>
+            </div>
+            <div css={feature2}>
+              <img
+                src="pal_sky.jpg"
+                alt="Trucks on the road"
+                height={600}
+                width={800}
+                css={image}
+              />
+              <Link href="/login">
+                <a className={styles.card}>
+                  <h2>Tracking </h2>
+                  <p>
+                    Follow up in real time how many pallets you have in stock
+                  </p>
+                </a>
+              </Link>
+            </div>
+            {/* <div css={line1} /> */}
+            <div css={feature3}>
+              <Link href="/login">
+                <a className={styles.card}>
+                  <h2>Driver contact </h2>
+                  <p>Possibility to send sms directly to the driver.</p>
+                </a>
+              </Link>
+              <img
+                src="trucks.jpg"
+                alt="Trucks on the road"
+                height={600}
+                width={800}
+                css={image}
+              />
+            </div>
           </div>
         </main>
-
-        <div>
-          <h2>Image à inserer</h2>
-        </div>
-        <div>
-          <h3> Info</h3>
-          <h3> Blabla</h3>
-        </div>
       </Layout>
     </div>
   );

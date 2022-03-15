@@ -68,29 +68,31 @@
 .grid {
   display: flex;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
   /* flex-wrap: wrap; */
   flex-direction: column;
-  max-width: 800px;
+  /* max-width: 800px; */
 }
 
 .card {
-  margin: 1rem;
-  padding: 1.5rem;
-  text-align: left;
+  /* margin: 8rem; */
+  padding: 3rem;
+  text-align: center;
   color: inherit;
   text-decoration: none;
-  border: 1px solid #eaeaea;
+  border: 1px solid #4a849b;
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
-  max-width: 300px;
+  background: #ffffff;
+  box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.25);
+  width: 400px;
 }
 
 .card:hover,
 .card:focus,
 .card:active {
-  color: #262999;
-  border-color: #262999;
+  color: #00a5d3;
+  border-color: #00a5d3;
 }
 
 .card h2 {

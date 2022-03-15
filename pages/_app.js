@@ -36,7 +36,7 @@ function MyApp({ Component, pageProps }) {
           body {
             margin: 0;
             padding: 0;
-            font-family: 'Oxygen', sans-serif;
+            font-family: 'Montserrat', sans-serif;
           }
         `}
       />

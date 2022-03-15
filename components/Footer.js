@@ -2,13 +2,14 @@
 import { css } from '@emotion/react';
 
 const footer = css`
-  background: #e6eef2;
+  background: #e6f4f1;
   text-align: center;
   padding-top: 4px;
   /* position: absolute; */
   left: 0;
   bottom: 0;
   width: 100%;
+  margin-top: 50px;
 
   /* right: 0;
   bottom: 0;
@@ -34,16 +35,15 @@ export default function Footer() {
     <footer css={footer}>
       <div>
         <div>
-          <h4>PalChange</h4>
-          <h5>All right not reserved</h5>
+          <h4>PalChange - All right not reserved</h4>
         </div>
         <hr />
         <div className="contact">
           <div>
             <p>contact :</p>
             <p> 1 rue de la fleur 10000 Cheverny</p>
+            <p>06 641234567</p>
           </div>
-          <p>06 641234567</p>
         </div>
       </div>
     </footer>

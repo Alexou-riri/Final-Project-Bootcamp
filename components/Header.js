@@ -40,7 +40,7 @@ const headerStyles = css`
 `;
 
 const link = css`
-  color: #262999;
+  color: #00b8c2;
   text-transform: uppercase;
   text-decoration: none;
   letter-spacing: 0.15em;
@@ -54,8 +54,8 @@ const link = css`
     margin-left: 20px;
     cursor: pointer;
     transition: transform 0.2s ease-out;
-  } */
-  /* a:after {
+  }
+  a:after {
     background: none repeat scroll 0 0 transparent;
     bottom: 0;
     content: '';
@@ -66,8 +66,8 @@ const link = css`
     background: red;
     transition: width 0.3s ease 0s, left 0.3s ease 0s;
     width: 0;
-  } */
-  /* a:hover:after {
+  }
+  a:hover:after {
     width: 100%;
     left: 0;
   } */
@@ -82,12 +82,16 @@ const sign = css`
   margin: 0 10px;
   width: 100px;
   padding: 10px 30px;
-  box-shadow: 0 0 10px #262999;
+  box-shadow: 0 0 10px #00b8c2;
   transition: 0.4s;
   color: white;
-  background-color: #262999;
+  background-color: #00b8c2;
 
   &:hover {
+    color: #00b8c2;
+    box-shadow: 0 0 20px #00b8c2;
+    background-color: white;
+    border: solid 1px #00b8c2;
   }
 `;
 
@@ -100,16 +104,16 @@ const login = css`
   margin: 0 10px;
   width: 100px;
   padding: 10px 30px;
-  box-shadow: 0 0 10px #262999;
+  box-shadow: 0 0 10px #00b8c2;
   transition: 0.4s;
-  color: #262999;
+  color: #00b8c2;
   background-color: rgba(255, 255, 255, 1);
-  border: 1px solid rgba(104, 85, 224, 1);
+  border: 1px solid #00b8c2;
 
   &:hover {
     color: white;
-    box-shadow: 0 0 20px rgba(104, 85, 224, 0.6);
-    background-color: #262999;
+    box-shadow: 0 0 20px #00b8c2;
+    background-color: #00b8c2;
   }
 `;
 
@@ -150,7 +154,7 @@ export default function Header(props) {
       </Link>
       <p>
         <Link href="/logout">
-          <a> Log Out</a>
+          <a css={link}> Log Out</a>
         </Link>
         {props.userObject && <div>{props.userObject.username}</div>}
         <Link href="/login">
