@@ -10,8 +10,8 @@ const headerStyles = css`
   /* background: #e6eef2; */
   padding: 10px;
   /* padding-right: 30em; */
-  display: flex;
-  justify-content: flex-end;
+  /* display: flex;
+  justify-content: flex-end; */
   margin-top: 0;
   /* position: sticky;
   position: 0; */
@@ -27,16 +27,24 @@ const headerStyles = css`
   /* padding-top: 0px;
   padding-bottom: 0px; */
 
-  p {
+  div {
     margin-right: 34px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .logo {
+      margin-inline-end: auto;
+    }
   }
 
-  > a:first-child {
-    display: flex;
-    margin-right: auto;
-    text-decoration: none;
-    text-transform: none;
-  }
+  /* > a:first-child {
+    /* display: flex; */
+  /* justify-content: flex-start; */
+  /* text-decoration: none;
+    text-transform: none; */
+  /* align-items: center; */
+  /* border: 1px solid red;}  */
 `;
 
 const link = css`
@@ -48,7 +56,7 @@ const link = css`
   cursor: pointer;
   display: inline-block;
   padding: 15px 20px;
-  position: relative;
+  /* position: relative; */
 
   /* a + a {
     margin-left: 20px;
@@ -117,6 +125,12 @@ const login = css`
   }
 `;
 
+const username = css`
+  display: flex;
+  border: 1px solid red;
+  justify-content: flex-start;
+`;
+
 // const imageLogo = css`
 //   display: flex;
 //   margin-left: 20px;
@@ -147,35 +161,43 @@ export default function Header(props) {
 
   return (
     <header css={headerStyles}>
-      <Link href="/">
-        <a>
-          <img src="/icon-192.png" alt="Logo" height={80} width={80} />
-        </a>
-      </Link>
-      <p>
-        <Link href="/logout">
-          <a css={link}> Log Out</a>
-        </Link>
-        {props.userObject && <div>{props.userObject.username}</div>}
-        <Link href="/login">
-          <a css={login}>Login</a>
-        </Link>
-        <Link href="/register">
-          <a css={sign}> Sign Up</a>
-        </Link>
+      <div>
+        <div className="logo">
+          <Link href="/">
+            <a>
+              <img src="/icon-192.png" alt="Logo" height={80} width={80} />
+            </a>
+          </Link>
+        </div>
+        <div>
+          {props.userObject && (
+            <div css={username}>
+              <a href="/users/dashboard">{props.userObject.username}</a>
+            </div>
+          )}
+          <Link href="/logout">
+            <a css={link}> Log Out</a>
+          </Link>
+          <Link href="/login">
+            <a css={login}>Login</a>
+          </Link>
+          <Link href="/register">
+            <a css={sign}> Sign Up</a>
+          </Link>
 
-        <Link href="/about">
-          <a css={link}>About</a>
+          <Link href="/about">
+            <a css={link}>About</a>
 
-          {/* <select></select> */}
-        </Link>
-        {/* menu deroulant? */}
-        <Link href="/contact">
-          {/* {cart.cartItems.length > 0 ? } */}
-          {/* <a>Cart - {isNaN(totalQuantity) ? '0' : totalQuantity}</a> */}
-          <a css={link}>Contact</a>
-        </Link>
-      </p>
+            {/* <select></select> */}
+          </Link>
+          {/* menu deroulant? */}
+          <Link href="/contact">
+            {/* {cart.cartItems.length > 0 ? } */}
+            {/* <a>Cart - {isNaN(totalQuantity) ? '0' : totalQuantity}</a> */}
+            <a css={link}>Contact</a>
+          </Link>
+        </div>
+      </div>
     </header>
   );
 }
