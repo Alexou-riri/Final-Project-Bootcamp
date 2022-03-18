@@ -14,6 +14,7 @@ type RegisterRequestBody = {
   company: string;
   password: string;
   csrfToken: string;
+  userPermission: number;
 };
 
 type RegisterNextApiRequest = Omit<NextApiRequest, 'body'> & {
@@ -36,6 +37,7 @@ export default async function registerHandler(
       !request.body.password ||
       typeof request.body.csrfToken !== 'string' ||
       !request.body.csrfToken
+      // !request.body.userPermission
     ) {
       response.status(400).json({
         errors: [
@@ -75,7 +77,11 @@ export default async function registerHandler(
     console.log(request.body);
     const passwordHash = await bcrypt.hash(request.body.password, 12);
 
-    const user = await createUser(passwordHash, request.body.company);
+    const user = await createUser(
+      request.body.company,
+      passwordHash,
+      request.body.userPermission,
+    );
     // 1. Create a unique token
     const token = crypto.randomBytes(64).toString('base64');
 

@@ -33,7 +33,7 @@ const sql = postgres();
 export type User = {
   id: number;
   company: string;
-  role: string;
+  permissionId: number;
 };
 
 export type UserWithPasswordHash = User & {
@@ -44,7 +44,6 @@ export async function getUserById(id: number) {
   const [user] = await sql<[User | undefined]>`
     SELECT id,
     company,
-    role
     from
     users
     where id = ${id}
@@ -57,18 +56,21 @@ export async function getUserByValidSessionToken(token: string | undefined) {
   const [user] = await sql<[User | undefined]>`
     SELECT
       users.id,
-      users.company
+      users.company,
+      users.permission_id
     FROM
       users,
-      sessions
+      sessions,
+      permission
     WHERE
       sessions.token = ${token} AND
       sessions.user_id = users.id AND
+      users.permission_id = permission.id AND
       sessions.expiry_timestamp > now()
   `;
   return user && camelcaseKeys(user);
 }
-
+// check if usrrname alrready exists in database
 export async function getUserByUsername(company: string) {
   const [user] = await sql<[{ id: number } | undefined]>`
     SELECT id from users where company = ${company}
@@ -87,15 +89,20 @@ export async function getUserWithPasswordHashByUsername(company: string) {
   return user && camelcaseKeys(user);
 }
 
-export async function createUser(passwordHash: string, company: string) {
+export async function createUser(
+  company: string,
+  passwordHash: string,
+  userPermission: number,
+) {
   const [user] = await sql<[User]>`
     INSERT INTO users
-      (password_hash, company)
+      (company, password_hash, permission_id)
     VALUES
-      ( ${passwordHash}, ${company})
+      ( ${company}, ${passwordHash}, ${userPermission})
     RETURNING
       id,
-      company
+      company,
+      permission_id
   `;
   return camelcaseKeys(user);
 }

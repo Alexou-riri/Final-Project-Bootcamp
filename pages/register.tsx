@@ -8,6 +8,7 @@ import { loadDefaultErrorComponents } from 'next/dist/server/load-components';
 import { Props } from './login';
 import { getValidSessionByToken } from '../util/database';
 import { GetServerSidePropsContext } from 'next';
+
 // import { responseBody } from './api/signup';
 
 // const label = css``;
@@ -26,8 +27,7 @@ const label = css`
 // const form = css`
 //   border: 1px solid black;
 // `;
-const client = 'client';
-const sub = 'sub';
+
 type Errors = { message: string }[];
 
 export default function Register(props: Props) {
@@ -36,52 +36,53 @@ export default function Register(props: Props) {
   const [company, setCompany] = useState('');
   const [errors, setErrors] = useState<Errors>([]);
   const router = Router;
-  const [role, setRole] = useState(client);
 
-  const formSubmit = async (event: any) => {
-    event.preventDefault();
-    if (role === 'client') {
-      const createUserResponse = await fetch('/api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          password: password,
-          company: company,
-          role: client,
-        }),
-      });
+  const [userPermission, setUserPermission] = useState(1);
 
-      const createUserResponseBody = await createUserResponse.json();
-      if ('errors' in createUserResponseBody) {
-        setErrors(createUserResponseBody.errors);
-        return;
-      }
-      props.refreshUserProfile();
-      await router.push('/login');
-    } else {
-      event.preventDefault();
-      const createUserResponse = await fetch('/api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          password: password,
-          company: company,
-          role: sub,
-        }),
-      });
-      const createUserResponseBody = await createUserResponse.json();
-      if ('errors' in createUserResponseBody) {
-        setErrors(createUserResponseBody.errors);
-        return;
-      }
-      props.refreshUserProfile();
-      await router.push('/login');
-    }
-  };
+  // const formSubmit = async (event: any) => {
+  //   event.preventDefault();
+  //   if (role === 'client') {
+  //     const createUserResponse = await fetch('/api/register', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         password: password,
+  //         company: company,
+  //         // role: client,
+  //       }),
+  //     });
+
+  //     const createUserResponseBody = await createUserResponse.json();
+  //     if ('errors' in createUserResponseBody) {
+  //       setErrors(createUserResponseBody.errors);
+  //       return;
+  //     }
+  //     props.refreshUserProfile();
+  //     await router.push('/login');
+  //   } else {
+  //     event.preventDefault();
+  //     const createUserResponse = await fetch('/api/register', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         password: password,
+  //         company: company,
+  //         // role: sub,
+  //       }),
+  //     });
+  //     const createUserResponseBody = await createUserResponse.json();
+  //     if ('errors' in createUserResponseBody) {
+  //       setErrors(createUserResponseBody.errors);
+  //       return;
+  //     }
+  //     props.refreshUserProfile();
+  //     await router.push('/login');
+  //   }
+  // };
 
   return (
     <Layout userObject={props.userObject}>
@@ -90,7 +91,30 @@ export default function Register(props: Props) {
         <meta name="description" content="Register on this website" />
       </Head>
 
-      <form onSubmit={formSubmit}>
+      <form
+        onSubmit={async (event) => {
+          event.preventDefault();
+          const createUserResponse = await fetch('/api/register', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              company: company,
+              password: password,
+              userPermission: userPermission,
+            }),
+          });
+          const createUserResponseBody = await createUserResponse.json();
+          if ('errors' in createUserResponseBody) {
+            setErrors(createUserResponseBody.errors);
+            return;
+          }
+          // props.refreshUserProfile();
+          props.refreshUserProfile();
+          await router.push('/login');
+        }}
+      >
         <label css={label}>
           Company Name :
           <input
@@ -98,11 +122,6 @@ export default function Register(props: Props) {
             onChange={(event) => setCompany(event.currentTarget.value)}
           />
         </label>
-        <div>
-          {errors.map((error) => {
-            return <div key={`error-${error.message}`}>{error.message};</div>;
-          })}
-        </div>
 
         <label css={label}>
           Password :
@@ -112,18 +131,23 @@ export default function Register(props: Props) {
             onChange={(event) => setPassword(event.currentTarget.value)}
           />
         </label>
+        <div>
+          {errors.map((error) => {
+            return <div key={`error-${error.message}`}>{error.message};</div>;
+          })}
+        </div>
 
-        <label>
+        <label htmlFor="userPermission">
           Please choose:
           <select
-            id="role"
-            value={role}
+            id="userPermission"
+            value={userPermission}
             onChange={(event) => {
-              setRole(event.currentTarget.value);
+              setUserPermission(parseInt(event.currentTarget.value));
             }}
           >
-            <option value={client}>I am a client</option>
-            <option value={sub}>I am a sub company</option>
+            <option value="1">I am a client</option>
+            <option value="2">I am a sub company</option>
           </select>
         </label>
 
