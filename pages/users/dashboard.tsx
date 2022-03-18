@@ -13,6 +13,9 @@ import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Link from 'next/link';
+import { AiOutlineCalendar } from 'react-icons/ai';
+import { FaWarehouse, FaPallet } from 'react-icons/fa';
+import { BsTruck } from 'react-icons/bs';
 
 // type Props = {
 //   user: User;
@@ -43,7 +46,7 @@ export default function ProtectedDashboard(props: Props) {
       >
         <div className={styles.col2}>
           <label>
-            Loading Place
+            <FaWarehouse /> Loading Place
             <input
               placeholder="Company Name"
               tabIndex={2}
@@ -58,7 +61,7 @@ export default function ProtectedDashboard(props: Props) {
         </div>
         <div className={styles.col2}>
           <label>
-            Loading Date:
+            <AiOutlineCalendar /> Loading Date:
             <DatePicker
               selected={loadingDate}
               onChange={(loadingDate: Date) => setLoadingDate(loadingDate)}
@@ -69,7 +72,7 @@ export default function ProtectedDashboard(props: Props) {
         </div>
         <div className={styles.col2}>
           <label>
-            Offlooading Place
+            <FaWarehouse /> Offlooading Place
             <input
               placeholder="Company Name"
               tabIndex={2}
@@ -84,7 +87,7 @@ export default function ProtectedDashboard(props: Props) {
         </div>
         <div className={styles.col2}>
           <label>
-            Offlooading Date:
+            <AiOutlineCalendar /> Offlooading Date:
             <DatePicker
               selected={offloadingDate}
               onChange={(offloadingDate: Date) =>
@@ -107,7 +110,7 @@ export default function ProtectedDashboard(props: Props) {
         </div>
         <div className={styles.col3}>
           <label>
-            Truck Number
+            <BsTruck /> Truck Number
             <input
               placeholder="Which truck is going to do this load"
               tabIndex={4}
@@ -116,8 +119,8 @@ export default function ProtectedDashboard(props: Props) {
         </div>
         <div className={styles.col3}>
           <label>
-            How many pallets should we give and thus get back at the end of the
-            mission
+            <FaPallet /> How many pallets should we give and thus get back at
+            the end of the mission
             <input
               type="number"
               placeholder="33"

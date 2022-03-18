@@ -6,7 +6,7 @@ import { css } from '@emotion/react';
 import { useEffect } from 'react';
 import Link from 'next/link';
 // import { useEffect } from 'react';
-import { AiOutlineCloudUpload } from 'react-icons/ai';
+import { AiOutlineCloudUpload, AiOutlineWhatsApp } from 'react-icons/ai';
 
 const color = css`
   color: #00b8c2;
@@ -116,7 +116,10 @@ export default function Home(props) {
               <Link href="/login">
                 <a className={styles.card}>
                   <h2>Driver contact </h2>
-                  <p>Possibility to send sms directly to the driver.</p>
+                  <p>
+                    Possibility to send sms directly to the driver.{' '}
+                    <AiOutlineWhatsApp />
+                  </p>
                 </a>
               </Link>
               <img

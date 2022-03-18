@@ -1,5 +1,7 @@
 import Head from 'next/head';
 import Layout from '../components/Layout';
+import { BsGithub, BsFacebook } from 'react-icons/bs';
+import { MdAlternateEmail } from 'react-icons/md';
 
 export default function Contact(props) {
   return (
@@ -16,6 +18,10 @@ export default function Contact(props) {
         </Head>
 
         <h1>Dont hesitate to contact us</h1>
+
+        <BsGithub size={100} />
+        <BsFacebook size={100} />
+        <MdAlternateEmail size={100} />
       </div>
     </Layout>
   );

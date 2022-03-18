@@ -21,6 +21,54 @@ const label = css`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: auto;
+  padding-bottom: 10px;
+`;
+
+const register = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  margin-top: 34px;
+  cursor: pointer;
+
+  border-radius: 4px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 10px 30px;
+  box-shadow: 0 0 10px #00b8c2;
+  transition: 0.4s;
+  color: #00b8c2;
+  background-color: rgba(255, 255, 255, 1);
+  border: 1px solid #00b8c2;
+
+  &:hover {
+    color: white;
+    box-shadow: 0 0 20px #00b8c2;
+    background-color: #00b8c2;
+  }
+`;
+const form = css`
+  border: 1px solid black;
+  box-shadow: 0px 1px 12px rgba(0, 0, 0, 0.25);
+  margin-bottom: 26rem;
+  margin-left: 40%;
+  margin-right: 40%;
+  padding: 2rem;
+  border-radius: 10px;
+`;
+
+const select = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  padding-bottom: 10px;
+`;
+
+const option = css`
+  color: red;
 `;
 
 // const form = css`
@@ -97,6 +145,7 @@ export default function Register(props: Props) {
       </Head>
 
       <form
+        css={form}
         onSubmit={async (event) => {
           event.preventDefault();
           const registerResponse = await fetch('/api/register', {
@@ -144,16 +193,19 @@ export default function Register(props: Props) {
           })}
         </div>
 
-        <label htmlFor="userPermission">
+        <label htmlFor="userPermission" css={label}>
           Please choose:
           <select
+            css={select}
             id="userPermission"
             value={userPermission}
             onChange={(event) => {
               setUserPermission(parseInt(event.currentTarget.value));
             }}
           >
-            <option value="1">I am a client</option>
+            <option css={option} value="1">
+              I am a client
+            </option>
             <option value="2">I am a sub company</option>
           </select>
         </label>
@@ -165,7 +217,7 @@ export default function Register(props: Props) {
             onChange={(event) => setCompany(event.currentTarget.value)}
           />
         </label> */}
-        <button>Sign Up</button>
+        <button css={register}>Sign Up</button>
       </form>
     </Layout>
   );

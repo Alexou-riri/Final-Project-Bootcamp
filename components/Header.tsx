@@ -4,6 +4,8 @@ import { User } from '../util/database';
 // import { useEffect, useState } from 'react';
 // import Image from 'next/image';
 // import { getParsedCookie } from '../util/cookies';
+import { FiLogIn } from 'react-icons/fi';
+import { CgLogOut } from 'react-icons/cg';
 
 // import logoipsum from ' ./public/Images/logoipsum.svg';
 
@@ -184,12 +186,14 @@ export default function Header(props: Props) {
           )}
           {props.userObject ? (
             <a css={link} href="/logout">
-              Log Out
+              Log Out <CgLogOut />
             </a>
           ) : (
             <>
               <Link href="/login">
-                <a css={login}>Login</a>
+                <a css={login}>
+                  Login <FiLogIn />
+                </a>
               </Link>
               <Link href="/register">
                 <a css={sign}> Sign Up</a>
