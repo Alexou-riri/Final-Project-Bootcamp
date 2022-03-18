@@ -165,3 +165,50 @@ export async function getValidSessionByToken(token: string) {
   await deleteExpiredSessions();
   return session && camelcaseKeys(session);
 }
+export type Load = {
+  id: number;
+  palletQuantityGiven: number;
+  palletQuantityReceived: number;
+  loadingPlaceId: number;
+  offloadingPlaceId: number;
+  truckId: number;
+  reference: string;
+  loadingDate: Date;
+  offloadingDate: Date;
+  requestDate: Date;
+  documentId: number;
+  userId: number;
+};
+export async function createNewLoad(
+  palletQuantityGiven: number,
+  palletQuantityReceived: number,
+  loadingPlaceId: number,
+  offloadingPlaceId: number,
+  truckId: number,
+  reference: string,
+  loadingDate: Date,
+  offloadingDate: Date,
+  requestDate: Date,
+  userId: number,
+) {
+  const [load] = await sql<[Load]>`
+  INSERT INTO loads
+    (pallet_quantity_given, pallet_quantity_received, loading_place_id, offloading_place_id, truck_id, reference, loading_date, offloading_date, request_date, document_id, user_id)
+  VALUES
+    ( ${palletQuantityGiven}, ${palletQuantityReceived}, ${loadingPlaceId},${offloadingPlaceId},${truckId},${reference},${loadingDate},${offloadingDate}, ${requestDate}, ${userId})
+  RETURNING
+    id,
+    pallet_quantity_given,
+    pallet_quantity_received,
+    loading_place_id,
+    offloading_place_id,
+    truck_id,
+    reference,
+    loading_date,
+    offloading_date,
+    request_date,
+    document_id,
+    user_id)
+`;
+  return camelcaseKeys(load);
+}

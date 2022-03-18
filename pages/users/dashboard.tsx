@@ -5,6 +5,7 @@ import {
   getUserByValidSessionToken,
   getValidSessionByToken,
   User,
+  Load,
 } from '../../util/database';
 import styles from './dashboard.module.css';
 import { css } from '@emotion/react';
@@ -25,6 +26,10 @@ type Props = {
 export default function ProtectedDashboard(props: Props) {
   const [loadingDate, setLoadingDate] = useState(new Date());
   const [offloadingDate, setOffloadingDate] = useState(new Date());
+  const [loadingPlace, setLoadingPlace] = useState('');
+  const [offloadingPlace, setOffloadingPlace] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [reference, setReference] = useState('');
 
   return (
     <Layout {...props.userObject}>
@@ -39,8 +44,16 @@ export default function ProtectedDashboard(props: Props) {
         <div className={styles.col2}>
           <label>
             Loading Place
-            <input placeholder="Company Name" tabIndex={2} />
-            <input placeholder="Company Address" tabIndex={2} />
+            <input
+              placeholder="Company Name"
+              tabIndex={2}
+              value={companyName}
+            />
+            <input
+              placeholder="Company Address"
+              tabIndex={2}
+              value={loadingPlace}
+            />
           </label>
         </div>
         <div className={styles.col2}>
@@ -57,8 +70,16 @@ export default function ProtectedDashboard(props: Props) {
         <div className={styles.col2}>
           <label>
             Offlooading Place
-            <input placeholder="Company Name" tabIndex={2} />
-            <input placeholder="Company Address" tabIndex={2} />
+            <input
+              placeholder="Company Name"
+              tabIndex={2}
+              value={companyName}
+            />
+            <input
+              placeholder="Company Address"
+              tabIndex={2}
+              value={offloadingPlace}
+            />
           </label>
         </div>
         <div className={styles.col2}>
