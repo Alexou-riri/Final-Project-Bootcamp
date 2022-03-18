@@ -59,7 +59,7 @@ const line1 = css`
 
 export default function Home(props) {
   useEffect(() => {
-    props.refreshUserProfile();
+    // props.refreshUserProfile();
   }, [props]);
 
   return (

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { css } from '@emotion/react';
+// import { User } from '../util/database';
 // import { useEffect, useState } from 'react';
 // import Image from 'next/image';
 // import { getParsedCookie } from '../util/cookies';
@@ -137,6 +138,9 @@ const username = css`
 // `;
 
 // const { cart } = useState;
+// type Props = {
+//   userObject?: User;
+// };
 
 export default function Header(props) {
   // const cookieValue = getParsedCookie('cart') || [];
@@ -172,12 +176,14 @@ export default function Header(props) {
         <div>
           {props.userObject && (
             <div css={username}>
-              <a href="/users/dashboard">{props.userObject.username}</a>
+              <Link href="../users/dashboard">
+                <a css={link}>{props.userObject.username}</a>
+              </Link>
             </div>
           )}
-          <Link href="/logout">
-            <a css={link}> Log Out</a>
-          </Link>
+          <a css={link} href="/logout">
+            Log Out
+          </a>
           <Link href="/login">
             <a css={login}>Login</a>
           </Link>

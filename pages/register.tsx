@@ -26,7 +26,8 @@ const label = css`
 // const form = css`
 //   border: 1px solid black;
 // `;
-
+const client = 'client';
+const sub = 'sub';
 type Errors = { message: string }[];
 
 export default function Register(props: Props) {
@@ -35,6 +36,52 @@ export default function Register(props: Props) {
   const [company, setCompany] = useState('');
   const [errors, setErrors] = useState<Errors>([]);
   const router = Router;
+  const [role, setRole] = useState(client);
+
+  const formSubmit = async (event: any) => {
+    event.preventDefault();
+    if (role === 'client') {
+      const createUserResponse = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          password: password,
+          company: company,
+          role: client,
+        }),
+      });
+
+      const createUserResponseBody = await createUserResponse.json();
+      if ('errors' in createUserResponseBody) {
+        setErrors(createUserResponseBody.errors);
+        return;
+      }
+      props.refreshUserProfile();
+      await router.push('/login');
+    } else {
+      event.preventDefault();
+      const createUserResponse = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          password: password,
+          company: company,
+          role: sub,
+        }),
+      });
+      const createUserResponseBody = await createUserResponse.json();
+      if ('errors' in createUserResponseBody) {
+        setErrors(createUserResponseBody.errors);
+        return;
+      }
+      props.refreshUserProfile();
+      await router.push('/login');
+    }
+  };
 
   return (
     <Layout userObject={props.userObject}>
@@ -43,35 +90,12 @@ export default function Register(props: Props) {
         <meta name="description" content="Register on this website" />
       </Head>
 
-      <form
-        onSubmit={async (event) => {
-          event.preventDefault();
-          const createUserResponse = await fetch('/api/register', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              username: username,
-              password: password,
-              company: company,
-            }),
-          });
-
-          const createUserResponseBody = await createUserResponse.json();
-          if ('errors' in createUserResponseBody) {
-            setErrors(createUserResponseBody.errors);
-            return;
-          }
-          props.refreshUserProfile();
-          await router.push('/login');
-        }}
-      >
+      <form onSubmit={formSubmit}>
         <label css={label}>
-          User Name :
+          Company Name :
           <input
-            value={username}
-            onChange={(event) => setUsername(event.currentTarget.value)}
+            value={company}
+            onChange={(event) => setCompany(event.currentTarget.value)}
           />
         </label>
         <div>
@@ -89,13 +113,27 @@ export default function Register(props: Props) {
           />
         </label>
 
-        <label css={label}>
+        <label>
+          Please choose:
+          <select
+            id="role"
+            value={role}
+            onChange={(event) => {
+              setRole(event.currentTarget.value);
+            }}
+          >
+            <option value={client}>I am a client</option>
+            <option value={sub}>I am a sub company</option>
+          </select>
+        </label>
+
+        {/* <label css={label}>
           Company:
           <input
             value={company}
             onChange={(event) => setCompany(event.currentTarget.value)}
           />
-        </label>
+        </label> */}
         <button>Sign Up</button>
       </form>
     </Layout>

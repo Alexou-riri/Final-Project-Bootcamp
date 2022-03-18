@@ -1,6 +1,11 @@
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import Layout from '../../components/Layout';
-import { getUserById, getValidSessionByToken, User } from '../../util/database';
+import {
+  getUserById,
+  getUserByValidSessionToken,
+  getValidSessionByToken,
+  User,
+} from '../../util/database';
 import styles from './dashboard.module.css';
 import { css } from '@emotion/react';
 import { useState } from 'react';
@@ -18,7 +23,7 @@ export default function ProtectedDashboard(props: Props) {
 
   return (
     <Layout {...props.user.username}>
-      <h1> Here is your dashboard {props.user.username} </h1>
+      <h1> Dashboard of {props.user.username} </h1>
 
       <form
         className={styles.form}
@@ -109,26 +114,31 @@ export default function ProtectedDashboard(props: Props) {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  // 1. check if there is a token and is valid from the cookie
+  // 1. Get a user from the cookie sessionToken
   const token = context.req.cookies.sessionToken;
+  const user = await getUserByValidSessionToken(token);
+  const sessionToken = context.req.cookies.sessionToken;
+  const session = await getValidSessionByToken(sessionToken);
 
-  if (token) {
-    // 2. check if the token is valid and redirect
-    const session = await getValidSessionByToken(token);
-
-    if (session) {
-      const user = await getUserById(session.userId);
-      console.log(user);
-      return {
-        props: { user: user },
-      };
-    }
-
+  if (!session) {
     return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
+      props: {
+        error: 'You are not allowed to see animals today',
       },
     };
   }
+
+  if (user) {
+    console.log(user);
+    return {
+      props: { user: user },
+    };
+  }
+  // 3. otherwise return to login page
+  return {
+    redirect: {
+      destination: '/login',
+      permanent: false,
+    },
+  };
 }
