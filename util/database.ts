@@ -43,7 +43,7 @@ export type UserWithPasswordHash = User & {
 export async function getUserById(id: number) {
   const [user] = await sql<[User | undefined]>`
     SELECT id,
-    company,
+    company
     from
     users
     where id = ${id}
@@ -57,15 +57,15 @@ export async function getUserByValidSessionToken(token: string | undefined) {
     SELECT
       users.id,
       users.company,
-      users.permission_id
+      users.user_permission_id
     FROM
       users,
       sessions,
-      permission
+      user_permission
     WHERE
       sessions.token = ${token} AND
       sessions.user_id = users.id AND
-      users.permission_id = permission.id AND
+      users.user_permission_id = user_permission.id AND
       sessions.expiry_timestamp > now()
   `;
   return user && camelcaseKeys(user);
@@ -96,13 +96,13 @@ export async function createUser(
 ) {
   const [user] = await sql<[User]>`
     INSERT INTO users
-      (company, password_hash, permission_id)
+      (company, password_hash, user_permission_id)
     VALUES
       ( ${company}, ${passwordHash}, ${userPermission})
     RETURNING
       id,
       company,
-      permission_id
+      user_permission_id
   `;
   return camelcaseKeys(user);
 }

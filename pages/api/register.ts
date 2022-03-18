@@ -36,8 +36,8 @@ export default async function registerHandler(
       typeof request.body.password !== 'string' ||
       !request.body.password ||
       typeof request.body.csrfToken !== 'string' ||
-      !request.body.csrfToken
-      // !request.body.userPermission
+      !request.body.csrfToken ||
+      !request.body.userPermission
     ) {
       response.status(400).json({
         errors: [

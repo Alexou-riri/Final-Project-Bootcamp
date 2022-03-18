@@ -5,11 +5,10 @@ import Head from 'next/head';
 import Router, { useRouter } from 'next/router';
 import { useState } from 'react';
 import { loadDefaultErrorComponents } from 'next/dist/server/load-components';
-import { Props } from './login';
 import { getValidSessionByToken } from '../util/database';
 import { GetServerSidePropsContext } from 'next';
-
-// import { responseBody } from './api/signup';
+import { RegisterResponseBody } from './api/register';
+import { createCsrfToken } from '../util/auth';
 
 // const label = css``;
 /* .tel {
@@ -29,6 +28,12 @@ const label = css`
 // `;
 
 type Errors = { message: string }[];
+
+type Props = {
+  refreshUserProfile: () => void;
+  userObject: { company: string };
+  csrfToken: string;
+};
 
 export default function Register(props: Props) {
   // const [username, setUsername] = useState('');
@@ -94,7 +99,7 @@ export default function Register(props: Props) {
       <form
         onSubmit={async (event) => {
           event.preventDefault();
-          const createUserResponse = await fetch('/api/register', {
+          const registerResponse = await fetch('/api/register', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -102,16 +107,18 @@ export default function Register(props: Props) {
             body: JSON.stringify({
               company: company,
               password: password,
+              csrfToken: props.csrfToken,
               userPermission: userPermission,
             }),
           });
-          const createUserResponseBody = await createUserResponse.json();
-          if ('errors' in createUserResponseBody) {
-            setErrors(createUserResponseBody.errors);
+          const registerResponseBody =
+            (await registerResponse.json()) as RegisterResponseBody;
+          if ('errors' in registerResponseBody) {
+            setErrors(registerResponseBody.errors);
             return;
           }
-          // props.refreshUserProfile();
           props.refreshUserProfile();
+
           await router.push('/login');
         }}
       >
@@ -186,6 +193,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   // 3. otherwise render the page
 
   return {
-    props: {},
+    props: {
+      csrfToken: createCsrfToken(),
+    },
   };
 }
