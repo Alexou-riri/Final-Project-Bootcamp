@@ -13,7 +13,12 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Link from 'next/link';
 
+// type Props = {
+//   user: User;
+// };
 type Props = {
+  userObject?: User;
+  userCompany?: string;
   user: User;
 };
 
@@ -22,7 +27,7 @@ export default function ProtectedDashboard(props: Props) {
   const [offloadingDate, setOffloadingDate] = useState(new Date());
 
   return (
-    <Layout {...props.user.company}>
+    <Layout {...props.userObject}>
       <h1> Dashboard of {props.user.company} </h1>
 
       <form

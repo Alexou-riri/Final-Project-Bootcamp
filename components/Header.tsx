@@ -140,6 +140,7 @@ const username = css`
 // const { cart } = useState;
 type Props = {
   userObject?: User;
+  userCompany?: string;
 };
 
 export default function Header(props: Props) {
@@ -177,7 +178,7 @@ export default function Header(props: Props) {
           {props.userObject && (
             <div css={username}>
               <Link href="../users/dashboard">
-                <a css={link}>{props.userObject.company}</a>
+                <a css={link}>{props.userCompany}</a>
               </Link>
             </div>
           )}
