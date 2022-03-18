@@ -1,13 +1,13 @@
-import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
-import Head from 'next/head';
-import Link from 'next/link';
+// import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
+// import Head from 'next/head';
+// import Link from 'next/link';
 import Layout from '../../components/Layout';
-import {
-  getUserById,
-  getValidSessionByToken,
-  User,
-  Session,
-} from '../../util/database';
+// import {
+//   getUserById,
+//   getValidSessionByToken,
+//   User,
+//   Session,
+// } from '../../util/database';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useState } from 'react';
@@ -104,19 +104,13 @@ export default function SingleLoad() {
           <label>
             How many pallets should we give and thus get back at the end of the
             mission
-            <input
-              type="number"
-              placeholder="33"
-              min="0"
-              max="40"
-              id="number"
-            />
+            <input type="number" placeholder="33" min="0" max="40" />
           </label>
         </div>
         <div
         // className={styles.colsubmit}
         >
-          <button type="submit">Submit</button>
+          <button>Submit</button>
         </div>
       </form>
     </Layout>

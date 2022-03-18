@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { css } from '@emotion/react';
-// import { User } from '../util/database';
+import { User } from '../util/database';
 // import { useEffect, useState } from 'react';
 // import Image from 'next/image';
 // import { getParsedCookie } from '../util/cookies';
@@ -138,11 +138,11 @@ const username = css`
 // `;
 
 // const { cart } = useState;
-// type Props = {
-//   userObject?: User;
-// };
+type Props = {
+  userObject?: User;
+};
 
-export default function Header(props) {
+export default function Header(props: Props) {
   // const cookieValue = getParsedCookie('cart') || [];
   // console.log('CookieValue', cookieValue);
   // const totalQuantity = cookieValue.reduce((previousValue, currentValue) => {
@@ -177,19 +177,24 @@ export default function Header(props) {
           {props.userObject && (
             <div css={username}>
               <Link href="../users/dashboard">
-                <a css={link}>{props.userObject.username}</a>
+                <a css={link}>{props.userObject.company}</a>
               </Link>
             </div>
           )}
-          <a css={link} href="/logout">
-            Log Out
-          </a>
-          <Link href="/login">
-            <a css={login}>Login</a>
-          </Link>
-          <Link href="/register">
-            <a css={sign}> Sign Up</a>
-          </Link>
+          {props.userObject ? (
+            <a css={link} href="/logout">
+              Log Out
+            </a>
+          ) : (
+            <>
+              <Link href="/login">
+                <a css={login}>Login</a>
+              </Link>
+              <Link href="/register">
+                <a css={sign}> Sign Up</a>
+              </Link>
+            </>
+          )}
 
           <Link href="/about">
             <a css={link}>About</a>

@@ -18,6 +18,7 @@
     "chart.js": "^3.7.1",
     "cloudinary": "^1.28.1",
     "cookie": "^0.4.2",
+    "csrf": "^3.1.0",
     "dotenv-cli": "^5.0.0",
     "dotenv-safe": "^8.2.0",
     "ley": "^0.7.1",

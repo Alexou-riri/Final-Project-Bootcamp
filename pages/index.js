@@ -47,15 +47,15 @@ const feature1 = css`
   margin-top: 100px;
 `;
 
-const line1 = css`
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    rgba(179, 132, 201, 0.4),
-    rgba(179, 132, 201, 0)
-  );
-`;
+// const line1 = css`
+//   width: 100%;
+//   height: 2px;
+//   background: linear-gradient(
+//     90deg,
+//     rgba(179, 132, 201, 0.4),
+//     rgba(179, 132, 201, 0)
+//   );
+// `;
 
 export default function Home(props) {
   useEffect(() => {

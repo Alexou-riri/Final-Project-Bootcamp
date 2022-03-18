@@ -7,6 +7,8 @@ import { useState } from 'react';
 import Router, { useRouter } from 'next/router';
 import { getValidSessionByToken } from '../util/database';
 import { GetServerSidePropsContext } from 'next';
+import { createCsrfToken } from '../util/auth';
+import { LoginResponseBody } from './api/login';
 
 const label = css`
   display: flex;
@@ -23,7 +25,8 @@ type Errors = { message: string }[];
 
 export type Props = {
   refreshUserProfile: () => void;
-  userObject: { username: string };
+  userObject: { company: string };
+  csrfToken: string;
 };
 
 export default function Login(props: Props) {
@@ -47,12 +50,14 @@ export default function Login(props: Props) {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              username: username,
+              company: company,
               password: password,
+              csrfToken: props.csrfToken,
             }),
           });
-
-          const loginResponseBody = await loginResponse.json();
+          // get response from API, then check for errors
+          const loginResponseBody =
+            (await loginResponse.json()) as LoginResponseBody;
           if ('errors' in loginResponseBody) {
             setErrors(loginResponseBody.errors);
             return;
@@ -67,10 +72,10 @@ export default function Login(props: Props) {
         }}
       >
         <label css={label}>
-          User Name :
+          Company Name :
           <input
-            value={username}
-            onChange={(event) => setUsername(event.currentTarget.value)}
+            value={company}
+            onChange={(event) => setCompany(event.currentTarget.value)}
           />
         </label>
 
@@ -130,6 +135,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   // 3. Otherwise, generate CSRF token and render the page
   return {
-    props: {},
+    props: {
+      csrfToken: createCsrfToken(),
+    },
   };
 }

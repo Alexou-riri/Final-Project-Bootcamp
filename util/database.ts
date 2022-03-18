@@ -32,8 +32,8 @@ const sql = postgres();
 
 export type User = {
   id: number;
-  username: string;
   company: string;
+  role: string;
 };
 
 export type UserWithPasswordHash = User & {
@@ -43,8 +43,8 @@ export type UserWithPasswordHash = User & {
 export async function getUserById(id: number) {
   const [user] = await sql<[User | undefined]>`
     SELECT id,
-    username,
-    company
+    company,
+    role
     from
     users
     where id = ${id}
@@ -57,7 +57,7 @@ export async function getUserByValidSessionToken(token: string | undefined) {
   const [user] = await sql<[User | undefined]>`
     SELECT
       users.id,
-      users.username
+      users.company
     FROM
       users,
       sessions
@@ -69,37 +69,32 @@ export async function getUserByValidSessionToken(token: string | undefined) {
   return user && camelcaseKeys(user);
 }
 
-export async function getUserByUsername(username: string) {
+export async function getUserByUsername(company: string) {
   const [user] = await sql<[{ id: number } | undefined]>`
-    SELECT id from users where username = ${username}
+    SELECT id from users where company = ${company}
     `;
   return user && camelcaseKeys(user);
 }
-export async function getUserWithPasswordHashByUsername(username: string) {
+export async function getUserWithPasswordHashByUsername(company: string) {
   const [user] = await sql<[UserWithPasswordHash | undefined]>`
     SELECT id,
-    username,
+    company,
     password_hash
     from
     users
-    where username = ${username}
+    where company = ${company}
     `;
   return user && camelcaseKeys(user);
 }
 
-export async function createUser(
-  username: string,
-  passwordHash: string,
-  company: string,
-) {
+export async function createUser(passwordHash: string, company: string) {
   const [user] = await sql<[User]>`
     INSERT INTO users
-      (username, password_hash, company)
+      (password_hash, company)
     VALUES
-      (${username}, ${passwordHash}, ${company})
+      ( ${passwordHash}, ${company})
     RETURNING
       id,
-      username,
       company
   `;
   return camelcaseKeys(user);

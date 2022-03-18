@@ -5,26 +5,58 @@ import {
   createUser,
   getUserByUsername,
   getUserWithPasswordHashByUsername,
+  User,
 } from '../../util/database';
 import crypto from 'node:crypto';
 import { createSerializedRegisterSessionTokenCookie } from '../../util/cookies';
+import { verifyCsrfToken } from '../../util/auth';
+
+type LoginRequestBody = {
+  username: string;
+  password: string;
+  csrfToken: string;
+};
+
+type LoginNextApiRequest = Omit<NextApiRequest, 'body'> & {
+  body: LoginRequestBody;
+};
+
+export type LoginResponseBody =
+  | { errors: { message: string }[] }
+  | { user: Pick<User, 'id'> };
 
 export default async function loginHandler(
-  request: NextApiRequest,
-  response: NextApiResponse,
+  request: LoginNextApiRequest,
+  response: NextApiResponse<LoginResponseBody>,
 ) {
   if (request.method === 'POST') {
     if (
       typeof request.body.username !== 'string' ||
       !request.body.username ||
       typeof request.body.password !== 'string' ||
-      !request.body.password
+      !request.body.password ||
+      typeof request.body.csrfToken !== 'string' ||
+      !request.body.csrfToken
     ) {
       response.status(400).json({
         errors: [
           {
             message:
               'Username or password missing. Please provide one. thanks.',
+          },
+        ],
+      });
+      return;
+    }
+
+    // Verify CSRF Token
+    const csrfTokenMatches = verifyCsrfToken(request.body.csrfToken);
+
+    if (!csrfTokenMatches) {
+      response.status(403).json({
+        errors: [
+          {
+            message: 'Invalid CSRF token',
           },
         ],
       });

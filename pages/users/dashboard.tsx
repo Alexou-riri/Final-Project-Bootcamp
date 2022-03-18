@@ -22,8 +22,8 @@ export default function ProtectedDashboard(props: Props) {
   const [offloadingDate, setOffloadingDate] = useState(new Date());
 
   return (
-    <Layout {...props.user.username}>
-      <h1> Dashboard of {props.user.username} </h1>
+    <Layout {...props.user.company}>
+      <h1> Dashboard of {props.user.company} </h1>
 
       <form
         className={styles.form}

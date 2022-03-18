@@ -27,7 +27,7 @@ body {
 .form > div > label {
   display: block;
   padding: 20px 20px 10px;
-  vertical-align: top;
+  /* vertical-align: top; */
   font-family: 'Oxygen' Arial, sans-serif;
   font-size: 14px;
   font-weight: 600;
