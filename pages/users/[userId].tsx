@@ -33,12 +33,11 @@ export default function UserDetail(props: Props) {
     <Layout>
       <Head>
         <title>
-          User #{props.user.id}, username: {props.user.company} - Company:{' '}
-          {props.user.company}
+          User #{props.user.id}, Company: {props.user.company}
         </title>
         <meta
           name="description"
-          content={`User #${props.user.id} has a username of ${props.user.company}`}
+          content={`User #${props.user.id} is from the company ${props.user.company}`}
         />
       </Head>
       <h1>

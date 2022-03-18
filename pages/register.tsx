@@ -31,7 +31,7 @@ const sub = 'sub';
 type Errors = { message: string }[];
 
 export default function Register(props: Props) {
-  const [username, setUsername] = useState('');
+  // const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [company, setCompany] = useState('');
   const [errors, setErrors] = useState<Errors>([]);

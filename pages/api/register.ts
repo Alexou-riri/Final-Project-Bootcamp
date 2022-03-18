@@ -41,7 +41,7 @@ export default async function registerHandler(
         errors: [
           {
             message:
-              'Username or password missing. Please provide one. thanks.',
+              'Company name or password missing. Please provide one. thanks.',
           },
         ],
       });
@@ -66,7 +66,7 @@ export default async function registerHandler(
         errors: [
           {
             message:
-              'Username already exists. Please choose another one. thanks.',
+              'Company name already exists. Check with your colleagues for the identification.',
           },
         ],
       });

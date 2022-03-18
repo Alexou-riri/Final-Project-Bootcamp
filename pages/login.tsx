@@ -30,7 +30,7 @@ export type Props = {
 };
 
 export default function Login(props: Props) {
-  const [username, setUsername] = useState('');
+  // const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [company, setCompany] = useState('');
   const [errors, setErrors] = useState<Errors>([]);

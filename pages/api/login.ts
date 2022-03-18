@@ -12,7 +12,7 @@ import { createSerializedRegisterSessionTokenCookie } from '../../util/cookies';
 import { verifyCsrfToken } from '../../util/auth';
 
 type LoginRequestBody = {
-  username: string;
+  company: string;
   password: string;
   csrfToken: string;
 };
@@ -31,8 +31,8 @@ export default async function loginHandler(
 ) {
   if (request.method === 'POST') {
     if (
-      typeof request.body.username !== 'string' ||
-      !request.body.username ||
+      typeof request.body.company !== 'string' ||
+      !request.body.company ||
       typeof request.body.password !== 'string' ||
       !request.body.password ||
       typeof request.body.csrfToken !== 'string' ||
@@ -42,7 +42,7 @@ export default async function loginHandler(
         errors: [
           {
             message:
-              'Username or password missing. Please provide one. thanks.',
+              'Company name or password missing. Please provide one. thanks.',
           },
         ],
       });
@@ -64,14 +64,14 @@ export default async function loginHandler(
     }
 
     const userWithPasswordHash = await getUserWithPasswordHashByUsername(
-      request.body.username,
+      request.body.company,
     );
 
     if (!userWithPasswordHash) {
       response.status(401).json({
         errors: [
           {
-            message: 'Username doesnt match existing user',
+            message: 'Company name doesnt match existing user',
           },
         ],
       });
