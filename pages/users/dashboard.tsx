@@ -46,7 +46,8 @@ export default function ProtectedDashboard(props: Props) {
       >
         <div className={styles.col2}>
           <label>
-            <FaWarehouse /> Loading Place
+            <FaWarehouse size={20} /> <br />
+            Loading Place
             <input
               placeholder="Company Name"
               tabIndex={2}
@@ -61,7 +62,7 @@ export default function ProtectedDashboard(props: Props) {
         </div>
         <div className={styles.col2}>
           <label>
-            <AiOutlineCalendar /> Loading Date:
+            <AiOutlineCalendar size={20} /> Loading Date:
             <DatePicker
               selected={loadingDate}
               onChange={(loadingDate: Date) => setLoadingDate(loadingDate)}
@@ -72,7 +73,9 @@ export default function ProtectedDashboard(props: Props) {
         </div>
         <div className={styles.col2}>
           <label>
-            <FaWarehouse /> Offlooading Place
+            <FaWarehouse size={20} />
+            <br />
+            Offlooading Place
             <input
               placeholder="Company Name"
               tabIndex={2}
@@ -87,7 +90,7 @@ export default function ProtectedDashboard(props: Props) {
         </div>
         <div className={styles.col2}>
           <label>
-            <AiOutlineCalendar /> Offlooading Date:
+            <AiOutlineCalendar size={20} /> Offlooading Date:
             <DatePicker
               selected={offloadingDate}
               onChange={(offloadingDate: Date) =>
@@ -110,7 +113,7 @@ export default function ProtectedDashboard(props: Props) {
         </div>
         <div className={styles.col3}>
           <label>
-            <BsTruck /> Truck Number
+            <BsTruck size={20} /> Truck Number
             <input
               placeholder="Which truck is going to do this load"
               tabIndex={4}

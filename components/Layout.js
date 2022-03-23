@@ -4,7 +4,8 @@ import Header from './Header';
 import { css } from '@emotion/react';
 
 const pageContainer = css`
-  background-color: white;
+  background-color: #f3f2ef;
+  // EAF1F5
   margin-top: 200px;
 `;
 

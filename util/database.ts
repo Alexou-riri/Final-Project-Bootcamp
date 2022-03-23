@@ -30,6 +30,8 @@ config();
 
 const sql = postgres();
 
+// USER FUNCTIONS  \\
+
 export type User = {
   id: number;
   company: string;
@@ -107,6 +109,8 @@ export async function createUser(
   return camelcaseKeys(user);
 }
 
+// SESSION FUNCTION \\
+
 export type Session = {
   id: number;
   token: string;
@@ -165,10 +169,13 @@ export async function getValidSessionByToken(token: string) {
   await deleteExpiredSessions();
   return session && camelcaseKeys(session);
 }
+
+// LOAD FUNCTION \\
+
 export type Load = {
-  id: number;
+  loadId: number;
   palletQuantityGiven: number;
-  palletQuantityReceived: number;
+  palletQuantityReceived?: number;
   loadingPlaceId: number;
   offloadingPlaceId: number;
   truckId: number;
@@ -176,12 +183,11 @@ export type Load = {
   loadingDate: Date;
   offloadingDate: Date;
   requestDate: Date;
-  documentId: number;
+  documentId?: number;
   userId: number;
 };
 export async function createNewLoad(
   palletQuantityGiven: number,
-  palletQuantityReceived: number,
   loadingPlaceId: number,
   offloadingPlaceId: number,
   truckId: number,
@@ -193,9 +199,9 @@ export async function createNewLoad(
 ) {
   const [load] = await sql<[Load]>`
   INSERT INTO loads
-    (pallet_quantity_given, pallet_quantity_received, loading_place_id, offloading_place_id, truck_id, reference, loading_date, offloading_date, request_date, document_id, user_id)
+    (pallet_quantity_given, loading_place_id, offloading_place_id, truck_id, reference, loading_date, offloading_date, request_date, user_id)
   VALUES
-    ( ${palletQuantityGiven}, ${palletQuantityReceived}, ${loadingPlaceId},${offloadingPlaceId},${truckId},${reference},${loadingDate},${offloadingDate}, ${requestDate}, ${userId})
+    ( ${palletQuantityGiven}, ${loadingPlaceId},${offloadingPlaceId},${truckId},${reference},${loadingDate},${offloadingDate}, ${requestDate}, ${userId})
   RETURNING
     id,
     pallet_quantity_given,
@@ -211,4 +217,83 @@ export async function createNewLoad(
     user_id)
 `;
   return camelcaseKeys(load);
+}
+
+export async function deleteLoad(id: number) {
+  const deletedLoad = await sql<[Load]>`
+    DELETE FROM
+    loads
+    WHERE
+    id = ${id}
+    RETURNING
+    id
+  `;
+  return deletedLoad.map((load) => camelcaseKeys(load));
+}
+
+export async function getAllInfoFromLoad(loadId: number) {
+  const allInfoFromLoad = await sql<[Load]>`
+    SELECT
+    *
+    FROM
+    loads,
+    addresses,
+    trucks
+    WHERE
+    loads.loading_place_id = addresses.id AND
+    loads.offloading_place_id = addresses.id AND
+    loads.truck_id = trucks.id AND
+    loads.user_id = user_id
+  `;
+  return allInfoFromLoad && camelcaseKeys(allInfoFromLoad);
+}
+
+// ADDRESS FUNCTION \\
+
+export type Address = {
+  addressId: number;
+  streetNumber: number;
+  streetName: string;
+  zipcode: string;
+  country: string;
+  companyName: string;
+};
+
+export async function AddLoadAddress(
+  streetNumber: number,
+  streetName: string,
+  zipcode: string,
+  country: string,
+  companyName: string,
+) {
+  const [loadAddress] = await sql<[Address]>`
+ INSERT INTO addresses
+ (street_number, street_name, zipcode, country, company_name)
+ VALUES
+ (${streetNumber}, ${streetName}, ${zipcode}, ${country}, ${companyName})
+ RETURNING *
+ `;
+  return loadAddress && camelcaseKeys(loadAddress);
+}
+
+// TRUCK FUNCTION \\
+
+export type Truck = {
+  truckId: number;
+  truckPlate: string;
+  trailerPlate: string;
+};
+export async function AddTruck(
+  truckId: number,
+  truckPlate: string,
+  trailerPlate: string,
+) {
+  const [truck] = await sql<[Truck]>`
+  INSERT INTO trucks
+  (truck_plate, trailer_plate)
+  VALUES
+  (${truckPlate}, ${trailerPlate} )
+  RETURNING *
+  `;
+  return truck && camelcaseKeys(truck);
 }

@@ -25,15 +25,16 @@ body {
 }
 
 .form > div > label {
-  display: block;
+  display: inline-block;
   padding: 20px 20px 10px;
-  /* vertical-align: top; */
+  vertical-align: center;
   font-family: 'Oxygen' Arial, sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   text-transform: uppercase;
   color: #939393;
   cursor: pointer;
+  gap: 20px;
 }
 
 .form > .col2,
