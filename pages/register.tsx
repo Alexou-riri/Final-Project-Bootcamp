@@ -235,7 +235,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       return {
         redirect: {
           // À Changer
-          destination: `/users/dashboard`,
+          destination: `/users/login`,
           permanent: false,
         },
       };

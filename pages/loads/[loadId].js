@@ -15,6 +15,16 @@ import { useState } from 'react';
 export default function SingleLoad() {
   const [loadingDate, setLoadingDate] = useState(new Date());
   const [offloadingDate, setOffloadingDate] = useState(new Date());
+  const [loadingAddress, setLoadingAddress] = useState('');
+  const [offloadingAddress, setOffloadingAddress] = useState('');
+  const [companyName1, setCompanyName1] = useState('');
+  const [companyName2, setCompanyName2] = useState('');
+  const [reference, setReference] = useState('');
+  const [truckPlate, setTruckPlate] = useState('');
+  const [trailerPlate, setTrailerPlate] = useState('');
+  const [palletNumber, setPalletNumber] = useState('');
+  const [requestDate, setRequestDate] = useState('');
+  const [errors, setErrors] = (useState < Errors) | (undefined > []);
 
   return (
     <Layout>

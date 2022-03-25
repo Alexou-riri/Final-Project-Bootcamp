@@ -9,7 +9,7 @@ const footer = css`
   left: 0;
   bottom: 0;
   width: 100%;
-  margin-top: 50px;
+  /* margin-top: 50px; */
 
   /* right: 0;
   bottom: 0;

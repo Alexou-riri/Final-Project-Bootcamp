@@ -226,7 +226,7 @@ export async function deleteLoad(id: number) {
     WHERE
     id = ${id}
     RETURNING
-    id
+  *
   `;
   return deletedLoad.map((load) => camelcaseKeys(load));
 }
@@ -259,21 +259,29 @@ export type Address = {
   companyName: string;
 };
 
-export async function AddLoadAddress(
+export async function createAddress(
   streetNumber: number,
   streetName: string,
   zipcode: string,
   country: string,
   companyName: string,
 ) {
-  const [loadAddress] = await sql<[Address]>`
+  const [address] = await sql<[Address]>`
  INSERT INTO addresses
  (street_number, street_name, zipcode, country, company_name)
  VALUES
  (${streetNumber}, ${streetName}, ${zipcode}, ${country}, ${companyName})
  RETURNING *
  `;
-  return loadAddress && camelcaseKeys(loadAddress);
+  return address && camelcaseKeys(address);
+}
+
+export async function getAllAdresses() {
+  const expenses = await sql<Address[]>`
+  SELECT * FROM addresses ;
+
+`;
+  return expenses.map((address: Address) => camelcaseKeys(address));
 }
 
 // TRUCK FUNCTION \\
@@ -283,11 +291,7 @@ export type Truck = {
   truckPlate: string;
   trailerPlate: string;
 };
-export async function AddTruck(
-  truckId: number,
-  truckPlate: string,
-  trailerPlate: string,
-) {
+export async function CreateTruck(truckPlate: string, trailerPlate: string) {
   const [truck] = await sql<[Truck]>`
   INSERT INTO trucks
   (truck_plate, trailer_plate)
@@ -296,4 +300,12 @@ export async function AddTruck(
   RETURNING *
   `;
   return truck && camelcaseKeys(truck);
+}
+
+export async function getAllTrucks() {
+  const expenses = await sql<Truck[]>`
+  SELECT * FROM trucks ;
+
+`;
+  return expenses.map((truck: Truck) => camelcaseKeys(truck));
 }

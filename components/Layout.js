@@ -4,9 +4,10 @@ import Header from './Header';
 import { css } from '@emotion/react';
 
 const pageContainer = css`
-  background-color: #f3f2ef;
+  background-color: #eaf1f5;
+  padding-top: 200px;
+  padding-bottom: 200px;
   // EAF1F5
-  margin-top: 200px;
 `;
 
 // const sticky = css`
