@@ -174,116 +174,165 @@ export async function getValidSessionByToken(token: string) {
 
 export type Load = {
   loadId: number;
-  palletQuantityGiven: number;
-  palletQuantityReceived?: number;
   loadingPlaceId: number;
   offloadingPlaceId: number;
-  truckId: number;
-  reference: string;
   loadingDate: Date;
   offloadingDate: Date;
-  requestDate: Date;
-  documentId?: number;
+  reference: string;
+  truckId: number;
+  palletQuantityGiven: number;
+  palletQuantityReceived?: number | undefined;
+  documentId?: number | undefined;
   userId: number;
 };
 export async function createNewLoad(
-  palletQuantityGiven: number,
   loadingPlaceId: number,
   offloadingPlaceId: number,
-  truckId: number,
-  reference: string,
   loadingDate: Date,
   offloadingDate: Date,
-  requestDate: Date,
+  reference: string,
+  truckId: number,
+  palletQuantityGiven: number,
+  palletQuantityReceived: number | undefined,
+  documentId: number | undefined,
   userId: number,
 ) {
   const [load] = await sql<[Load]>`
   INSERT INTO loads
-    (pallet_quantity_given, loading_place_id, offloading_place_id, truck_id, reference, loading_date, offloading_date, request_date, user_id)
+    (loading_place_id, offloading_place_id, loading_date, offloading_date, reference, truck_id, pallet_quantity_given, document_id user_id)
   VALUES
-    ( ${palletQuantityGiven}, ${loadingPlaceId},${offloadingPlaceId},${truckId},${reference},${loadingDate},${offloadingDate}, ${requestDate}, ${userId})
+    ( ${loadingPlaceId}, ${offloadingPlaceId}, ${loadingDate},${offloadingDate}, ${reference}, ${truckId},${palletQuantityGiven}, ${userId})
   RETURNING
-    id,
-    pallet_quantity_given,
-    pallet_quantity_received,
-    loading_place_id,
-    offloading_place_id,
-    truck_id,
-    reference,
-    loading_date,
-    offloading_date,
-    request_date,
-    document_id,
-    user_id)
+    *
 `;
   return camelcaseKeys(load);
 }
 
-export async function deleteLoad(id: number) {
+export async function getLoads() {
+  const loads = await sql<Load[]>`
+    SELECT * FROM loads;
+  `;
+  return loads.map((load) => camelcaseKeys(load));
+}
+
+export async function getLoadById(loadId: number) {
+  const [load] = await sql<[Load | undefined]>`
+    SELECT * FROM loads WHERE id = ${loadId};
+  `;
+  return load && camelcaseKeys(load);
+}
+
+export async function deleteLoad(loadId: number) {
   const deletedLoad = await sql<[Load]>`
     DELETE FROM
     loads
     WHERE
-    id = ${id}
+    id = ${loadId}
     RETURNING
   *
   `;
   return deletedLoad.map((load) => camelcaseKeys(load));
 }
 
-export async function getAllInfoFromLoad(loadId: number) {
-  const allInfoFromLoad = await sql<[Load]>`
+export async function updateLoadById(
+  loadId: number,
+  loadingPlaceId: number,
+  offloadingPlaceId: number,
+  loadingDate: Date,
+  offloadingDate: Date,
+  reference: string,
+  truckId: number,
+  palletQuantityGiven: number,
+  palletQuantityReceived: number,
+  documentId: number,
+  userId: number,
+) {
+  const [load] = await sql<[Load | undefined]>`
+    UPDATE
+      loads
+    SET
+      loading_place_id = ${loadingPlaceId},
+      offloading_place_id = ${offloadingPlaceId},
+      loading_date = ${loadingDate},
+      offloading_date = ${offloadingDate},
+      reference = ${reference},
+      truck_id = ${truckId},
+      pallet_quantity_given = ${palletQuantityGiven},
+      pallet_quantity_received = ${palletQuantityReceived},
+       document_id = ${documentId},
+
+    WHERE
+      id = ${loadId}
+    RETURNING *
+  `;
+  return load && camelcaseKeys(load);
+}
+
+export async function getAllInfoFromLoadById(loadId: number) {
+  const allInfoFromLoadById = await sql<[Load]>`
     SELECT
     *
     FROM
     loads,
     addresses,
-    trucks
+    trucks,
+    palnote
     WHERE
+    loads.id = ${loadId} AND
     loads.loading_place_id = addresses.id AND
     loads.offloading_place_id = addresses.id AND
     loads.truck_id = trucks.id AND
-    loads.user_id = user_id
+    loads.document_id = palnote.id
+    -- loads.user_id = user_id
   `;
-  return allInfoFromLoad && camelcaseKeys(allInfoFromLoad);
+  return allInfoFromLoadById && camelcaseKeys(allInfoFromLoadById);
 }
 
 // ADDRESS FUNCTION \\
 
 export type Address = {
   addressId: number;
+  companyName: string;
   streetNumber: number;
   streetName: string;
   zipcode: string;
+  city: string;
   country: string;
-  companyName: string;
 };
 
 export async function createAddress(
+  companyName: string,
   streetNumber: number,
   streetName: string,
   zipcode: string,
+  city: string,
   country: string,
-  companyName: string,
 ) {
   const [address] = await sql<[Address]>`
  INSERT INTO addresses
- (street_number, street_name, zipcode, country, company_name)
+ (company_name, street_number, street_name, zipcode, city, country, )
  VALUES
- (${streetNumber}, ${streetName}, ${zipcode}, ${country}, ${companyName})
+ (${companyName},${streetNumber}, ${streetName}, ${zipcode}, ${city}, ${country})
  RETURNING *
  `;
   return address && camelcaseKeys(address);
 }
 
-export async function getAllAdresses() {
-  const expenses = await sql<Address[]>`
+export async function getAllAddresses() {
+  const addresses = await sql<Address[]>`
   SELECT * FROM addresses ;
 
 `;
-  return expenses.map((address: Address) => camelcaseKeys(address));
+  return addresses.map((address: Address) => camelcaseKeys(address));
 }
 
+export async function getAdressById(addressId: number) {
+  const [address] = await sql<[Address | undefined]>`
+  SELECT * FROM addresses WHERE id=${addressId};
+
+`;
+  return address && camelcaseKeys(address);
+}
 // TRUCK FUNCTION \\
 
 export type Truck = {
@@ -291,7 +340,7 @@ export type Truck = {
   truckPlate: string;
   trailerPlate: string;
 };
-export async function CreateTruck(truckPlate: string, trailerPlate: string) {
+export async function createTruck(truckPlate: string, trailerPlate: string) {
   const [truck] = await sql<[Truck]>`
   INSERT INTO trucks
   (truck_plate, trailer_plate)
@@ -303,9 +352,40 @@ export async function CreateTruck(truckPlate: string, trailerPlate: string) {
 }
 
 export async function getAllTrucks() {
-  const expenses = await sql<Truck[]>`
+  const truck = await sql<Truck[]>`
   SELECT * FROM trucks ;
 
 `;
-  return expenses.map((truck: Truck) => camelcaseKeys(truck));
+  return truck.map((truck: Truck) => camelcaseKeys(truck));
+}
+
+// Pal Note \\
+
+export type Palnote = {
+  palnoteId: number;
+  content: string;
+  url: string;
+  userId: number;
+};
+export async function CreatePalnote(
+  content: string,
+  url: string,
+  userId: number,
+) {
+  const [palnote] = await sql<[Palnote]>`
+  INSERT INTO palnote
+  (content_pal_note, document_url, user_id)
+  VALUES
+  (${content}, ${url}, ${userId} )
+  RETURNING *
+  `;
+  return palnote && camelcaseKeys(palnote);
+}
+
+export async function getPalnote() {
+  const palnote = await sql<Palnote[]>`
+  SELECT * FROM palnote ;
+
+`;
+  return palnote.map((palnote: Palnote) => camelcaseKeys(palnote));
 }

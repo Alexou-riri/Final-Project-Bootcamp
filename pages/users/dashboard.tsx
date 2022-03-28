@@ -4,8 +4,12 @@ import {
   getUserById,
   getUserByValidSessionToken,
   getValidSessionByToken,
+  getAllAddresses,
   User,
   Load,
+  Address,
+  Truck,
+  getAllTrucks,
 } from '../../util/database';
 import { DeleteLoadResponseBody } from '../api/newLoad';
 import styles from './dashboard.module.css';
@@ -17,6 +21,8 @@ import Link from 'next/link';
 import { AiOutlineCalendar } from 'react-icons/ai';
 import { FaWarehouse, FaPallet } from 'react-icons/fa';
 import { BsTruck } from 'react-icons/bs';
+import { loadStaticPaths } from 'next/dist/server/dev/static-paths-worker';
+// import { CreateAddressResponseBody } from '../api/addresse';
 
 // type Props = {
 //   user: User;
@@ -28,11 +34,21 @@ type Props = {
   loadsFromDatabase: Load[];
   load: Load;
   errors?: string;
+  address: Address;
+  truck: Truck;
 };
 
 type CreateLoadResponseBody =
   | { errors: { message: string }[] }
   | { load: Load };
+
+type CreateAddressResponseBody =
+  | { errors: { message: string }[] }
+  | { address: Address };
+
+type CreateTruckResponseBody =
+  | { errors: { message: string }[] }
+  | { truck: Truck };
 
 type Errors = { message: string }[];
 // type Props = {loadsFromDatabase: Load[]}
@@ -59,6 +75,8 @@ export default function ProtectedDashboard(props: Props) {
   const [country2, setCountry2] = useState('');
   const [errors, setErrors] = useState<Errors | undefined>([]);
   const [loadList, setLoadList] = useState<Load[]>(props.loadsFromDatabase);
+  const [addressList, setAddressList] = useState<Address[]>([]);
+  const [truckList, setTruckList] = useState<Truck[]>([]);
 
   if ('error' in props) {
     return (
@@ -129,7 +147,69 @@ export default function ProtectedDashboard(props: Props) {
         className={styles.form}
         onSubmit={async (event) => {
           event.preventDefault();
-          const createLoadResponse = await fetch('api/newLoad', {
+          // // address\\
+          // const createAddressResponse = await fetch('/api/addresse', {
+          //   method: 'POST',
+          //   headers: {
+          //     'Content-Type': 'application/json',
+          //   },
+          //   body: JSON.stringify({
+          //     address: props.address,
+          //   }),
+          // });
+          // const createAddressResponseBody =
+          //   (await createAddressResponse.json()) as CreateAddressResponseBody;
+
+          // if ('errors' in createAddressResponseBody) {
+          //   setErrors(createAddressResponseBody.errors);
+          //   return;
+          // }
+
+          // const createdAddress = [
+          //   ...addressList,
+          //   createAddressResponseBody.address,
+          // ];
+          // console.log(createdAddress);
+          // setAddressList(createdAddress);
+
+          // setCompanyName1('');
+          // setStreetNumber('');
+          // setStreetName('');
+          // setCountry('');
+          // setZipcode('');
+          // setCompanyName2('');
+          // setStreetNumber2('');
+          // setStreetName2('');
+          // setCountry2('');
+          // setZipcode2('');
+
+          // // Truck\\
+          // const createTruckResponse = await fetch('/api/truck', {
+          //   method: 'POST',
+          //   headers: {
+          //     'Content-Type': 'application/json',
+          //   },
+          //   body: JSON.stringify({
+          //     truck: props.truck,
+          //   }),
+          // });
+          // const createTruckResponseBody =
+          //   (await createTruckResponse.json()) as CreateTruckResponseBody;
+
+          // if ('errors' in createTruckResponseBody) {
+          //   setErrors(createTruckResponseBody.errors);
+          //   return;
+          // }
+
+          // const createdTruck = [...truckList, createTruckResponseBody.truck];
+          // console.log(createdTruck);
+          // setTruckList(createdTruck);
+
+          // setTruckPlate('');
+          // setTruckPlate('');
+
+          // load \\
+          const createLoadResponse = await fetch('/api/newLoad', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -140,7 +220,12 @@ export default function ProtectedDashboard(props: Props) {
             }),
           });
           const createLoadResponseBody =
-            (await createLoadResponse.json()) as DeleteLoadResponseBody;
+            (await createLoadResponse.json()) as CreateLoadResponseBody;
+
+          if ('errors' in createLoadResponseBody) {
+            setErrors(createLoadResponseBody.errors);
+            return;
+          }
 
           const createdLoad = [...loadList, createLoadResponseBody.load];
           console.log(createdLoad);
@@ -156,11 +241,6 @@ export default function ProtectedDashboard(props: Props) {
           setPalletNumber('');
           setTruckPlate('');
           setTrailerPlate('');
-
-          if ('errors' in createLoadResponseBody) {
-            setErrors(createLoadResponseBody.errors);
-            return;
-          }
         }}
       >
         <div className={styles.col2}>
@@ -322,6 +402,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const user = await getUserByValidSessionToken(token);
   const sessionToken = context.req.cookies.sessionToken;
   const session = await getValidSessionByToken(sessionToken);
+  const load = await getAllAddresses();
+  const truck = await getAllTrucks();
 
   if (!session) {
     return {
@@ -341,7 +423,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (user) {
     console.log(user);
     return {
-      props: { user: user },
+      props: { user: user, load: load, truck: truck },
     };
   }
   // 3. otherwise return to login page

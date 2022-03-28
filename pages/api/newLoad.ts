@@ -3,146 +3,146 @@ import {
   Address,
   createAddress,
   createNewLoad,
-  CreateTruck,
+  createTruck,
   deleteLoad,
-  getValidSessionByToken,
+  getLoads,
+  getLoadById,
+  updateLoadById,
   Load,
   Truck,
 } from '../../util/database';
 
+// export type CreateAddressRequestBody = {
+//   addressId: number;
+//   companyName: string;
+//   streetNumber: number;
+//   streetName: string;
+//   city: string;
+//   zipcode: string;
+//   country: string;
+// };
 
-//Creating address\\
+// type CreateAddressNextApiRequest = Omit<NextApiRequest, 'body'> & {
+//   body: CreateAddressRequestBody;
+// };
 
-export type CreateAddressRequestBody = {
-  addressId: number;
-  streetNumber: number;
-  streetName: string;
-  zipcode: string;
-  country: string;
-  companyName: string;
-};
+// export type CreateAddressResponseBody =
+//   | { errors?: { message: string }[] }
+//   | { address: Address };
 
-type CreateAddressNextApiRequest = Omit<NextApiRequest, 'body'> & {
-  body: CreateAddressRequestBody;
-};
+// export async function createAddressHandler(
+//   request: CreateAddressNextApiRequest,
+//   response: NextApiResponse<CreateAddressResponseBody>,
+// ) {
+//   console.log(request.query);
+//   if (request.method === 'POST') {
+//     if (
+//       typeof request.body.companyName !== 'string' ||
+//       !request.body.companyName ||
+//       typeof request.body.streetNumber !== 'number' ||
+//       !request.body.streetNumber ||
+//       typeof request.body.streetName !== 'string' ||
+//       !request.body.streetName ||
+//       typeof request.body.zipcode !== 'string' ||
+//       !request.body.zipcode ||
+//       typeof request.body.city !== 'string' ||
+//       !request.body.city ||
+//       typeof request.body.country !== 'string' ||
+//       !request.body.country
+//     ) {
+//       // 400 bad request
+//       response.status(400).json({
+//         errors: [{ message: 'Something is missing' }],
+//       });
+//       return; // Important, prevents error for multiple requests
+//     }
 
-export type CreateAddressResponseBody =
-  | { errors?: { message: string }[] }
-  | { address: Address };
+//     const address = await createAddress(
+//       request.body.companyName,
+//       request.body.streetNumber,
+//       request.body.streetName,
+//       request.body.zipcode,
+//       request.body.city,
+//       request.body.country,
+//     );
 
+//     response.status(201).json({ address: address });
+//     return;
+//   }
+// }
 
-  export default async function createAddressHandler(
-    request: CreateAddressNextApiRequest,
-    response: NextApiResponse<CreateAddressResponseBody>,
-  ) {
-    console.log(request.query);
-    if (request.method === 'POST') {
-      if (
-        typeof request.body.streetNumber !== 'number' ||
-        !request.body.streetNumber ||
-        typeof request.body.streetName!== 'string' ||
-        !request.body.streetName ||
-        typeof request.body.zipcode !== 'string' ||
-        !request.body.zipcode||
-        typeof request.body.country !== 'string' ||
-        !request.body.country ||
-        typeof request.body.companyName !== 'string' ||
-        !request.body.companyName
-      ) {
-        // 400 bad request
-        response.status(400).json({
-          errors: [{ message: 'Something is missing' }],
-        });
-        return; // Important, prevents error for multiple requests
-      }
+// TRCUK\\
 
-      ////// a rajouter if permission = 1 \\\\\\\\\
+// export type CreateTruckRequestBody = {
+//   truckId: number;
+//   truckPlate: string;
+//   trailerPlate: string;
+// };
 
-      // Create address in DB
+// type CreateTruckNextApiRequest = Omit<NextApiRequest, 'body'> & {
+//   body: CreateTruckRequestBody;
+// };
 
-      const address = await createAddress(
-        request.body.streetNumber,
-        request.body.streetName,
-        request.body.zipcode,
-        request.body.country,
-        request.body.companyName,
-      );
+// export type CreateTruckResponseBody =
+//   | { errors?: { message: string }[] }
+//   | { truck: Truck };
 
-      response.status(201).json({ address: address });
-      return;
-    }
+// export async function createTruckHandler(
+//   request: CreateTruckNextApiRequest,
+//   response: NextApiResponse<CreateTruckResponseBody>,
+// ) {
+//   console.log(request.query);
+//   if (request.method === 'POST') {
+//     if (
+//       typeof request.body.truckPlate !== 'string' ||
+//       !request.body.truckPlate ||
+//       typeof request.body.trailerPlate !== 'string' ||
+//       !request.body.trailerPlate
+//     ) {
+//       // 400 bad request
+//       response.status(400).json({
+//         errors: [{ message: 'Something is missing' }],
+//       });
+//       return; // Important, prevents error for multiple requests
+//     }
 
-    //Creating truck\\
+//     ////// a rajouter if permission = 1 \\\\\\\\\
 
-export type CreateTruckRequestBody = {
-  truckId: number,
-  truckPlate: string,
-  trailerPlate: string,
-};
+//     // Create address in DB
 
-type CreateTruckNextApiRequest = Omit<NextApiRequest, 'body'> & {
-  body: CreateTruckRequestBody;
-};
+//     const truck = await createTruck(
+//       request.body.truckPlate,
+//       request.body.trailerPlate,
+//     );
 
-export type CreateTruckResponseBody =
-  | { errors?: { message: string }[] }
-  | { truck: Truck };
-
-
-  export default async function createTruckHandler(
-    request: CreateTruckNextApiRequest,
-    response: NextApiResponse<CreateTruckResponseBody>,
-  ) {
-    console.log(request.query);
-    if (request.method === 'POST') {
-      if (
-        typeof request.body.truckPlate!== 'string' ||
-        !request.body.truckPlate ||
-        typeof request.body.trailerPlate!== 'string' ||
-        !request.body.trailerPlate
-      ) {
-        // 400 bad request
-        response.status(400).json({
-          errors: [{ message: 'Something is missing' }],
-        });
-        return; // Important, prevents error for multiple requests
-      }
-
-      ////// a rajouter if permission = 1 \\\\\\\\\
-
-      // Create address in DB
-
-      const truck = await CreateTruck(
-        request.body.truckPlate,
-        request.body.trailerPlate,
-      );
-
-      response.status(201).json({ truck: truck });
-      return;
-    }
+//     response.status(201).json({ truck: truck });
+//     return;
+//   }
+// }
 
 // Load request
 
-export type CreateLoadRequestBody = {
-  loadId: number;
-  palletQuantityGiven: number;
-  loadingPlaceId: number;
-  offloadingPlaceId: number;
-  truckId: number;
-  reference: string;
-  loadingDate: Date;
-  offloadingDate: Date;
-  requestDate: Date;
-  userId: number;
-};
+// export type CreateLoadRequestBody = {
+//   loadId: number;
+//   loadingPlaceId: number;
+//   offloadingPlaceId: number;
+//   loadingDate: Date;
+//   offloadingDate: Date;
+//   reference: string;
+//   truckId: number;
+//   palletQuantityGiven: number;
+//   palletQuantityReceived?: number | undefined;
+//   documentId?: number | undefined;
+//   userId: number;
+// };
 
-type CreateLoadNextApiRequest = Omit<NextApiRequest, 'body'> & {
-  body: CreateLoadRequestBody;
-};
+// type CreateLoadNextApiRequest = Omit<NextApiRequest, 'body'> & {
+//   body: CreateLoadRequestBody;
+// };
 
 export type CreateLoadResponseBody =
-  | { errors?: { message: string }[] }
-  | { load: Load };
+  | { errors: { message: string }[] }
+  | { load: Load; address: Address; truck: Truck };
 
 export type DeleteLoadResponseBody = {
   load: Load;
@@ -150,7 +150,7 @@ export type DeleteLoadResponseBody = {
 };
 
 export default async function createLoadHandler(
-  request: CreateLoadNextApiRequest,
+  request: NextApiRequest,
   response: NextApiResponse<CreateLoadResponseBody>,
 ) {
   console.log(request.query);
@@ -170,8 +170,6 @@ export default async function createLoadHandler(
       !request.body.loadingDate ||
       typeof request.body.offloadingDate !== 'string' ||
       !request.body.offloadingDate ||
-      typeof request.body.requestDate !== 'string' ||
-      !request.body.requestDate ||
       typeof request.body.userId !== 'number' ||
       !request.body.userId
     ) {
@@ -186,19 +184,35 @@ export default async function createLoadHandler(
 
     // Create load in DB
 
-    const load = await createNewLoad(
-      request.body.palletQuantityGiven,
+    const formAddress = await createAddress(
+      request.body.companyName,
+      request.body.streetNumber,
+      request.body.streetName,
+      request.body.zipcode,
+      request.body.city,
+      request.body.country,
+    );
+    const formTruck = await createTruck(
+      request.body.truckPlate,
+      request.body.trailerPlate,
+    );
+
+    const formLoad = await createNewLoad(
       request.body.loadingPlaceId,
       request.body.offloadingPlaceId,
-      request.body.truckId,
-      request.body.reference,
       request.body.loadingDate,
       request.body.offloadingDate,
-      request.body.requestDate,
+      request.body.reference,
+      request.body.truckId,
+      request.body.palletQuantityGiven,
+      request.body.palletQuantityReceived,
+      request.body.documentId,
       request.body.userId,
     );
 
-    response.status(201).json({ load: load });
+    response
+      .status(201)
+      .json({ address: formAddress, load: formLoad, truck: formTruck });
     return;
   } else if (request.method === 'DELETE') {
     // if the method is DELETE delete the load matching the id and user_id
