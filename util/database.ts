@@ -181,27 +181,27 @@ export type Load = {
   reference: string;
   truckId: number;
   palletQuantityGiven: number;
-  palletQuantityReceived?: number | undefined;
-  documentId?: number | undefined;
+  palletQuantityReceived: number | null;
+  documentId: number | null;
   userId: number;
 };
 export async function createNewLoad(
-  loadingPlaceId: number,
-  offloadingPlaceId: number,
+  // loadingPlaceId: number,
+  // offloadingPlaceId: number,
   loadingDate: Date,
   offloadingDate: Date,
   reference: string,
   truckId: number,
   palletQuantityGiven: number,
-  palletQuantityReceived: number | undefined,
-  documentId: number | undefined,
+  palletQuantityReceived: number | null,
+  documentId: number | null,
   userId: number,
 ) {
   const [load] = await sql<[Load]>`
   INSERT INTO loads
-    (loading_place_id, offloading_place_id, loading_date, offloading_date, reference, truck_id, pallet_quantity_given, document_id user_id)
+    (loading_date, offloading_date, reference, truck_id, pallet_quantity_given, document_id user_id)
   VALUES
-    ( ${loadingPlaceId}, ${offloadingPlaceId}, ${loadingDate},${offloadingDate}, ${reference}, ${truckId},${palletQuantityGiven}, ${userId})
+    ( ${loadingDate},${offloadingDate}, ${reference}, ${truckId},${palletQuantityGiven}, ${userId})
   RETURNING
     *
 `;
@@ -216,7 +216,7 @@ export async function getLoads() {
 }
 
 export async function getLoadById(loadId: number) {
-  const [load] = await sql<[Load | undefined]>`
+  const [load] = await sql<[Load]>`
     SELECT * FROM loads WHERE id = ${loadId};
   `;
   return load && camelcaseKeys(load);
@@ -247,7 +247,7 @@ export async function updateLoadById(
   documentId: number,
   userId: number,
 ) {
-  const [load] = await sql<[Load | undefined]>`
+  const [load] = await sql<[Load]>`
     UPDATE
       loads
     SET
@@ -293,8 +293,7 @@ export async function getAllInfoFromLoadById(loadId: number) {
 export type Address = {
   addressId: number;
   companyName: string;
-  streetNumber: number;
-  streetName: string;
+  streetInfo: string;
   zipcode: string;
   city: string;
   country: string;
@@ -302,20 +301,22 @@ export type Address = {
 
 export async function createAddress(
   companyName: string,
-  streetNumber: number,
-  streetName: string,
+  streetInfo: string,
   zipcode: string,
   city: string,
   country: string,
 ) {
-  const [address] = await sql<[Address]>`
+  console.log('verif address');
+  const address = await sql<[Address]>`
  INSERT INTO addresses
- (company_name, street_number, street_name, zipcode, city, country, )
+ (company_name, street_info, zipcode, city, country )
  VALUES
- (${companyName},${streetNumber}, ${streetName}, ${zipcode}, ${city}, ${country})
+ (${companyName}, ${streetInfo}, ${zipcode}, ${city}, ${country} )
  RETURNING *
  `;
-  return address && camelcaseKeys(address);
+  console.log('verifaddress2');
+
+  return address.map((address: Address) => camelcaseKeys(address));
 }
 
 export async function getAllAddresses() {
@@ -327,7 +328,7 @@ export async function getAllAddresses() {
 }
 
 export async function getAdressById(addressId: number) {
-  const [address] = await sql<[Address | undefined]>`
+  const [address] = await sql<[Address]>`
   SELECT * FROM addresses WHERE id=${addressId};
 
 `;

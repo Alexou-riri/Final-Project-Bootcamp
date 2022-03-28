@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { FaAddressBook } from 'react-icons/fa';
 import {
   Address,
   createAddress,
@@ -140,80 +141,119 @@ import {
 //   body: CreateLoadRequestBody;
 // };
 
-export type CreateLoadResponseBody =
-  | { errors: { message: string }[] }
-  | { load: Load; address: Address; truck: Truck };
+// export type CreateLoadResponseBody =
+//   | { errors: { message: string }[] }
+//   | { load: Load; address: Address; truck: Truck };
 
 export type DeleteLoadResponseBody = {
   load: Load;
   errors?: { message: string }[];
 };
 
+type LoadsRequestBody = {
+  load: Omit<Load, 'id'>;
+  address: Address;
+  truck: Truck;
+};
+
+type LoadsNextApiRequest = Omit<NextApiRequest, 'body'> & {
+  body: LoadsRequestBody;
+};
+
+export type LoadsResponseBodyGet = {
+  loads: Load[];
+};
+
+export type LoadsResponseBodyPost =
+  | { error: string }
+  | { load: Load; address: Address; truck: Truck };
+
+type LoadsResponseBody = LoadsResponseBodyGet | LoadsResponseBodyPost;
+
 export default async function createLoadHandler(
-  request: NextApiRequest,
-  response: NextApiResponse<CreateLoadResponseBody>,
+  request: LoadsNextApiRequest,
+  response: NextApiResponse<LoadsResponseBody>,
 ) {
   console.log(request.query);
+  console.log(request.method);
+  // console.log(request.body);
+  console.log('oskour');
+
+  if (request.method === 'GET') {
+    const loads = await getLoads();
+    response.status(200).json({ loads: loads });
+    return;
+  }
   if (request.method === 'POST') {
-    if (
-      typeof request.body.palletQuantityGiven !== 'number' ||
-      !request.body.palletQuantityGiven ||
-      typeof request.body.loadingPlaceId !== 'number' ||
-      !request.body.loadingPlaceId ||
-      typeof request.body.offloadingPlaceId !== 'number' ||
-      !request.body.offloadingPlaceId ||
-      typeof request.body.truckId !== 'number' ||
-      !request.body.truckId ||
-      typeof request.body.reference !== 'string' ||
-      !request.body.reference ||
-      typeof request.body.loadingDate !== 'string' ||
-      !request.body.loadingDate ||
-      typeof request.body.offloadingDate !== 'string' ||
-      !request.body.offloadingDate ||
-      typeof request.body.userId !== 'number' ||
-      !request.body.userId
-    ) {
-      // 400 bad request
-      response.status(400).json({
-        errors: [{ message: 'Something is missing' }],
-      });
-      return; // Important, prevents error for multiple requests
-    }
+    // if (
+    //   typeof request.body.palletQuantityGiven !== 'number' ||
+    //   !request.body.palletQuantityGiven ||
+    //   typeof request.body.loadingPlaceId !== 'number' ||
+    //   !request.body.loadingPlaceId ||
+    //   typeof request.body.offloadingPlaceId !== 'number' ||
+    //   !request.body.offloadingPlaceId ||
+    //   typeof request.body.truckId !== 'number' ||
+    //   !request.body.truckId ||
+    //   typeof request.body.reference !== 'string' ||
+    //   !request.body.reference ||
+    //   typeof request.body.loadingDate !== 'string' ||
+    //   !request.body.loadingDate ||
+    //   typeof request.body.offloadingDate !== 'string' ||
+    //   !request.body.offloadingDate ||
+    //   typeof request.body.userId !== 'number' ||
+    //   !request.body.userId
+    // ) {
+    //   // 400 bad request
+    //   response.status(400).json({
+    //     error: [{ message: 'Something is missing' }],
+    //   });
+    //   return; // Important, prevents error for multiple requests
+    // }
 
     ////// a rajouter if permission = 1 \\\\\\\\\
 
     // Create load in DB
-
-    const formAddress = await createAddress(
+    console.log('prout3');
+    console.log('body', request.body);
+    const loadingAddress = await createAddress(
       request.body.companyName,
-      request.body.streetNumber,
-      request.body.streetName,
+      request.body.streetInfo,
       request.body.zipcode,
       request.body.city,
       request.body.country,
     );
-    const formTruck = await createTruck(
-      request.body.truckPlate,
-      request.body.trailerPlate,
+
+    const offloadingAddress = await createAddress(
+      request.body.companyName2,
+      request.body.streetInfo2,
+      request.body.zipcode2,
+      request.body.cit2y,
+      request.body.country2,
     );
 
-    const formLoad = await createNewLoad(
-      request.body.loadingPlaceId,
-      request.body.offloadingPlaceId,
-      request.body.loadingDate,
-      request.body.offloadingDate,
-      request.body.reference,
-      request.body.truckId,
-      request.body.palletQuantityGiven,
-      request.body.palletQuantityReceived,
-      request.body.documentId,
-      request.body.userId,
-    );
+    // console.log('prout4');
+    // const formTruck = await createTruck(
+    //   request.body.truckPlate,
+    //   request.body.trailerPlate,
+    // );
+    // console.log('prout5');
+    // const formLoad = await createNewLoad(
+    //   request.body.loadingDate,
+    //   request.body.offloadingDate,
+    //   request.body.reference,
+    //   request.body.truckId,
+    //   request.body.palletQuantityGiven,
+    //   request.body.palletQuantityReceived,
+    //   request.body.documentId,
+    //   request.body.userId,
+    // );
 
-    response
-      .status(201)
-      .json({ address: formAddress, load: formLoad, truck: formTruck });
-    return;
+    // response.status(201).json({
+    //   // address: loadingAddress,
+    //   load: formLoad,
+    //   truck: formTruck,
+    // });
+    // return;
   } else if (request.method === 'DELETE') {
     // if the method is DELETE delete the load matching the id and user_id
     if (
@@ -224,7 +264,7 @@ export default async function createLoadHandler(
     ) {
       // 400 bad request
       response.status(400).json({
-        errors: [{ message: 'id or name not provided' }],
+        error: [{ message: 'id or name not provided' }],
       });
       return; // Important, prevents error for multiple requests
     }
@@ -232,11 +272,11 @@ export default async function createLoadHandler(
     const deletedLoad = await deleteLoad(request.body.loadId);
 
     if (!deletedLoad) {
-      response.status(404).json({ errors: [{ message: 'Name not provided' }] });
+      response.status(404).json({ error: [{ message: 'Name not provided' }] });
       return;
     }
     // response.status(201).json({ load: deletedLoad});
     // return;
   }
-  response.status(405).json({ errors: [{ message: 'Method not supported' }] });
+  response.status(405).json({ error: [{ message: 'Method not supported' }] });
 }

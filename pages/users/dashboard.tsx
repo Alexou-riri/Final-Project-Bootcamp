@@ -21,7 +21,7 @@ import Link from 'next/link';
 import { AiOutlineCalendar } from 'react-icons/ai';
 import { FaWarehouse, FaPallet } from 'react-icons/fa';
 import { BsTruck } from 'react-icons/bs';
-import { loadStaticPaths } from 'next/dist/server/dev/static-paths-worker';
+
 // import { CreateAddressResponseBody } from '../api/addresse';
 
 // type Props = {
@@ -58,21 +58,22 @@ export default function ProtectedDashboard(props: Props) {
   const [offloadingDate, setOffloadingDate] = useState(new Date());
   const [loadingAddress, setLoadingAddress] = useState('');
   const [offloadingAddress, setOffloadingAddress] = useState('');
-  const [companyName1, setCompanyName1] = useState('');
-  const [companyName2, setCompanyName2] = useState('');
+  const [loadingCompanyName, setLoadingCompanyName] = useState('');
+  const [offloadingCompanyName, setOfflloadingCompanyName] = useState('');
   const [reference, setReference] = useState('');
   const [truckPlate, setTruckPlate] = useState('');
   const [trailerPlate, setTrailerPlate] = useState('');
   const [palletNumber, setPalletNumber] = useState('');
-  const [requestDate, setRequestDate] = useState('');
-  const [streetNumber, setStreetNumber] = useState('');
-  const [streetName, setStreetName] = useState('');
-  const [zipcode, setZipcode] = useState('');
-  const [country, setCountry] = useState('');
-  const [streetNumber2, setStreetNumber2] = useState('');
-  const [streetName2, setStreetName2] = useState('');
-  const [zipcode2, setZipcode2] = useState('');
-  const [country2, setCountry2] = useState('');
+
+  const [loadingStreetInfo, setLoadingStreetInfo] = useState('');
+  const [loadingZipcode, setLoadingZipcode] = useState('');
+  const [loadingCountry, setLoadingCountry] = useState('');
+  const [loadingCity, setLoadingCity] = useState('');
+  const [offloadingCity, setOffloadingCity] = useState('');
+
+  const [offlloadingStreetInfo, setOffloadingStreetInfo] = useState('');
+  const [offloadingZipcode, setOffloadingZipcode] = useState('');
+  const [offloadingCountry, setOffloadingCountry] = useState('');
   const [errors, setErrors] = useState<Errors | undefined>([]);
   const [loadList, setLoadList] = useState<Load[]>(props.loadsFromDatabase);
   const [addressList, setAddressList] = useState<Address[]>([]);
@@ -121,7 +122,7 @@ export default function ProtectedDashboard(props: Props) {
         return (
           <div>
             <div>
-              <p>{load.requestDate}</p>
+
               <button
                 onClick={() => {
                   deleteLoad(load.loadId).catch(() => {});
@@ -147,81 +148,41 @@ export default function ProtectedDashboard(props: Props) {
         className={styles.form}
         onSubmit={async (event) => {
           event.preventDefault();
-          // // address\\
-          // const createAddressResponse = await fetch('/api/addresse', {
-          //   method: 'POST',
-          //   headers: {
-          //     'Content-Type': 'application/json',
-          //   },
-          //   body: JSON.stringify({
-          //     address: props.address,
-          //   }),
-          // });
-          // const createAddressResponseBody =
-          //   (await createAddressResponse.json()) as CreateAddressResponseBody;
+          console.log('blablabla');
 
-          // if ('errors' in createAddressResponseBody) {
-          //   setErrors(createAddressResponseBody.errors);
-          //   return;
-          // }
-
-          // const createdAddress = [
-          //   ...addressList,
-          //   createAddressResponseBody.address,
-          // ];
-          // console.log(createdAddress);
-          // setAddressList(createdAddress);
-
-          // setCompanyName1('');
-          // setStreetNumber('');
-          // setStreetName('');
-          // setCountry('');
-          // setZipcode('');
-          // setCompanyName2('');
-          // setStreetNumber2('');
-          // setStreetName2('');
-          // setCountry2('');
-          // setZipcode2('');
-
-          // // Truck\\
-          // const createTruckResponse = await fetch('/api/truck', {
-          //   method: 'POST',
-          //   headers: {
-          //     'Content-Type': 'application/json',
-          //   },
-          //   body: JSON.stringify({
-          //     truck: props.truck,
-          //   }),
-          // });
-          // const createTruckResponseBody =
-          //   (await createTruckResponse.json()) as CreateTruckResponseBody;
-
-          // if ('errors' in createTruckResponseBody) {
-          //   setErrors(createTruckResponseBody.errors);
-          //   return;
-          // }
-
-          // const createdTruck = [...truckList, createTruckResponseBody.truck];
-          // console.log(createdTruck);
-          // setTruckList(createdTruck);
-
-          // setTruckPlate('');
-          // setTruckPlate('');
-
-          // load \\
-          const createLoadResponse = await fetch('/api/newLoad', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
+          const createLoadResponse = await fetch(
+            `http://localhost:3000/api/newLoad`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                address: {
+                  companyName: loadingCompanyName,
+                  companyName2: offloadingCompanyName,
+                  streetInfo: loadingStreetInfo,
+                  streetInfo2: offlloadingStreetInfo,
+                  zipcode: loadingZipcode,
+                  zipcode2: offloadingZipcode,
+                  city: loadingCity,
+                  city2: offloadingCity,
+                  country: loadingCountry,
+                  country2: offloadingCountry,
+                },
+                // truck: {
+                //   truckPlate: truckPlate,
+                //   trailerPlate: trailerPlate,
+                // },
+                // load: {
+                //   // loadingAddress: address,
+                // },
+              }),
             },
-            body: JSON.stringify({
-              requestDate: requestDate,
-              load: props.load,
-            }),
-          });
-          const createLoadResponseBody =
-            (await createLoadResponse.json()) as CreateLoadResponseBody;
-
+          );
+          console.log('prouttttt');
+          const createLoadResponseBody = await createLoadResponse.json();
+          console.log('presque');
           if ('errors' in createLoadResponseBody) {
             setErrors(createLoadResponseBody.errors);
             return;
@@ -231,16 +192,16 @@ export default function ProtectedDashboard(props: Props) {
           console.log(createdLoad);
           setLoadList(createdLoad);
 
-          setCompanyName1('');
-          setCompanyName2('');
-          setLoadingAddress('');
-          setOffloadingAddress('');
-          // setOffloadingDate();
-          // setLoadingDate();
-          setReference('');
-          setPalletNumber('');
-          setTruckPlate('');
-          setTrailerPlate('');
+          // setCompanyName1('');
+          // setCompanyName2('');
+          // setLoadingAddress('');
+          // setOffloadingAddress('');
+          // // setOffloadingDate();
+          // // setLoadingDate();
+          // setReference('');
+          // setPalletNumber('');
+          // setTruckPlate('');
+          // setTrailerPlate('');
         }}
       >
         <div className={styles.col2}>
@@ -250,32 +211,46 @@ export default function ProtectedDashboard(props: Props) {
             <input
               placeholder="Company Name"
               tabIndex={2}
-              value={companyName1}
-              onChange={(event) => setCompanyName1(event.target.value)}
-            />
-            <input
-              placeholder="Street number"
-              tabIndex={2}
-              value={streetNumber}
-              onChange={(event) => setStreetNumber(event.target.value)}
+              value={loadingCompanyName}
+              onChange={(event) => {
+                setLoadingCompanyName(event.target.value);
+                // console.log('prout')
+              }}
             />
             <input
               placeholder="Street"
               tabIndex={2}
-              value={streetName}
-              onChange={(event) => setStreetName(event.target.value)}
+              value={loadingStreetInfo}
+              onChange={(event) => {
+                setLoadingStreetInfo(event.target.value);
+                // console.log('prouttttt');
+              }}
             />
             <input
               placeholder="Zipcode"
               tabIndex={2}
-              value={zipcode}
-              onChange={(event) => setZipcode(event.target.value)}
+              value={loadingZipcode}
+              onChange={(event) => {
+                setLoadingZipcode(event.target.value);
+                console.log(typeof loadingZipcode);
+              }}
+            />
+            <input
+              placeholder="City"
+              tabIndex={2}
+              value={loadingCity}
+              onChange={(event) => {
+                setLoadingCity(event.target.value);
+              }}
             />
             <input
               placeholder="Country"
               tabIndex={2}
-              value={country}
-              onChange={(event) => setCountry(event.target.value)}
+              value={loadingCountry}
+              onChange={(event) => {
+                setLoadingCountry(event.target.value);
+                console.log(typeof loadingCountry);
+              }}
             />
           </label>
         </div>
@@ -284,7 +259,7 @@ export default function ProtectedDashboard(props: Props) {
             <AiOutlineCalendar size={20} /> Loading Date:
             <DatePicker
               selected={loadingDate}
-              onChange={(loadingDate: Date) => setLoadingDate(loadingDate)}
+              onChange={(date: Date) => setLoadingDate(date)}
               dateFormat="dd/MM/yyyy"
               withPortal
             />
@@ -298,32 +273,34 @@ export default function ProtectedDashboard(props: Props) {
             <input
               placeholder="Company Name"
               tabIndex={2}
-              value={companyName2}
-              onChange={(event) => setCompanyName2(event.target.value)}
-            />
-            <input
-              placeholder="Street number"
-              tabIndex={2}
-              value={streetNumber2}
-              onChange={(event) => setStreetNumber2(event.target.value)}
+              value={offloadingCompanyName}
+              onChange={(event) =>
+                setOfflloadingCompanyName(event.target.value)
+              }
             />
             <input
               placeholder="Street"
               tabIndex={2}
-              value={streetName2}
-              onChange={(event) => setStreetName2(event.target.value)}
+              value={offlloadingStreetInfo}
+              onChange={(event) => setOffloadingStreetInfo(event.target.value)}
             />
             <input
               placeholder="Zipcode"
               tabIndex={2}
-              value={zipcode2}
-              onChange={(event) => setZipcode2(event.target.value)}
+              value={offloadingZipcode}
+              onChange={(event) => setOffloadingZipcode(event.target.value)}
+            />
+            <input
+              placeholder="City"
+              tabIndex={2}
+              value={offloadingCity}
+              onChange={(event) => setOffloadingCity(event.target.value)}
             />
             <input
               placeholder="Country"
               tabIndex={2}
-              value={country2}
-              onChange={(event) => setCountry2(event.target.value)}
+              value={offloadingCountry}
+              onChange={(event) => setOffloadingCountry(event.target.value)}
             />
           </label>
         </div>
@@ -404,6 +381,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getValidSessionByToken(sessionToken);
   const load = await getAllAddresses();
   const truck = await getAllTrucks();
+  const address = await getAllAddresses();
 
   if (!session) {
     return {
@@ -423,7 +401,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (user) {
     console.log(user);
     return {
-      props: { user: user, load: load, truck: truck },
+      props: { user: user, load: load, truck: truck, address: address },
     };
   }
   // 3. otherwise return to login page

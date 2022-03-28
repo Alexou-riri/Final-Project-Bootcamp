@@ -23,7 +23,7 @@ export default function SingleLoad() {
   const [truckPlate, setTruckPlate] = useState('');
   const [trailerPlate, setTrailerPlate] = useState('');
   const [palletNumber, setPalletNumber] = useState('');
-  const [requestDate, setRequestDate] = useState('');
+
   const [errors, setErrors] = (useState < Errors) | (undefined > []);
 
   return (

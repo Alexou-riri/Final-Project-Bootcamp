@@ -54,7 +54,7 @@ export default function AllLoads(props: Props) {
   const [truckPlate, setTruckPlate] = useState('');
   const [trailerPlate, setTrailerPlate] = useState('');
   const [palletNumber, setPalletNumber] = useState('');
-  const [requestDate, setRequestDate] = useState('');
+
   const [errors, setErrors] = useState<Errors | undefined>([]);
   const [loadList, setLoadList] = useState<Load[]>(props.loadsFromDatabase);
 
@@ -78,7 +78,6 @@ export default function AllLoads(props: Props) {
       {props.loadsFromDatabase.map((load) => {
         return (
           <div>
-            <p>Request Date: {load.requestDate}</p>
             <p>Loading Place: </p>
             <p>Offloading Place</p>
             <p>Loading date: {load.loadingDate}</p>
