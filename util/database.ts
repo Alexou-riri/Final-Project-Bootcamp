@@ -176,8 +176,8 @@ export type Load = {
   loadId: number;
   loadingPlaceId: number;
   offloadingPlaceId: number;
-  loadingDate: Date;
-  offloadingDate: Date;
+  loadingDate: string;
+  offloadingDate: string;
   reference: string;
   truckId: number;
   palletQuantityGiven: number;
@@ -191,20 +191,22 @@ export async function createNewLoad(
   loadingDate: Date,
   offloadingDate: Date,
   reference: string,
-  truckId: number,
+  // truckId: number,
   palletQuantityGiven: number,
-  palletQuantityReceived: number | null,
-  documentId: number | null,
-  userId: number,
+  // palletQuantityReceived: number | null,
+  // documentId: number | null,
+  // userId: number,
 ) {
+  console.log('verif load');
   const [load] = await sql<[Load]>`
   INSERT INTO loads
-    (loading_date, offloading_date, reference, truck_id, pallet_quantity_given, document_id user_id)
+    (loading_date, offloading_date, reference, pallet_quantity_given)
   VALUES
-    ( ${loadingDate},${offloadingDate}, ${reference}, ${truckId},${palletQuantityGiven}, ${userId})
+    ( ${loadingDate},${offloadingDate}, ${reference},${palletQuantityGiven})
   RETURNING
     *
 `;
+  console.log('verif load2');
   return camelcaseKeys(load);
 }
 

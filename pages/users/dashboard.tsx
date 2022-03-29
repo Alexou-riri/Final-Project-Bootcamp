@@ -21,6 +21,11 @@ import Link from 'next/link';
 import { AiOutlineCalendar } from 'react-icons/ai';
 import { FaWarehouse, FaPallet } from 'react-icons/fa';
 import { BsTruck } from 'react-icons/bs';
+import router from 'next/router';
+import moment from 'moment';
+moment().format();
+import format from 'date-fns/format';
+import { stringify } from 'querystring';
 
 // import { CreateAddressResponseBody } from '../api/addresse';
 
@@ -54,8 +59,8 @@ type Errors = { message: string }[];
 // type Props = {loadsFromDatabase: Load[]}
 
 export default function ProtectedDashboard(props: Props) {
-  const [loadingDate, setLoadingDate] = useState(new Date());
-  const [offloadingDate, setOffloadingDate] = useState(new Date());
+  const [loadingDate, setLoadingDate] = useState<Date>(new Date());
+  const [offloadingDate, setOffloadingDate] = useState<Date>(new Date());
   const [loadingAddress, setLoadingAddress] = useState('');
   const [offloadingAddress, setOffloadingAddress] = useState('');
   const [loadingCompanyName, setLoadingCompanyName] = useState('');
@@ -63,7 +68,8 @@ export default function ProtectedDashboard(props: Props) {
   const [reference, setReference] = useState('');
   const [truckPlate, setTruckPlate] = useState('');
   const [trailerPlate, setTrailerPlate] = useState('');
-  const [palletNumber, setPalletNumber] = useState('');
+  const [palletQuantityGiven, setPalletQuantityGiven] = useState<Number>(0);
+  const [palletQuantityrReceived, setPalletQuantityReceived] = useState('');
 
   const [loadingStreetInfo, setLoadingStreetInfo] = useState('');
   const [loadingZipcode, setLoadingZipcode] = useState('');
@@ -170,16 +176,20 @@ export default function ProtectedDashboard(props: Props) {
                   country: loadingCountry,
                   country2: offloadingCountry,
                 },
-                // truck: {
-                //   truckPlate: truckPlate,
-                //   trailerPlate: trailerPlate,
-                // },
-                // load: {
-                //   // loadingAddress: address,
-                // },
+                truck: {
+                  truckPlate: truckPlate,
+                  trailerPlate: trailerPlate,
+                },
+                load: {
+                  loadingDate: loadingDate,
+                  offloadingDate: offloadingDate,
+                  reference: reference,
+                  palletQuantityGiven: Number(palletQuantityGiven),
+                },
               }),
             },
           );
+          // Number(palletQuantityGiven);
           console.log('prouttttt');
           const createLoadResponseBody = await createLoadResponse.json();
           console.log('presque');
@@ -202,6 +212,7 @@ export default function ProtectedDashboard(props: Props) {
           // setPalletNumber('');
           // setTruckPlate('');
           // setTrailerPlate('');
+          // router.push(`/loads/${props.loadId}`);
         }}
       >
         <div className={styles.col2}>
@@ -259,9 +270,22 @@ export default function ProtectedDashboard(props: Props) {
             <AiOutlineCalendar size={20} /> Loading Date:
             <DatePicker
               selected={loadingDate}
-              onChange={(date: Date) => setLoadingDate(date)}
+              onChange={(date: Date) => {
+                {
+                  // new Date(loadingDate).toISOString().split('T')[0];
+                  setLoadingDate(date);
+                  JSON.stringify(loadingDate);
+                }
+                console.log(typeof loadingDate);
+              }}
               dateFormat="dd/MM/yyyy"
               withPortal
+              // moment(date).format("YYYY-MM-DD")
+              // moment().subtract(10, 'days').calendar();
+              // const expensesCurrentYearDateToString = JSON.parse(
+              //   JSON.stringify(expensesCurrentYear),
+              // );
+              // <DatePicker selected={this.state.startDate} onChange={(date)=>this.handleChange(format(date, "yyyy/MM/dd", { awareOfUnicodeTokens: true }))} dateFormat="yyyy/MM/dd" />
             />
           </label>
         </div>
@@ -356,8 +380,15 @@ export default function ProtectedDashboard(props: Props) {
               min="0"
               max="40"
               id="number"
-              value={palletNumber}
-              onChange={(event) => setPalletNumber(event.target.value)}
+              value={palletQuantityGiven}
+              onChange={(event) => {
+                {
+                  setPalletQuantityGiven(Number(event.target.value));
+                }
+                console.log(typeof palletQuantityGiven);
+                // Number(palletNumberGiven);
+                // console.log(typeof palletNumberGiven);
+              }}
             />
           </label>
         </div>

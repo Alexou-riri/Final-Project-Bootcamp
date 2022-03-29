@@ -216,38 +216,41 @@ export default async function createLoadHandler(
     console.log('prout3');
     console.log('body', request.body);
     const loadingAddress = await createAddress(
-      request.body.companyName,
-      request.body.streetInfo,
-      request.body.zipcode,
-      request.body.city,
-      request.body.country,
+      request.body.address.companyName,
+      request.body.address.streetInfo,
+      request.body.address.zipcode,
+      request.body.address.city,
+      request.body.address.country,
     );
 
     const offloadingAddress = await createAddress(
-      request.body.companyName2,
-      request.body.streetInfo2,
-      request.body.zipcode2,
-      request.body.cit2y,
-      request.body.country2,
+      request.body.address.companyName,
+      request.body.address.streetInfo,
+      request.body.address.zipcode,
+      request.body.address.city,
+      request.body.address.country,
     );
 
-    // console.log('prout4');
-    // const formTruck = await createTruck(
-    //   request.body.truckPlate,
-    //   request.body.trailerPlate,
-    // );
-    // console.log('prout5');
-    // const formLoad = await createNewLoad(
-    //   request.body.loadingDate,
-    //   request.body.offloadingDate,
-    //   request.body.reference,
-    //   request.body.truckId,
-    //   request.body.palletQuantityGiven,
-    //   request.body.palletQuantityReceived,
-    //   request.body.documentId,
-    //   request.body.userId,
-    // );
-
+    console.log('prout4');
+    const formTruck = await createTruck(
+      request.body.truck.truckPlate,
+      request.body.truck.trailerPlate,
+    );
+    console.log(request.body.load.loadingDate);
+    const formLoad = await createNewLoad(
+      loadingAddress,
+      offloadingAddress,
+      request.body.load.loadingDate,
+      request.body.load.offloadingDate,
+      request.body.load.reference,
+      formTruck,
+      // request.body.load.truckId,
+      request.body.load.palletQuantityGiven,
+      // request.body.load.palletQuantityReceived,
+      // request.body.load.documentId,
+      // request.body.load.userId,
+    );
+    console.log('prout6');
     // response.status(201).json({
     //   // address: loadingAddress,
     //   load: formLoad,
