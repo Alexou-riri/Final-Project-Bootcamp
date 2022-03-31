@@ -5,11 +5,13 @@ import {
   getUserByValidSessionToken,
   getValidSessionByToken,
   getAllAddresses,
+  getLoads,
   User,
   Load,
   Address,
   Truck,
   getAllTrucks,
+  getLoadById,
 } from '../../util/database';
 import { DeleteLoadResponseBody } from '../api/newLoad';
 import styles from './dashboard.module.css';
@@ -27,6 +29,12 @@ moment().format();
 import format from 'date-fns/format';
 import { stringify } from 'querystring';
 
+const loadPreview = css`
+  display: flex;
+  flex-direction: row;
+  border: 1px solid red;
+`;
+
 // import { CreateAddressResponseBody } from '../api/addresse';
 
 // type Props = {
@@ -41,6 +49,7 @@ type Props = {
   errors?: string;
   address: Address;
   truck: Truck;
+  loads: Load;
 };
 
 type CreateLoadResponseBody =
@@ -59,8 +68,8 @@ type Errors = { message: string }[];
 // type Props = {loadsFromDatabase: Load[]}
 
 export default function ProtectedDashboard(props: Props) {
-  const [loadingDate, setLoadingDate] = useState<Date>(new Date());
-  const [offloadingDate, setOffloadingDate] = useState<Date>(new Date());
+  const [loadingDate, setLoadingDate] = useState(new Date());
+  const [offloadingDate, setOffloadingDate] = useState(new Date());
   const [loadingAddress, setLoadingAddress] = useState('');
   const [offloadingAddress, setOffloadingAddress] = useState('');
   const [loadingCompanyName, setLoadingCompanyName] = useState('');
@@ -70,6 +79,7 @@ export default function ProtectedDashboard(props: Props) {
   const [trailerPlate, setTrailerPlate] = useState('');
   const [palletQuantityGiven, setPalletQuantityGiven] = useState<Number>(0);
   const [palletQuantityrReceived, setPalletQuantityReceived] = useState('');
+  const [documentId, setDocumentId] = useState('');
 
   const [loadingStreetInfo, setLoadingStreetInfo] = useState('');
   const [loadingZipcode, setLoadingZipcode] = useState('');
@@ -81,7 +91,7 @@ export default function ProtectedDashboard(props: Props) {
   const [offloadingZipcode, setOffloadingZipcode] = useState('');
   const [offloadingCountry, setOffloadingCountry] = useState('');
   const [errors, setErrors] = useState<Errors | undefined>([]);
-  const [loadList, setLoadList] = useState<Load[]>(props.loadsFromDatabase);
+  const [loadList, setLoadList] = useState([]);
   const [addressList, setAddressList] = useState<Address[]>([]);
   const [truckList, setTruckList] = useState<Truck[]>([]);
 
@@ -93,41 +103,53 @@ export default function ProtectedDashboard(props: Props) {
     );
   }
 
-  async function deleteLoad(id: number) {
-    const deleteResponse = await fetch(`/api/newLoad`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        loadId: id,
-        load: props.load,
-      }),
-    });
-    const deleteLoadResponseBody =
-      (await deleteResponse.json()) as DeleteLoadResponseBody;
+  // async function deleteLoad(id: number) {
+  //   const deleteResponse = await fetch(`/api/newLoad`, {
+  //     method: 'DELETE',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       loadId: id,
+  //       load: props.load,
+  //     }),
+  //   });
+  //   const deleteLoadResponseBody =
+  //     (await deleteResponse.json()) as DeleteLoadResponseBody;
 
-    if ('error' in deleteLoadResponseBody) {
-      setErrors(deleteLoadResponseBody.errors);
-      return;
-    }
+  //   if ('error' in deleteLoadResponseBody) {
+  //     setErrors(deleteLoadResponseBody.errors);
+  //     return;
+  //   }
 
-    const newLoadList = loadList.filter((load) => {
-      return deleteLoadResponseBody.load.loadId !== load.loadId;
-    });
+  //   const newLoadList = loadList.filter((load) => {
+  //     return deleteLoadResponseBody.load.loadId !== load.loadId;
+  //   });
 
-    setLoadList(newLoadList);
-  }
-
+  //   setLoadList(newLoadList);
+  // }
+  // console.log(JSON.parse(props.load));
   return (
     <Layout {...props.userObject}>
       <h1> Dashboard of {props.user.company} </h1>
 
       <h2>Here are the last loads entered:</h2>
+
+      {props.loads.map((load) => {
+        console.log(props.load, 'iiiiiiiiii');
+
+        return (
+          <>
+            <div key={load.id} css={loadPreview}>
+              <div>{load.reference} ref</div>
+              <div>{load.palletQuantityGiven} pal</div>
+            </div>
+          </>
+        );
+      })}
       {/* {props.loadsFromDatabase.map((load: Load) => {
         return (
           <div>
-            <div>
 
               <button
                 onClick={() => {
@@ -137,7 +159,7 @@ export default function ProtectedDashboard(props: Props) {
                 Dont follow this load anymore
               </button>
             </div>
-             <div data-test-id="product-quantity">
+            {/* <div data-test-id="product-quantity">
               <button css={button} onClick={() => addProduct(props.house.id)}>
                 Buy one more
               </button>
@@ -145,11 +167,12 @@ export default function ProtectedDashboard(props: Props) {
               <button css={button} onClick={() => removeProduct()}>
                 too many?
               </button>
-            </div>
-          </div>
-        );
+            </div> */}
+      {/* );
       })} */}
-
+      <div>
+        <p>{props.load}</p>
+      </div>
       <form
         className={styles.form}
         onSubmit={async (event) => {
@@ -185,6 +208,8 @@ export default function ProtectedDashboard(props: Props) {
                   offloadingDate: offloadingDate,
                   reference: reference,
                   palletQuantityGiven: Number(palletQuantityGiven),
+                  // palletQuantityrReceived: null,
+                  // documentId: null,
                 },
               }),
             },
@@ -197,12 +222,13 @@ export default function ProtectedDashboard(props: Props) {
             setErrors(createLoadResponseBody.errors);
             return;
           }
+          setLoadList([...loadList, createLoadResponseBody]);
+          console.log(setLoadList, 'liste');
+          // const createdLoad = [...loadList, createLoadResponseBody.load];
+          // console.log(createdLoad);
+          // setLoadList(createdLoad);
 
-          const createdLoad = [...loadList, createLoadResponseBody.load];
-          console.log(createdLoad);
-          setLoadList(createdLoad);
-
-          // setCompanyName1('');
+          setLoadingCompanyName('');
           // setCompanyName2('');
           // setLoadingAddress('');
           // setOffloadingAddress('');
@@ -212,7 +238,8 @@ export default function ProtectedDashboard(props: Props) {
           // setPalletNumber('');
           // setTruckPlate('');
           // setTrailerPlate('');
-          // router.push(`/loads/${props.loadId}`);
+          // router.push(`../loads/${props.loadId}`);
+          await router.push(`/loads/${createLoadResponseBody.load.id}`);
         }}
       >
         <div className={styles.col2}>
@@ -268,15 +295,17 @@ export default function ProtectedDashboard(props: Props) {
         <div className={styles.col2}>
           <label>
             <AiOutlineCalendar size={20} /> Loading Date:
-            <DatePicker
+            {/* <DatePicker
               selected={loadingDate}
               onChange={(date: Date) => {
-                {
-                  // new Date(loadingDate).toISOString().split('T')[0];
-                  setLoadingDate(date);
-                  JSON.stringify(loadingDate);
-                }
-                console.log(typeof loadingDate);
+                // new Date(loadingDate).toISOString().split('T')[0];
+
+                const datee = loadingDate;
+                let loadingDateToString = datee.toDateString().split('T')[0];
+
+                setLoadingDate(loadingDateToString);
+
+                console.log(loadingDateToString, 'dateenstrig');
               }}
               dateFormat="dd/MM/yyyy"
               withPortal
@@ -286,6 +315,17 @@ export default function ProtectedDashboard(props: Props) {
               //   JSON.stringify(expensesCurrentYear),
               // );
               // <DatePicker selected={this.state.startDate} onChange={(date)=>this.handleChange(format(date, "yyyy/MM/dd", { awareOfUnicodeTokens: true }))} dateFormat="yyyy/MM/dd" />
+            /> */}
+            <input
+              data-cy="event-start-date"
+              required
+              type="date"
+              placeholder="dd/mm/yyyy"
+              value={loadingDate}
+              onChange={(event) => {
+                setLoadingDate(event.currentTarget.value);
+                console.log(setLoadingDate, 'PUTIN');
+              }}
             />
           </label>
         </div>
@@ -331,13 +371,23 @@ export default function ProtectedDashboard(props: Props) {
         <div className={styles.col2}>
           <label>
             <AiOutlineCalendar size={20} /> Offlooading Date:
-            <DatePicker
+            {/* <DatePicker
               selected={offloadingDate}
               onChange={(offloadingDate: Date) =>
                 setOffloadingDate(offloadingDate)
               }
               dateFormat="dd/MM/yyyy"
               withPortal
+            /> */}
+            <input
+              data-cy="event-start-date"
+              required
+              type="date"
+              placeholder="dd/mm/yyyy"
+              value={offloadingDate}
+              onChange={(event) => {
+                setOffloadingDate(event.currentTarget.value);
+              }}
             />
           </label>
         </div>
@@ -385,9 +435,7 @@ export default function ProtectedDashboard(props: Props) {
                 {
                   setPalletQuantityGiven(Number(event.target.value));
                 }
-                console.log(typeof palletQuantityGiven);
-                // Number(palletNumberGiven);
-                // console.log(typeof palletNumberGiven);
+                console.log(typeof palletQuantityGiven, 'gdgds');
               }}
             />
           </label>
@@ -407,12 +455,38 @@ export default function ProtectedDashboard(props: Props) {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   // 1. Get a user from the cookie sessionToken
   const token = context.req.cookies.sessionToken;
+
   const user = await getUserByValidSessionToken(token);
+
   const sessionToken = context.req.cookies.sessionToken;
+
   const session = await getValidSessionByToken(sessionToken);
-  const load = await getAllAddresses();
-  const truck = await getAllTrucks();
-  const address = await getAllAddresses();
+  const loadsFromDatabase = await getLoads();
+  // loadsFromDatabase est un array de objet moche, mais typeof dit object\\
+  const stringifyLoadsFromDatabase = JSON.stringify(loadsFromDatabase);
+  // stringifyLoadsfromDB arra de object mais typeof string\\
+  const loads = JSON.parse(stringifyLoadsFromDatabase);
+  // loads array beau mais typeof objet\\
+
+  // console.log(stringifyLoadsFromDatabase, 'iiii');
+  // console.log(Array.isArray(loads));
+
+  // const resultLoad = Object.keys(loads).map((key) => {
+  //   return { [key]: loads[key as keyof typeof loads] };
+  // });
+
+  console.log(typeof loads, 'ntm');
+
+  // const loads = await getLoadById(loadId);
+
+  // console.log(loads, 'iii');
+  // const truck = await getAllTrucks();
+  // const address = await getAllAddresses();
+  // To avoid issue with serializing object
+  // const loadingDateToString = JSON.parse(JSON.stringify(loadingDate));
+  // const loadingDate = JSON.parse(JSON.stringify(date));
+
+  // const loads = await getLoads();
 
   if (!session) {
     return {
@@ -432,7 +506,17 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (user) {
     console.log(user);
     return {
-      props: { user: user, load: load, truck: truck, address: address },
+      props: {
+        user: user,
+        load: stringifyLoadsFromDatabase,
+        loads: loads,
+
+        // loads: loads,
+        // loads: loads,
+
+        // truck: truck,
+        // address: address,
+      },
     };
   }
   // 3. otherwise return to login page

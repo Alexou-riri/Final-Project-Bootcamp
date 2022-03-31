@@ -176,8 +176,8 @@ export type Load = {
   loadId: number;
   loadingPlaceId: number;
   offloadingPlaceId: number;
-  loadingDate: string;
-  offloadingDate: string;
+  loadingDate: Date;
+  offloadingDate: Date;
   reference: string;
   truckId: number;
   palletQuantityGiven: number;
@@ -186,28 +186,33 @@ export type Load = {
   userId: number;
 };
 export async function createNewLoad(
-  // loadingPlaceId: number,
-  // offloadingPlaceId: number,
+  loadingPlaceId: number,
+  offloadingPlaceId: number,
   loadingDate: Date,
   offloadingDate: Date,
   reference: string,
-  // truckId: number,
+  truckId: number,
   palletQuantityGiven: number,
-  // palletQuantityReceived: number | null,
-  // documentId: number | null,
+  palletQuantityReceived: number | null,
+  documentId: number | null,
   // userId: number,
 ) {
   console.log('verif load');
   const [load] = await sql<[Load]>`
   INSERT INTO loads
-    (loading_date, offloading_date, reference, pallet_quantity_given)
+    (loading_place_id, offloading_place_id, loading_date, offloading_date, reference, truck_id, pallet_quantity_given,
+     pallet_quantity_received, document_id
+      -- user_id
+      )
   VALUES
-    ( ${loadingDate},${offloadingDate}, ${reference},${palletQuantityGiven})
+    (${loadingPlaceId}, ${offloadingPlaceId}, ${loadingDate},${offloadingDate}, ${reference},${truckId}, ${palletQuantityGiven},${palletQuantityReceived}, ${documentId}
+
+    )
   RETURNING
     *
 `;
   console.log('verif load2');
-  return camelcaseKeys(load);
+  return load && camelcaseKeys(load);
 }
 
 export async function getLoads() {
@@ -218,14 +223,18 @@ export async function getLoads() {
 }
 
 export async function getLoadById(loadId: number) {
-  const [load] = await sql<[Load]>`
+  console.log('verifsamere');
+  const [loadById] = await sql<[Load]>`
     SELECT * FROM loads WHERE id = ${loadId};
   `;
-  return load && camelcaseKeys(load);
+  console.log('verifsonpere');
+  return loadById && camelcaseKeys(loadById);
 }
 
 export async function deleteLoad(loadId: number) {
-  const deletedLoad = await sql<[Load]>`
+  const deletedLoad =
+    //  [load]
+    await sql<[Load]>`
     DELETE FROM
     loads
     WHERE
@@ -234,6 +243,7 @@ export async function deleteLoad(loadId: number) {
   *
   `;
   return deletedLoad.map((load) => camelcaseKeys(load));
+  // return load && camelcaseKeys(load)
 }
 
 export async function updateLoadById(
@@ -309,7 +319,7 @@ export async function createAddress(
   country: string,
 ) {
   console.log('verif address');
-  const address = await sql<[Address]>`
+  const [address] = await sql<[Address]>`
  INSERT INTO addresses
  (company_name, street_info, zipcode, city, country )
  VALUES
@@ -318,7 +328,7 @@ export async function createAddress(
  `;
   console.log('verifaddress2');
 
-  return address.map((address: Address) => camelcaseKeys(address));
+  return address && camelcaseKeys(address);
 }
 
 export async function getAllAddresses() {
@@ -331,11 +341,12 @@ export async function getAllAddresses() {
 
 export async function getAdressById(addressId: number) {
   const [address] = await sql<[Address]>`
-  SELECT * FROM addresses WHERE id=${addressId};
+  SELECT id FROM addresses WHERE id=${addressId};
 
 `;
   return address && camelcaseKeys(address);
 }
+
 // TRUCK FUNCTION \\
 
 export type Truck = {
@@ -350,6 +361,13 @@ export async function createTruck(truckPlate: string, trailerPlate: string) {
   VALUES
   (${truckPlate}, ${trailerPlate} )
   RETURNING *
+  `;
+  return truck && camelcaseKeys(truck);
+}
+
+export async function getTruckById(truckId: number) {
+  const [truck] = await sql<[Truck | undefined]>`
+    SELECT id FROM trucks WHERE id = ${truckId};
   `;
   return truck && camelcaseKeys(truck);
 }
@@ -375,7 +393,7 @@ export async function CreatePalnote(
   url: string,
   userId: number,
 ) {
-  const [palnote] = await sql<[Palnote]>`
+  const palnote = await sql<[Palnote]>`
   INSERT INTO palnote
   (content_pal_note, document_url, user_id)
   VALUES

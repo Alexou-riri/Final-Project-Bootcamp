@@ -10,9 +10,7 @@ exports.up = async (sql) => {
 			truck_id INTEGER NOT NULL REFERENCES trucks (id) ON DELETE CASCADE,
 			pallet_quantity_given INTEGER NOT NULL,
 			pallet_quantity_received INTEGER,
-			document_id INTEGER REFERENCES palnote(id) ON DELETE CASCADE,
-			user_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE
-
+			document_id INTEGER REFERENCES palnote(id) ON DELETE CASCADE
 		);
 	`;
 };

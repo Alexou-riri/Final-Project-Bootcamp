@@ -177,7 +177,7 @@ export default async function createLoadHandler(
   console.log(request.query);
   console.log(request.method);
   // console.log(request.body);
-  console.log('oskour');
+  // console.log('oskour');
 
   if (request.method === 'GET') {
     const loads = await getLoads();
@@ -213,8 +213,8 @@ export default async function createLoadHandler(
     ////// a rajouter if permission = 1 \\\\\\\\\
 
     // Create load in DB
-    console.log('prout3');
-    console.log('body', request.body);
+    // console.log('prout3');
+    // console.log('body', request.body);
     const loadingAddress = await createAddress(
       request.body.address.companyName,
       request.body.address.streetInfo,
@@ -224,39 +224,39 @@ export default async function createLoadHandler(
     );
 
     const offloadingAddress = await createAddress(
-      request.body.address.companyName,
-      request.body.address.streetInfo,
-      request.body.address.zipcode,
-      request.body.address.city,
-      request.body.address.country,
+      request.body.address.companyName2,
+      request.body.address.streetInfo2,
+      request.body.address.zipcode2,
+      request.body.address.city2,
+      request.body.address.country2,
     );
 
-    console.log('prout4');
+    // console.log(loadingAddress);
+    // console.log(offloadingAddress);
     const formTruck = await createTruck(
       request.body.truck.truckPlate,
       request.body.truck.trailerPlate,
     );
-    console.log(request.body.load.loadingDate);
+    console.log('receivfffff', typeof request.body.load.loadingDate);
     const formLoad = await createNewLoad(
-      loadingAddress,
-      offloadingAddress,
+      loadingAddress.id,
+      offloadingAddress.id,
       request.body.load.loadingDate,
       request.body.load.offloadingDate,
       request.body.load.reference,
-      formTruck,
-      // request.body.load.truckId,
+      formTruck.id,
       request.body.load.palletQuantityGiven,
-      // request.body.load.palletQuantityReceived,
-      // request.body.load.documentId,
+      request.body.load.palletQuantityReceived || null,
+      request.body.load.documentId || null,
       // request.body.load.userId,
     );
     console.log('prout6');
-    // response.status(201).json({
-    //   // address: loadingAddress,
-    //   load: formLoad,
-    //   truck: formTruck,
-    // });
-    // return;
+    response.status(201).json({
+      address: [loadingAddress, offloadingAddress],
+      truck: formTruck,
+      load: formLoad,
+    });
+    return;
   } else if (request.method === 'DELETE') {
     // if the method is DELETE delete the load matching the id and user_id
     if (
