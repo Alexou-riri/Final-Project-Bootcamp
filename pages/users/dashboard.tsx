@@ -156,6 +156,15 @@ export default function ProtectedDashboard(props: Props) {
 
     setLoadList(newLoadList);
   }
+  const totalGiven = props.loads.reduce(
+    (prevValue, currentValue) => prevValue + currentValue.palletQuantityGiven,
+    0,
+  );
+  const totalReceived = props.loads.reduce(
+    (prevValue, currentValue) =>
+      prevValue + currentValue.palletQuantityReceived,
+    0,
+  );
 
   // useEffect(() => {
   //   const getLoads = async () => {
@@ -174,6 +183,10 @@ export default function ProtectedDashboard(props: Props) {
       <h1> Dashboard of {props.user.company} </h1>
       {/* <div>{props.load}</div> */}
       <h2>Pallet count:</h2>
+      <p>
+        {totalReceived}/{totalGiven}
+      </p>
+
       <div></div>
       <h2>Here are the last loads entered:</h2>
 
