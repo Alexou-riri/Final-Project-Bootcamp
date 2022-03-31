@@ -97,6 +97,7 @@ export default function ProtectedDashboard(props: Props) {
   const [palletQuantityReceived, setPalletQuantityReceived] =
     useState<Number>();
   const [idEditLoadId, setOnEditLoadId] = useState();
+  const [isOpen, setIsOpen] = useState(false);
 
   if ('error' in props) {
     return (
@@ -280,129 +281,130 @@ export default function ProtectedDashboard(props: Props) {
       {/* );
       })} */}
       <div>{/* <p>{props.load}</p> */}</div>
-      <form
-        className={styles.form}
-        onSubmit={async (event) => {
-          event.preventDefault();
-          // console.log('blablabla');
+      {isOpen ? (
+        <form
+          className={styles.form}
+          onSubmit={async (event) => {
+            event.preventDefault();
+            // console.log('blablabla');
 
-          const createLoadResponse = await fetch(
-            `http://localhost:3000/api/newLoad`,
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
+            const createLoadResponse = await fetch(
+              `http://localhost:3000/api/newLoad`,
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  address: {
+                    companyName: loadingCompanyName,
+                    companyName2: offloadingCompanyName,
+                    streetInfo: loadingStreetInfo,
+                    streetInfo2: offlloadingStreetInfo,
+                    zipcode: loadingZipcode,
+                    zipcode2: offloadingZipcode,
+                    city: loadingCity,
+                    city2: offloadingCity,
+                    country: loadingCountry,
+                    country2: offloadingCountry,
+                  },
+                  truck: {
+                    truckPlate: truckPlate,
+                    trailerPlate: trailerPlate,
+                  },
+                  load: {
+                    loadingDate: loadingDate,
+                    offloadingDate: offloadingDate,
+                    reference: reference,
+                    palletQuantityGiven: Number(palletQuantityGiven),
+                    // palletQuantityrReceived: null,
+                    // documentId: null,
+                  },
+                }),
               },
-              body: JSON.stringify({
-                address: {
-                  companyName: loadingCompanyName,
-                  companyName2: offloadingCompanyName,
-                  streetInfo: loadingStreetInfo,
-                  streetInfo2: offlloadingStreetInfo,
-                  zipcode: loadingZipcode,
-                  zipcode2: offloadingZipcode,
-                  city: loadingCity,
-                  city2: offloadingCity,
-                  country: loadingCountry,
-                  country2: offloadingCountry,
-                },
-                truck: {
-                  truckPlate: truckPlate,
-                  trailerPlate: trailerPlate,
-                },
-                load: {
-                  loadingDate: loadingDate,
-                  offloadingDate: offloadingDate,
-                  reference: reference,
-                  palletQuantityGiven: Number(palletQuantityGiven),
-                  // palletQuantityrReceived: null,
-                  // documentId: null,
-                },
-              }),
-            },
-          );
-          // Number(palletQuantityGiven);
-          console.log('prouttttt');
-          const createLoadResponseBody = await createLoadResponse.json();
-          console.log('presque');
-          if ('errors' in createLoadResponseBody) {
-            setErrors(createLoadResponseBody.errors);
-            return;
-          }
-          setLoadList([...loadList, createLoadResponseBody]);
-          console.log(setLoadList, 'liste');
-          // const createdLoad = [...loadList, createLoadResponseBody.load];
-          // console.log(createdLoad);
-          // setLoadList(createdLoad);
+            );
+            // Number(palletQuantityGiven);
+            console.log('prouttttt');
+            const createLoadResponseBody = await createLoadResponse.json();
+            console.log('presque');
+            if ('errors' in createLoadResponseBody) {
+              setErrors(createLoadResponseBody.errors);
+              return;
+            }
+            setLoadList([...loadList, createLoadResponseBody]);
+            console.log(setLoadList, 'liste');
+            // const createdLoad = [...loadList, createLoadResponseBody.load];
+            // console.log(createdLoad);
+            // setLoadList(createdLoad);
 
-          setLoadingCompanyName('');
-          // setCompanyName2('');
-          // setLoadingAddress('');
-          // setOffloadingAddress('');
-          // // setOffloadingDate();
-          // // setLoadingDate();
-          // setReference('');
-          // setPalletNumber('');
-          // setTruckPlate('');
-          // setTrailerPlate('');
-          // router.push(`../loads/${props.loadId}`);
-          await router.push(`/loads/${createLoadResponseBody.load.id}`);
-        }}
-      >
-        <div className={styles.col2}>
-          <label>
-            <FaWarehouse size={20} /> <br />
-            Loading Place
-            <input
-              placeholder="Company Name"
-              tabIndex={2}
-              value={loadingCompanyName}
-              onChange={(event) => {
-                setLoadingCompanyName(event.target.value);
-                // console.log('prout')
-              }}
-            />
-            <input
-              placeholder="Street"
-              tabIndex={2}
-              value={loadingStreetInfo}
-              onChange={(event) => {
-                setLoadingStreetInfo(event.target.value);
-                // console.log('prouttttt');
-              }}
-            />
-            <input
-              placeholder="Zipcode"
-              tabIndex={2}
-              value={loadingZipcode}
-              onChange={(event) => {
-                setLoadingZipcode(event.target.value);
-                console.log(typeof loadingZipcode);
-              }}
-            />
-            <input
-              placeholder="City"
-              tabIndex={2}
-              value={loadingCity}
-              onChange={(event) => {
-                setLoadingCity(event.target.value);
-              }}
-            />
-            <input
-              placeholder="Country"
-              tabIndex={2}
-              value={loadingCountry}
-              onChange={(event) => {
-                setLoadingCountry(event.target.value);
-                console.log(typeof loadingCountry);
-              }}
-            />
-          </label>
-        </div>
-        <div className={styles.col2}>
-          <label>
-            <AiOutlineCalendar size={20} /> Loading Date:
-            {/* <DatePicker
+            setLoadingCompanyName('');
+            // setCompanyName2('');
+            // setLoadingAddress('');
+            // setOffloadingAddress('');
+            // // setOffloadingDate();
+            // // setLoadingDate();
+            // setReference('');
+            // setPalletNumber('');
+            // setTruckPlate('');
+            // setTrailerPlate('');
+            // router.push(`../loads/${props.loadId}`);
+            await router.push(`/loads/${createLoadResponseBody.load.id}`);
+          }}
+        >
+          <div className={styles.col2}>
+            <label>
+              <FaWarehouse size={20} /> <br />
+              Loading Place
+              <input
+                placeholder="Company Name"
+                tabIndex={2}
+                value={loadingCompanyName}
+                onChange={(event) => {
+                  setLoadingCompanyName(event.target.value);
+                  // console.log('prout')
+                }}
+              />
+              <input
+                placeholder="Street"
+                tabIndex={2}
+                value={loadingStreetInfo}
+                onChange={(event) => {
+                  setLoadingStreetInfo(event.target.value);
+                  // console.log('prouttttt');
+                }}
+              />
+              <input
+                placeholder="Zipcode"
+                tabIndex={2}
+                value={loadingZipcode}
+                onChange={(event) => {
+                  setLoadingZipcode(event.target.value);
+                  console.log(typeof loadingZipcode);
+                }}
+              />
+              <input
+                placeholder="City"
+                tabIndex={2}
+                value={loadingCity}
+                onChange={(event) => {
+                  setLoadingCity(event.target.value);
+                }}
+              />
+              <input
+                placeholder="Country"
+                tabIndex={2}
+                value={loadingCountry}
+                onChange={(event) => {
+                  setLoadingCountry(event.target.value);
+                  console.log(typeof loadingCountry);
+                }}
+              />
+            </label>
+          </div>
+          <div className={styles.col2}>
+            <label>
+              <AiOutlineCalendar size={20} /> Loading Date:
+              {/* <DatePicker
               selected={loadingDate}
               onChange={(date: Date) => {
                 // new Date(loadingDate).toISOString().split('T')[0];
@@ -423,62 +425,64 @@ export default function ProtectedDashboard(props: Props) {
               // );
               // <DatePicker selected={this.state.startDate} onChange={(date)=>this.handleChange(format(date, "yyyy/MM/dd", { awareOfUnicodeTokens: true }))} dateFormat="yyyy/MM/dd" />
             /> */}
-            <input
-              data-cy="event-start-date"
-              required
-              type="date"
-              placeholder="dd/mm/yyyy"
-              value={loadingDate}
-              onChange={(event) => {
-                setLoadingDate(event.currentTarget.value);
-                console.log(setLoadingDate, 'PUTIN');
-              }}
-            />
-          </label>
-        </div>
-        <div className={styles.col2}>
-          <label>
-            <FaWarehouse size={20} />
-            <br />
-            Offloading Place
-            <input
-              placeholder="Company Name"
-              tabIndex={2}
-              value={offloadingCompanyName}
-              onChange={(event) =>
-                setOfflloadingCompanyName(event.target.value)
-              }
-            />
-            <input
-              placeholder="Street"
-              tabIndex={2}
-              value={offlloadingStreetInfo}
-              onChange={(event) => setOffloadingStreetInfo(event.target.value)}
-            />
-            <input
-              placeholder="Zipcode"
-              tabIndex={2}
-              value={offloadingZipcode}
-              onChange={(event) => setOffloadingZipcode(event.target.value)}
-            />
-            <input
-              placeholder="City"
-              tabIndex={2}
-              value={offloadingCity}
-              onChange={(event) => setOffloadingCity(event.target.value)}
-            />
-            <input
-              placeholder="Country"
-              tabIndex={2}
-              value={offloadingCountry}
-              onChange={(event) => setOffloadingCountry(event.target.value)}
-            />
-          </label>
-        </div>
-        <div className={styles.col2}>
-          <label>
-            <AiOutlineCalendar size={20} /> Offlooading Date:
-            {/* <DatePicker
+              <input
+                data-cy="event-start-date"
+                required
+                type="date"
+                placeholder="dd/mm/yyyy"
+                value={loadingDate}
+                onChange={(event) => {
+                  setLoadingDate(event.currentTarget.value);
+                  console.log(setLoadingDate, 'PUTIN');
+                }}
+              />
+            </label>
+          </div>
+          <div className={styles.col2}>
+            <label>
+              <FaWarehouse size={20} />
+              <br />
+              Offloading Place
+              <input
+                placeholder="Company Name"
+                tabIndex={2}
+                value={offloadingCompanyName}
+                onChange={(event) =>
+                  setOfflloadingCompanyName(event.target.value)
+                }
+              />
+              <input
+                placeholder="Street"
+                tabIndex={2}
+                value={offlloadingStreetInfo}
+                onChange={(event) =>
+                  setOffloadingStreetInfo(event.target.value)
+                }
+              />
+              <input
+                placeholder="Zipcode"
+                tabIndex={2}
+                value={offloadingZipcode}
+                onChange={(event) => setOffloadingZipcode(event.target.value)}
+              />
+              <input
+                placeholder="City"
+                tabIndex={2}
+                value={offloadingCity}
+                onChange={(event) => setOffloadingCity(event.target.value)}
+              />
+              <input
+                placeholder="Country"
+                tabIndex={2}
+                value={offloadingCountry}
+                onChange={(event) => setOffloadingCountry(event.target.value)}
+              />
+            </label>
+          </div>
+          <div className={styles.col2}>
+            <label>
+              <AiOutlineCalendar size={20} /> Offlooading Date:
+              {/* <DatePicker
               selected={offloadingDate}
               onChange={(offloadingDate: Date) =>
                 setOffloadingDate(offloadingDate)
@@ -486,71 +490,74 @@ export default function ProtectedDashboard(props: Props) {
               dateFormat="dd/MM/yyyy"
               withPortal
             /> */}
-            <input
-              data-cy="event-start-date"
-              required
-              type="date"
-              placeholder="dd/mm/yyyy"
-              value={offloadingDate}
-              onChange={(event) => {
-                setOffloadingDate(event.currentTarget.value);
-              }}
-            />
-          </label>
-        </div>
+              <input
+                data-cy="event-start-date"
+                required
+                type="date"
+                placeholder="dd/mm/yyyy"
+                value={offloadingDate}
+                onChange={(event) => {
+                  setOffloadingDate(event.currentTarget.value);
+                }}
+              />
+            </label>
+          </div>
 
-        <div className={styles.col3}>
-          <label>
-            Reference
-            <input
-              placeholder="Do we have a reference for this load?"
-              tabIndex={3}
-              value={reference}
-              onChange={(event) => setReference(event.target.value)}
-            />
-          </label>
-        </div>
-        <div className={styles.col3}>
-          <label>
-            <BsTruck size={20} /> Truck Number
-            <input
-              placeholder="Which truck is going to do this load"
-              tabIndex={4}
-              value={truckPlate}
-              onChange={(event) => setTruckPlate(event.target.value)}
-            />
-            <input
-              placeholder="Which truck is going to do this load"
-              tabIndex={4}
-              value={trailerPlate}
-              onChange={(event) => setTrailerPlate(event.target.value)}
-            />
-          </label>
-        </div>
-        <div className={styles.col3}>
-          <label>
-            <FaPallet /> How many pallets should we give and thus get back at
-            the end of the mission
-            <input
-              type="number"
-              placeholder="33"
-              min="0"
-              max="40"
-              id="number"
-              value={palletQuantityGiven}
-              onChange={(event) => {
-                {
-                  setPalletQuantityGiven(Number(event.target.value));
-                }
-                console.log(typeof palletQuantityGiven, 'gdgds');
-              }}
-            />
-          </label>
-        </div>
-        <div className={styles.colsubmit}>
-          <button type="submit">Submit</button>
-        </div>
-      </form>
+          <div className={styles.col3}>
+            <label>
+              Reference
+              <input
+                placeholder="Do we have a reference for this load?"
+                tabIndex={3}
+                value={reference}
+                onChange={(event) => setReference(event.target.value)}
+              />
+            </label>
+          </div>
+          <div className={styles.col3}>
+            <label>
+              <BsTruck size={20} /> Truck Number
+              <input
+                placeholder="Which truck is going to do this load"
+                tabIndex={4}
+                value={truckPlate}
+                onChange={(event) => setTruckPlate(event.target.value)}
+              />
+              <input
+                placeholder="Which truck is going to do this load"
+                tabIndex={4}
+                value={trailerPlate}
+                onChange={(event) => setTrailerPlate(event.target.value)}
+              />
+            </label>
+          </div>
+          <div className={styles.col3}>
+            <label>
+              <FaPallet /> How many pallets should we give and thus get back at
+              the end of the mission
+              <input
+                type="number"
+                placeholder="33"
+                min="0"
+                max="40"
+                id="number"
+                value={palletQuantityGiven}
+                onChange={(event) => {
+                  {
+                    setPalletQuantityGiven(Number(event.target.value));
+                  }
+                  console.log(typeof palletQuantityGiven, 'gdgds');
+                }}
+              />
+            </label>
+          </div>
+          <div className={styles.colsubmit}>
+            <button type="submit">Submit</button>
+          </div>
+        </form>
+      ) : (
+        <button onClick={() => setIsOpen(true)}>ADD A LOAD</button>
+      )}
 
       <Link href="/loads/all_loads">
         <a>To All the loads</a>
