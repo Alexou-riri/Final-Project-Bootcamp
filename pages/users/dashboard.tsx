@@ -93,8 +93,10 @@ export default function ProtectedDashboard(props: Props) {
   const [loadList, setLoadList] = useState<Load[]>(props.loads);
   // const [addressList, setAddressList] = useState<Address[]>([]);
   // const [truckList, setTruckList] = useState<Truck[]>([]);
-  const [alletReceivedOnEdit, setPalletReceivedOnEdit] = useState<Number>();
-  const [palletReceived, setPalletReceived] = useState<Number>();
+  const [palletReceivedOnEdit, setPalletReceivedOnEdit] = useState<Number>();
+  const [palletQuantityReceived, setPalletQuantityReceived] =
+    useState<Number>();
+  const [idEditLoadId, setOnEditLoadId] = useState();
 
   if ('error' in props) {
     return (
@@ -112,7 +114,7 @@ export default function ProtectedDashboard(props: Props) {
       },
       body: JSON.stringify({
         loadId: id,
-        palletQuantityReceived: setPalletReceived,
+        palletQuantityReceived: palletQuantityReceived,
       }),
     });
     const updatedLoadPallet = await updateResponse.json();
@@ -155,16 +157,29 @@ export default function ProtectedDashboard(props: Props) {
     setLoadList(newLoadList);
   }
 
+  // useEffect(() => {
+  //   const getLoads = async () => {
+  //     const response = await fetch('/api/animals');
+  //     const animalArray = await response.json();
+  //     setAnimals(animalArray);
+  //   };
+
+  //   getAnimals().catch(() => {});
+  // }, []);
+
   // console.log(JSON.parse(props.load));
-  console.log('addddd', props.addresses);
+  // console.log('addddd', props.addresses);
   return (
     <Layout {...props.userObject}>
       <h1> Dashboard of {props.user.company} </h1>
       {/* <div>{props.load}</div> */}
+      <h2>Pallet count:</h2>
+      <div></div>
       <h2>Here are the last loads entered:</h2>
 
       <div>
         {loadList.map((load) => {
+          const isDisabled = idEditLoadId !== load.id;
           // console.log(props.loads, 'iiiiiiiiii');
           // for (let i = 0; i <= 5; i++) {
           return (
@@ -193,11 +208,41 @@ export default function ProtectedDashboard(props: Props) {
                     );
                   })}
                 </div>
-                <div>{load.palletQuantityGiven} pal nbr</div>
-                <div>
-                  <input value={load.palletQuantityReceived}></input>
-                  pal nbr
-                </div>
+                <div>pal nbr given{load.palletQuantityGiven} </div>
+                <label>
+                  pal nbr back :
+                  <input
+                    type="number"
+                    onChange={(event) =>
+                      setPalletQuantityReceived(event.currentTarget.value)
+                    }
+                    value={
+                      isDisabled
+                        ? load.palletQuantityReceived
+                        : palletReceivedOnEdit
+                    }
+                    disabled={isDisabled}
+                  ></input>
+                </label>
+                {isDisabled ? (
+                  <button
+                    onClick={() => {
+                      setOnEditLoadId(load.id);
+                      setPalletReceivedOnEdit(load.palletQuantityReceived);
+                    }}
+                  >
+                    Add a quantity of pallet received from offloading place
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      updateLoad(load.id).catch(() => {});
+                      setOnEditLoadId(undefined);
+                    }}
+                  >
+                    Save
+                  </button>
+                )}
 
                 <button onClick={() => deleteLoad(load.id).catch(() => {})}>
                   Delete the load
@@ -531,7 +576,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   // console.log(loads, 'iii');
   // const truck = await getAllTrucks();
   const addresses = await getAllAddresses();
-  console.log('adressedsamere', addresses);
+  // console.log('adressedsamere', addresses);
 
   // To avoid issue with serializing object
   // const loadingDateToString = JSON.parse(JSON.stringify(loadingDate));

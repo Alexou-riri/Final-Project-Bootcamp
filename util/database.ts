@@ -242,35 +242,33 @@ export async function deleteLoad(loadId: number) {
   *
   `;
   return load && camelcaseKeys(load);
-  // return load && camelcaseKeys(load)
 }
 
 export async function updateLoadById(
   loadId: number,
-  loadingPlaceId: number,
-  offloadingPlaceId: number,
-  loadingDate: Date,
-  offloadingDate: Date,
-  reference: string,
-  truckId: number,
-  palletQuantityGiven: number,
+  // loadingPlaceId: number,
+  // offloadingPlaceId: number,
+  // loadingDate: Date,
+  // offloadingDate: Date,
+  // reference: string,
+  // truckId: number,
+  // palletQuantityGiven: number,
   palletQuantityReceived: number,
-  documentId: number,
-  userId: number,
+  // documentId: number,
 ) {
-  const [load] = await sql<[Load]>`
+  const [load] = await sql<[Load[]]>`
     UPDATE
       loads
     SET
-      loading_place_id = ${loadingPlaceId},
-      offloading_place_id = ${offloadingPlaceId},
-      loading_date = ${loadingDate},
-      offloading_date = ${offloadingDate},
-      reference = ${reference},
-      truck_id = ${truckId},
-      pallet_quantity_given = ${palletQuantityGiven},
+      -- loading_place_id =
+      -- offloading_place_id =
+      -- loading_date =
+      -- offloading_date =
+      -- reference =
+      -- truck_id =
+      -- pallet_quantity_given =
       pallet_quantity_received = ${palletQuantityReceived}
-      --  document_id = ${documentId},
+      --  document_id =
 
     WHERE
       id = ${loadId}

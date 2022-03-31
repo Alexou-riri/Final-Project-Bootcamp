@@ -122,8 +122,8 @@ export default function SingleLoad(props: Props) {
           );
         })}
       </div>
-      <div>load id: {props.load.palletQuantityGiven}</div>
-      <div>load id: {props.load.palletQuantityReceived}</div>
+      <div>Pallet given: {props.load.palletQuantityGiven}</div>
+      <div>Pal received: {props.load.palletQuantityReceived}</div>
       <div>
         <button>Add the pallet note</button>
       </div>

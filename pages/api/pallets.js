@@ -1,6 +1,8 @@
 import { updateLoadById } from '../../util/database';
+// import {Load} from '../../util/database';
 
-export default async function handler(request, reponse) {
+export default async function handler(request, response) {
+  console.log('is this the iddddd', request.query.loadId);
   if (request.method === 'PUT') {
     // if the method is PUT update the animal and response the updated animal
 
@@ -10,7 +12,7 @@ export default async function handler(request, reponse) {
     // TODO: create error responses when the body don't have the full data. with a 400 status code
 
     const updatedLoadPallet = await updateLoadById(
-      loadId,
+      palletFromRequest.loadId,
       palletFromRequest.palletQuantityReceived,
     );
 
