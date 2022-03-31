@@ -174,7 +174,7 @@ export default function ProtectedDashboard(props: Props) {
               <div key={load.id} css={loadPreview}>
                 <div>{load.loadingDate} Loading date</div>
                 <div>{load.reference} ref</div>
-                <div>{load.palletQuantityGiven} pal</div>
+
                 <div>
                   {props.addresses.map((address) => {
                     return (
@@ -195,10 +195,16 @@ export default function ProtectedDashboard(props: Props) {
                     );
                   })}
                 </div>
+                <div>{load.palletQuantityGiven} pal nbr</div>
+                <div>
+                  <input value={load.palletQuantityReceived}></input>
+                  pal nbr
+                </div>
 
                 <button onClick={() => deleteLoad(load.id).catch(() => {})}>
                   Delete the load
                 </button>
+                <Link href={`/loads/${load.id}`}>To the load's details</Link>
               </div>
             </>
           );
