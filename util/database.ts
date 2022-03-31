@@ -223,16 +223,15 @@ export async function getLoads() {
 }
 
 export async function getLoadById(loadId: number) {
-  console.log('verifsamere');
   const [loadById] = await sql<[Load]>`
     SELECT * FROM loads WHERE id = ${loadId};
   `;
-  console.log('verifsonpere');
+
   return loadById && camelcaseKeys(loadById);
 }
 
 export async function deleteLoad(loadId: number) {
-  const deletedLoad =
+  const [load] =
     //  [load]
     await sql<[Load]>`
     DELETE FROM
@@ -242,7 +241,7 @@ export async function deleteLoad(loadId: number) {
     RETURNING
   *
   `;
-  return deletedLoad.map((load) => camelcaseKeys(load));
+  return load && camelcaseKeys(load);
   // return load && camelcaseKeys(load)
 }
 
@@ -303,7 +302,7 @@ export async function getAllInfoFromLoadById(loadId: number) {
 // ADDRESS FUNCTION \\
 
 export type Address = {
-  addressId: number;
+  id: number;
   companyName: string;
   streetInfo: string;
   zipcode: string;
@@ -346,6 +345,14 @@ export async function getAdressById(addressId: number) {
 `;
   return address && camelcaseKeys(address);
 }
+
+// export async function getLoadById(loadId: number) {
+//   const [loadById] = await sql<[Load]>`
+//     SELECT * FROM loads WHERE id = ${loadId};
+//   `;
+
+//   return loadById && camelcaseKeys(loadById);
+// }
 
 // TRUCK FUNCTION \\
 

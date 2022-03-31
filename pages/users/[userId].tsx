@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Layout from '../../components/Layout';
 import {
   getUserById,
-  getValidSessionByToken,
+  // getValidSessionByToken,
   User,
   Session,
 } from '../../util/database';

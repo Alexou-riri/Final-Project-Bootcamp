@@ -1,25 +1,39 @@
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import Layout from '../../components/Layout';
-import Head from 'next/head';
 import {
-  getUserById,
+  // getUserById,
   getUserByValidSessionToken,
   getValidSessionByToken,
+  // getAllAddresses,
+  getLoads,
   User,
   Load,
-  Truck,
   Address,
+  Truck,
+  // getAllTrucks,
+  // getLoadById,
 } from '../../util/database';
-import { DeleteLoadResponseBody } from '../api/newLoad';
-import styles from './dashboard.module.css';
+// import { DeleteLoadResponseBody } from '../api/newLoad';
+// import styles from './dashboard.module.css';
 import { css } from '@emotion/react';
 import { useState } from 'react';
-import DatePicker from 'react-datepicker';
+
 import 'react-datepicker/dist/react-datepicker.css';
 import Link from 'next/link';
-import { AiOutlineCalendar } from 'react-icons/ai';
-import { FaWarehouse, FaPallet } from 'react-icons/fa';
-import { BsTruck } from 'react-icons/bs';
+// import { AiOutlineCalendar } from 'react-icons/ai';
+// import { FaWarehouse, FaPallet } from 'react-icons/fa';
+// import { BsTruck } from 'react-icons/bs';
+import router from 'next/router';
+import moment from 'moment';
+moment().format();
+import format from 'date-fns/format';
+import Head from 'next/head';
+
+const loadPreview = css`
+  display: flex;
+  flex-direction: row;
+  border: 1px solid red;
+`;
 
 // type Props = {
 //   user: User;
@@ -33,6 +47,7 @@ type Props = {
   errors?: string;
   truck: Truck;
   address: Address;
+  loads: Load;
 };
 
 type CreateLoadResponseBody =
@@ -48,15 +63,28 @@ export default function AllLoads(props: Props) {
   const [offloadingDate, setOffloadingDate] = useState(new Date());
   const [loadingAddress, setLoadingAddress] = useState('');
   const [offloadingAddress, setOffloadingAddress] = useState('');
-  const [companyName1, setCompanyName1] = useState('');
-  const [companyName2, setCompanyName2] = useState('');
+  const [loadingCompanyName, setLoadingCompanyName] = useState('');
+  const [offloadingCompanyName, setOfflloadingCompanyName] = useState('');
   const [reference, setReference] = useState('');
   const [truckPlate, setTruckPlate] = useState('');
   const [trailerPlate, setTrailerPlate] = useState('');
-  const [palletNumber, setPalletNumber] = useState('');
+  const [palletQuantityGiven, setPalletQuantityGiven] = useState<Number>(0);
+  const [palletQuantityrReceived, setPalletQuantityReceived] = useState('');
+  const [documentId, setDocumentId] = useState('');
 
+  const [loadingStreetInfo, setLoadingStreetInfo] = useState('');
+  const [loadingZipcode, setLoadingZipcode] = useState('');
+  const [loadingCountry, setLoadingCountry] = useState('');
+  const [loadingCity, setLoadingCity] = useState('');
+  const [offloadingCity, setOffloadingCity] = useState('');
+
+  const [offlloadingStreetInfo, setOffloadingStreetInfo] = useState('');
+  const [offloadingZipcode, setOffloadingZipcode] = useState('');
+  const [offloadingCountry, setOffloadingCountry] = useState('');
   const [errors, setErrors] = useState<Errors | undefined>([]);
-  const [loadList, setLoadList] = useState<Load[]>(props.loadsFromDatabase);
+  const [loadList, setLoadList] = useState([]);
+  const [addressList, setAddressList] = useState<Address[]>([]);
+  const [truckList, setTruckList] = useState<Truck[]>([]);
 
   if ('error' in props) {
     return (
@@ -75,20 +103,16 @@ export default function AllLoads(props: Props) {
     <Layout>
       <h1>All loads done in the past</h1>
       {/* map all loads */}
-      {props.loadsFromDatabase.map((load) => {
+      {props.loads.map((load) => {
+        // console.log(props.load, 'iiiiiiiiii');
+
         return (
-          <div>
-            <p>Loading Place: </p>
-            <p>Offloading Place</p>
-            <p>Loading date: {load.loadingDate}</p>
-            <p>Offloading Date: {load.offloadingDate}</p>
-            <p>Reference: {load.reference}</p>
-            <p>Pallet given: {load.palletQuantityGiven}</p>
-            <p>Pallet received: {load.palletQuantityReceived}</p>
-            <p>Truck Plate:</p>
-            <p>Trailer Plate</p>
-            <p></p>
-          </div>
+          <>
+            <div key={load.id} css={loadPreview}>
+              <div>{load.reference} ref</div>
+              <div>{load.palletQuantityGiven} pal</div>
+            </div>
+          </>
         );
       })}
       );
@@ -105,6 +129,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const user = await getUserByValidSessionToken(token);
   const sessionToken = context.req.cookies.sessionToken;
   const session = await getValidSessionByToken(sessionToken);
+  const loadsFromDatabase = await getLoads();
+  // loadsFromDatabase est un array de objet moche, mais typeof dit object\\
+  const stringifyLoadsFromDatabase = JSON.stringify(loadsFromDatabase);
+  // stringifyLoadsfromDB arra de object mais typeof string\\
+  const loads = JSON.parse(stringifyLoadsFromDatabase);
+  // loads array beau mais typeof objet\\
 
   if (!session) {
     return {
@@ -117,7 +147,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (user) {
     console.log(user);
     return {
-      props: { user: user },
+      props: { user: user, load: stringifyLoadsFromDatabase, loads: loads },
     };
   }
   // 3. otherwise return to login page

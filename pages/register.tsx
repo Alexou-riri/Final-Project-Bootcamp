@@ -4,7 +4,7 @@ import Layout from '../components/Layout';
 import Head from 'next/head';
 import Router, { useRouter } from 'next/router';
 import { useState } from 'react';
-import { loadDefaultErrorComponents } from 'next/dist/server/load-components';
+
 import { getValidSessionByToken } from '../util/database';
 import { GetServerSidePropsContext } from 'next';
 import { RegisterResponseBody } from './api/register';

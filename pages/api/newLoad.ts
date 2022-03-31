@@ -7,8 +7,8 @@ import {
   createTruck,
   deleteLoad,
   getLoads,
-  getLoadById,
-  updateLoadById,
+  // getLoadById,
+  // updateLoadById,
   Load,
   Truck,
 } from '../../util/database';
@@ -151,7 +151,8 @@ export type DeleteLoadResponseBody = {
 };
 
 type LoadsRequestBody = {
-  load: Omit<Load, 'id'>;
+  // load: Omit<Load, 'id'>;
+  load: Load;
   address: Address;
   truck: Truck;
 };
@@ -174,10 +175,13 @@ export default async function createLoadHandler(
   request: LoadsNextApiRequest,
   response: NextApiResponse<LoadsResponseBody>,
 ) {
-  console.log(request.query);
-  console.log(request.method);
+  console.log('query', request.query.load);
+  // console.log(request.method);
   // console.log(request.body);
   // console.log('oskour');
+  // console.log('is this the idddd', request.query.load.loadId);
+
+  // const loadId = Number(request.query.load.loadId);
 
   if (request.method === 'GET') {
     const loads = await getLoads();
@@ -258,19 +262,15 @@ export default async function createLoadHandler(
     });
     return;
   } else if (request.method === 'DELETE') {
+    console.log('fgdgfd', request.body);
     // if the method is DELETE delete the load matching the id and user_id
-    if (
-      typeof request.body.loadId !== 'number' ||
-      !request.body.loadId ||
-      typeof request.body.userId !== 'string' ||
-      !request.body.userId
-    ) {
-      // 400 bad request
-      response.status(400).json({
-        error: [{ message: 'id or name not provided' }],
-      });
-      return; // Important, prevents error for multiple requests
-    }
+    // if (typeof request.body.load.id !== 'number' || !request.body.load.id) {
+    //   // 400 bad request
+    //   response.status(400).json({
+    //     error: [{ message: 'id or name not provided' }],
+    //   });
+    //   return; // Important, prevents error for multiple requests
+    // }
 
     const deletedLoad = await deleteLoad(request.body.loadId);
 
@@ -278,8 +278,8 @@ export default async function createLoadHandler(
       response.status(404).json({ error: [{ message: 'Name not provided' }] });
       return;
     }
-    // response.status(201).json({ load: deletedLoad});
-    // return;
+    response.status(201).json({ load: deletedLoad });
+    return;
   }
   response.status(405).json({ error: [{ message: 'Method not supported' }] });
 }

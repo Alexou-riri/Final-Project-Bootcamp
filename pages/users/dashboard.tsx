@@ -1,7 +1,7 @@
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import Layout from '../../components/Layout';
 import {
-  getUserById,
+  // getUserById,
   getUserByValidSessionToken,
   getValidSessionByToken,
   getAllAddresses,
@@ -10,24 +10,25 @@ import {
   Load,
   Address,
   Truck,
-  getAllTrucks,
-  getLoadById,
+  // getAllTrucks,
+  // getLoadById,
+  // deleteLoad,
 } from '../../util/database';
-import { DeleteLoadResponseBody } from '../api/newLoad';
+import { deleteLoad } from '../api/newLoad';
 import styles from './dashboard.module.css';
 import { css } from '@emotion/react';
 import { useState } from 'react';
-import DatePicker from 'react-datepicker';
+// import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Link from 'next/link';
 import { AiOutlineCalendar } from 'react-icons/ai';
 import { FaWarehouse, FaPallet } from 'react-icons/fa';
 import { BsTruck } from 'react-icons/bs';
 import router from 'next/router';
-import moment from 'moment';
-moment().format();
-import format from 'date-fns/format';
-import { stringify } from 'querystring';
+// import moment from 'moment';
+// moment().format();
+// import format from 'date-fns/format';
+// import { stringify } from 'querystring';
 
 const loadPreview = css`
   display: flex;
@@ -47,9 +48,10 @@ type Props = {
   loadsFromDatabase: Load[];
   load: Load;
   errors?: string;
-  address: Address;
+  // address: Address;
   truck: Truck;
   loads: Load;
+  addresses: Address[];
 };
 
 type CreateLoadResponseBody =
@@ -91,7 +93,7 @@ export default function ProtectedDashboard(props: Props) {
   const [offloadingZipcode, setOffloadingZipcode] = useState('');
   const [offloadingCountry, setOffloadingCountry] = useState('');
   const [errors, setErrors] = useState<Errors | undefined>([]);
-  const [loadList, setLoadList] = useState([]);
+  const [loadList, setLoadList] = useState<Load[]>(props.loads);
   const [addressList, setAddressList] = useState<Address[]>([]);
   const [truckList, setTruckList] = useState<Truck[]>([]);
 
@@ -128,25 +130,80 @@ export default function ProtectedDashboard(props: Props) {
 
   //   setLoadList(newLoadList);
   // }
+
+  async function deleteLoad(id: number) {
+    const deleteResponse = await fetch(`/api/newLoad`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        loadId: id,
+        // loads: props.load,
+      }),
+    });
+    const deleteResponseBody =
+      (await deleteResponse.json()) as DeleteLoadResponseBody;
+
+    if ('error' in deleteResponseBody) {
+      setErrors(deleteResponseBody.errors);
+      return;
+    }
+    console.log('fproutprout', deleteResponseBody);
+
+    const newLoadList = loadList.filter((load) => {
+      return deleteResponseBody.load.id !== load.id;
+    });
+
+    setLoadList(newLoadList);
+  }
   // console.log(JSON.parse(props.load));
+  console.log('addddd', props.addresses);
   return (
     <Layout {...props.userObject}>
       <h1> Dashboard of {props.user.company} </h1>
-
+      {/* <div>{props.load}</div> */}
       <h2>Here are the last loads entered:</h2>
 
-      {props.loads.map((load) => {
-        console.log(props.load, 'iiiiiiiiii');
+      <div>
+        {loadList.map((load) => {
+          // console.log(props.loads, 'iiiiiiiiii');
+          // for (let i = 0; i <= 5; i++) {
+          return (
+            <>
+              <div key={load.id} css={loadPreview}>
+                <div>{load.loadingDate} Loading date</div>
+                <div>{load.reference} ref</div>
+                <div>{load.palletQuantityGiven} pal</div>
+                <div>
+                  {props.addresses.map((address) => {
+                    return (
+                      load.loadingPlaceId === address.id && (
+                        <div key={address.id}>
+                          Cie Name :{address.companyName}
+                        </div>
+                      )
+                    );
+                  })}
+                  {props.addresses.map((address) => {
+                    return (
+                      load.offloadingPlaceId === address.id && (
+                        <div key={address.id}>
+                          Cie Name22 :{address.companyName}
+                        </div>
+                      )
+                    );
+                  })}
+                </div>
 
-        return (
-          <>
-            <div key={load.id} css={loadPreview}>
-              <div>{load.reference} ref</div>
-              <div>{load.palletQuantityGiven} pal</div>
-            </div>
-          </>
-        );
-      })}
+                <button onClick={() => deleteLoad(load.id).catch(() => {})}>
+                  Delete the load
+                </button>
+              </div>
+            </>
+          );
+        })}
+      </div>
       {/* {props.loadsFromDatabase.map((load: Load) => {
         return (
           <div>
@@ -170,14 +227,12 @@ export default function ProtectedDashboard(props: Props) {
             </div> */}
       {/* );
       })} */}
-      <div>
-        <p>{props.load}</p>
-      </div>
+      <div>{/* <p>{props.load}</p> */}</div>
       <form
         className={styles.form}
         onSubmit={async (event) => {
           event.preventDefault();
-          console.log('blablabla');
+          // console.log('blablabla');
 
           const createLoadResponse = await fetch(
             `http://localhost:3000/api/newLoad`,
@@ -475,13 +530,15 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   //   return { [key]: loads[key as keyof typeof loads] };
   // });
 
-  console.log(typeof loads, 'ntm');
+  // console.log(typeof loads, 'ntm');
 
   // const loads = await getLoadById(loadId);
 
   // console.log(loads, 'iii');
   // const truck = await getAllTrucks();
-  // const address = await getAllAddresses();
+  const addresses = await getAllAddresses();
+  console.log('adressedsamere', addresses);
+
   // To avoid issue with serializing object
   // const loadingDateToString = JSON.parse(JSON.stringify(loadingDate));
   // const loadingDate = JSON.parse(JSON.stringify(date));
@@ -515,7 +572,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         // loads: loads,
 
         // truck: truck,
-        // address: address,
+        addresses: addresses,
       },
     };
   }

@@ -2,8 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import bcrypt from 'bcrypt';
 import {
   createSession,
-  createUser,
-  getUserByUsername,
+  // createUser,
+  // getUserByUsername,
   getUserWithPasswordHashByUsername,
   User,
 } from '../../util/database';

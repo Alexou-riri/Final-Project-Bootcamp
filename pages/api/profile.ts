@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import {
-  getUserById,
+  // getUserById,
   getUserByValidSessionToken,
-  getValidSessionByToken,
+  // getValidSessionByToken,
 } from '../../util/database';
 
 export default async function handler(

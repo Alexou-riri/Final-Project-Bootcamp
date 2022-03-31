@@ -12,13 +12,13 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useState } from 'react';
 import { AiFillPropertySafety } from 'react-icons/ai';
-import { Props } from '../login';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import {
   Address,
-  getAdressById,
   getLoadById,
-  getTruckById,
+  // getAdressById,
+  // getLoadById,
+  // getTruckById,
   Load,
   Truck,
   User,
@@ -41,8 +41,8 @@ type Props = {
 };
 
 export default function SingleLoad(props: Props) {
-  const [loadingDate, setLoadingDate] = useState(new Date());
-  const [offloadingDate, setOffloadingDate] = useState(new Date());
+  // const [loadingDate, setLoadingDate] = useState(new Date());
+  // const [offloadingDate, setOffloadingDate] = useState(new Date());
   const [loadingAddress, setLoadingAddress] = useState('');
   const [offloadingAddress, setOffloadingAddress] = useState('');
   const [companyName1, setCompanyName1] = useState('');
@@ -53,7 +53,7 @@ export default function SingleLoad(props: Props) {
   const [palletNumber, setPalletNumber] = useState('');
 
   const [errors, setErrors] = useState();
-
+  console.log('HELP', props);
   if (!props.load) {
     // TODO: You would probably want to also send
     // a 404 HTTP status code (not found)
@@ -72,11 +72,12 @@ export default function SingleLoad(props: Props) {
   return (
     <Layout>
       <Head>
-        <title>{props.load.loadId}</title>
-        <meta name="description" content={`User #${props.load.loadId} is `} />
+        <title>blabla</title>
+        <meta name="description" content={`User # is `} />
       </Head>
 
-      <div>load id: {props.load.loadId}</div>
+      {/* <div>load id: {props.load.loadId}</div> */}
+
       <div>
         <Link href="/users/dashboard">
           <a>Back To thr dashboard -</a>
@@ -89,7 +90,14 @@ export default function SingleLoad(props: Props) {
 export async function getServerSideProps(
   context: GetServerSidePropsContext,
 ): Promise<GetServerSidePropsResult<{ user?: User; session?: Session }>> {
-  const loadId = context.query.loadId;
+  const loadId = context.query.loadId as string;
+
+  const load = await getLoadById(parseInt(loadId));
+  console.log('putin', load);
+  const loadById = JSON.stringify(load);
+  console.log('putin2', loadById);
+  const parsedLoadById = JSON.parse(loadById);
+  console.log('putin3', parsedLoadById);
   // const addressId = context.query.addressId;
   // const truckId = context.query.truckId;
 
@@ -112,13 +120,14 @@ export async function getServerSideProps(
   // const address = await getAdressById(parseInt(addressId));
   // const truck = await getTruckById(parseInt(truckId));
 
-  // if (!load) {
-  //   context.res.statusCode = 404;
-  //   return {
-  //     // notFound: true, // also works, but generates a generic error page
-  //     props: {},
-  //   };
-  // }
+  if (!load) {
+    return {
+      // notFound: true, // also works, but generates a generic error page
+      props: {
+        error: 'Try again ',
+      },
+    };
+  }
   // // 1. check if there is a token and is valid from the cookie
   // const token = context.req.cookies.sessionToken;
 
@@ -143,7 +152,7 @@ export async function getServerSideProps(
 
   return {
     props: {
-      // load,
+      load: parsedLoadById,
       // address: address,
       // truck: truck,
     },
