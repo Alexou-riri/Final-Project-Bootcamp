@@ -25,6 +25,7 @@ import { AiOutlineCalendar } from 'react-icons/ai';
 import { FaWarehouse, FaPallet } from 'react-icons/fa';
 import { BsTruck } from 'react-icons/bs';
 import router from 'next/router';
+import id from 'date-fns/esm/locale/id/index.js';
 // import moment from 'moment';
 // moment().format();
 // import format from 'date-fns/format';
@@ -72,16 +73,12 @@ type Errors = { message: string }[];
 export default function ProtectedDashboard(props: Props) {
   const [loadingDate, setLoadingDate] = useState(new Date());
   const [offloadingDate, setOffloadingDate] = useState(new Date());
-  const [loadingAddress, setLoadingAddress] = useState('');
-  const [offloadingAddress, setOffloadingAddress] = useState('');
   const [loadingCompanyName, setLoadingCompanyName] = useState('');
   const [offloadingCompanyName, setOfflloadingCompanyName] = useState('');
   const [reference, setReference] = useState('');
   const [truckPlate, setTruckPlate] = useState('');
   const [trailerPlate, setTrailerPlate] = useState('');
-  const [palletQuantityGiven, setPalletQuantityGiven] = useState<Number>(0);
-  const [palletQuantityrReceived, setPalletQuantityReceived] = useState('');
-  const [documentId, setDocumentId] = useState('');
+  const [palletQuantityGiven, setPalletQuantityGiven] = useState<Number>();
 
   const [loadingStreetInfo, setLoadingStreetInfo] = useState('');
   const [loadingZipcode, setLoadingZipcode] = useState('');
@@ -94,8 +91,10 @@ export default function ProtectedDashboard(props: Props) {
   const [offloadingCountry, setOffloadingCountry] = useState('');
   const [errors, setErrors] = useState<Errors | undefined>([]);
   const [loadList, setLoadList] = useState<Load[]>(props.loads);
-  const [addressList, setAddressList] = useState<Address[]>([]);
-  const [truckList, setTruckList] = useState<Truck[]>([]);
+  // const [addressList, setAddressList] = useState<Address[]>([]);
+  // const [truckList, setTruckList] = useState<Truck[]>([]);
+  const [alletReceivedOnEdit, setPalletReceivedOnEdit] = useState<Number>();
+  const [palletReceived, setPalletReceived] = useState<Number>();
 
   if ('error' in props) {
     return (
@@ -105,31 +104,29 @@ export default function ProtectedDashboard(props: Props) {
     );
   }
 
-  // async function deleteLoad(id: number) {
-  //   const deleteResponse = await fetch(`/api/newLoad`, {
-  //     method: 'DELETE',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       loadId: id,
-  //       load: props.load,
-  //     }),
-  //   });
-  //   const deleteLoadResponseBody =
-  //     (await deleteResponse.json()) as DeleteLoadResponseBody;
+  async function updateLoad(id: Number) {
+    const updateResponse = await fetch(`/api/pallets`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        loadId: id,
+        palletQuantityReceived: setPalletReceived,
+      }),
+    });
+    const updatedLoadPallet = await updateResponse.json();
 
-  //   if ('error' in deleteLoadResponseBody) {
-  //     setErrors(deleteLoadResponseBody.errors);
-  //     return;
-  //   }
+    const updatedLoad = loadList.map((load) => {
+      if (load.id === updatedLoadPallet.id) {
+        return updatedLoadPallet;
+      } else {
+        return load;
+      }
+    });
 
-  //   const newLoadList = loadList.filter((load) => {
-  //     return deleteLoadResponseBody.load.loadId !== load.loadId;
-  //   });
-
-  //   setLoadList(newLoadList);
-  // }
+    setLoadList(updatedLoad);
+  }
 
   async function deleteLoad(id: number) {
     const deleteResponse = await fetch(`/api/newLoad`, {
@@ -157,6 +154,7 @@ export default function ProtectedDashboard(props: Props) {
 
     setLoadList(newLoadList);
   }
+
   // console.log(JSON.parse(props.load));
   console.log('addddd', props.addresses);
   return (
@@ -210,17 +208,7 @@ export default function ProtectedDashboard(props: Props) {
           );
         })}
       </div>
-      {/* {props.loadsFromDatabase.map((load: Load) => {
-        return (
-          <div>
-
-              <button
-                onClick={() => {
-                  deleteLoad(load.loadId).catch(() => {});
-                }}
-              >
-                Dont follow this load anymore
-              </button>
+      {/*
             </div>
             {/* <div data-test-id="product-quantity">
               <button css={button} onClick={() => addProduct(props.house.id)}>

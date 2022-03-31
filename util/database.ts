@@ -269,8 +269,8 @@ export async function updateLoadById(
       reference = ${reference},
       truck_id = ${truckId},
       pallet_quantity_given = ${palletQuantityGiven},
-      pallet_quantity_received = ${palletQuantityReceived},
-       document_id = ${documentId},
+      pallet_quantity_received = ${palletQuantityReceived}
+      --  document_id = ${documentId},
 
     WHERE
       id = ${loadId}
@@ -346,18 +346,10 @@ export async function getAdressById(addressId: number) {
   return address && camelcaseKeys(address);
 }
 
-// export async function getLoadById(loadId: number) {
-//   const [loadById] = await sql<[Load]>`
-//     SELECT * FROM loads WHERE id = ${loadId};
-//   `;
-
-//   return loadById && camelcaseKeys(loadById);
-// }
-
 // TRUCK FUNCTION \\
 
 export type Truck = {
-  truckId: number;
+  id: number;
   truckPlate: string;
   trailerPlate: string;
 };
@@ -380,11 +372,11 @@ export async function getTruckById(truckId: number) {
 }
 
 export async function getAllTrucks() {
-  const truck = await sql<Truck[]>`
+  const trucks = await sql<Truck[]>`
   SELECT * FROM trucks ;
 
 `;
-  return truck.map((truck: Truck) => camelcaseKeys(truck));
+  return trucks.map((truck: Truck) => camelcaseKeys(truck));
 }
 
 // Pal Note \\

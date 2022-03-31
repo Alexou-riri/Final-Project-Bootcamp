@@ -15,6 +15,8 @@ import { AiFillPropertySafety } from 'react-icons/ai';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import {
   Address,
+  getAllAddresses,
+  getAllTrucks,
   getLoadById,
   // getAdressById,
   // getLoadById,
@@ -36,8 +38,9 @@ type Props = {
   loadsFromDatabase: Load[];
   load: Load;
   errors?: string;
-  address: Address;
-  truck: Truck;
+  // address: Address;
+  trucks: Truck[];
+  addresses: Address[];
 };
 
 export default function SingleLoad(props: Props) {
@@ -76,7 +79,54 @@ export default function SingleLoad(props: Props) {
         <meta name="description" content={`User # is `} />
       </Head>
 
-      {/* <div>load id: {props.load.loadId}</div> */}
+      <div>load id: {props.load.id}</div>
+
+      <div>
+        load loadingplace:
+        {props.addresses.map((address) => {
+          return (
+            props.load.loadingPlaceId === address.id && (
+              <p key={address.id}>Cie Name :{address.companyName}</p>
+            )
+          );
+        })}
+      </div>
+      <div>
+        load offloadingplace:
+        {props.addresses.map((address) => {
+          return (
+            props.load.offloadingPlaceId === address.id && (
+              <p key={address.id}>Cie Name :{address.companyName}</p>
+            )
+          );
+        })}
+      </div>
+      <div>load id: {props.load.loadingDate}</div>
+      <div>load id: {props.load.offloadingDate}</div>
+      <div>load id: {props.load.reference}</div>
+      <div>
+        {props.trucks.map((truck) => {
+          return (
+            props.load.truckId === truck.id && (
+              <p key={truck.id}>truck plate :{truck.truckPlate}</p>
+            )
+          );
+        })}
+      </div>
+      <div>
+        {props.trucks.map((truck) => {
+          return (
+            props.load.truckId === truck.id && (
+              <p key={truck.id}>trailer plate :{truck.trailerPlate}</p>
+            )
+          );
+        })}
+      </div>
+      <div>load id: {props.load.palletQuantityGiven}</div>
+      <div>load id: {props.load.palletQuantityReceived}</div>
+      <div>
+        <button>Add the pallet note</button>
+      </div>
 
       <div>
         <Link href="/users/dashboard">
@@ -99,7 +149,8 @@ export async function getServerSideProps(
   const parsedLoadById = JSON.parse(loadById);
   console.log('putin3', parsedLoadById);
   // const addressId = context.query.addressId;
-  // const truckId = context.query.truckId;
+  const trucks = await getAllTrucks();
+  const addresses = await getAllAddresses();
 
   // User id is not correct type
   if (!loadId || Array.isArray(loadId)) {
@@ -153,8 +204,8 @@ export async function getServerSideProps(
   return {
     props: {
       load: parsedLoadById,
-      // address: address,
-      // truck: truck,
+      addresses: addresses,
+      trucks: trucks,
     },
   };
 }

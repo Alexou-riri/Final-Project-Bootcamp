@@ -17,4 +17,5 @@ export default async function handler(request, reponse) {
     response.status(200).json(updatedLoadPallet);
     return;
   }
+  response.status(405).json({ error: 'Method not Allowed' });
 }
