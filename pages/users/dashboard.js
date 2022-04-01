@@ -33,6 +33,28 @@ const loadPreview = css`
   border: 1px solid red;
 `;
 
+const addALoad = css`
+  cursor: pointer;
+  border: 0;
+  border-radius: 4px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin: 0 10px;
+  width: 100px;
+  padding: 10px 30px;
+  box-shadow: 0 0 10px #00b8c2;
+  transition: 0.4s;
+  color: #00b8c2;
+  background-color: rgba(255, 255, 255, 1);
+  border: 1px solid #00b8c2;
+
+  &:hover {
+    color: white;
+    box-shadow: 0 0 20px #00b8c2;
+    background-color: #00b8c2;
+  }
+`;
+
 // import { CreateAddressResponseBody } from '../api/addresse';
 
 // type Props = {
@@ -567,7 +589,9 @@ export default function ProtectedDashboard(props) {
           </div>
         </form>
       ) : (
-        <button onClick={() => setIsOpen(true)}>ADD A LOAD</button>
+        <button css={addALoad} onClick={() => setIsOpen(true)}>
+          ADD A LOAD
+        </button>
       )}
 
       <Link href="/loads/all_loads">
