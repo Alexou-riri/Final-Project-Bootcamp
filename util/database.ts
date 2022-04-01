@@ -1,34 +1,36 @@
 import { config } from 'dotenv-safe';
 import postgres from 'postgres';
 import camelcaseKeys from 'camelcase-keys';
+import setPostgresDefaultsOnHeroku from './setPostgresDefaultsOnHeroku.js';
+
+setPostgresDefaultsOnHeroku();
 
 config();
 
-// declare module globalThis {
-//   let postgresSqlClient: ReturnType<typeof postgres> | undefined;
-// }
+declare module globalThis {
+  let postgresSqlClient: ReturnType<typeof postgres> | undefined;
+}
 // Connect only once to the database
 // https://github.com/vercel/next.js/issues/7811#issuecomment-715259370
-// function connectOneTimeToDatabase() {
-//   // let sql;
+function connectOneTimeToDatabase() {
+  let sql;
 
-//   // if(process.env.NODE_ENV === 'production' && process.env.DATABASE_URL) {
-//   //   sql =postgres();
-//   //   sql = postgres({ssl: { reject}})
-//   // }
-//   // connect only once to the databse
-//   if (!globalThis.postgresSqlClient) {
-//     globalThis.postgresSqlClient = postgres();
-//   }
-//   const sql = globalThis.postgresSqlClient;
+  if (process.env.NODE_ENV === 'production' && process.env.DATABASE_URL) {
+    sql = postgres();
+    sql = postgres({ ssl: { rejectUnauthorized: false } });
+  } else {
+    // connect only once to the databse
+    if (!globalThis.postgresSqlClient) {
+      globalThis.postgresSqlClient = postgres();
+    }
+    sql = globalThis.postgresSqlClient;
+  }
 
-//   return sql;
-// }
+  return sql;
+}
 
 // Connect to PostgreSQL
-// const sql = connectOneTimeToDatabase();
-
-const sql = postgres();
+const sql = connectOneTimeToDatabase();
 
 // USER FUNCTIONS  \\
 
