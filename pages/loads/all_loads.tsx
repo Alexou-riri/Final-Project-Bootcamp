@@ -59,32 +59,40 @@ type Errors = { message: string }[];
 // type Props = {loadsFromDatabase: Load[]}
 
 export default function AllLoads(props: Props) {
-  const [loadingDate, setLoadingDate] = useState(new Date());
-  const [offloadingDate, setOffloadingDate] = useState(new Date());
-  const [loadingAddress, setLoadingAddress] = useState('');
-  const [offloadingAddress, setOffloadingAddress] = useState('');
-  const [loadingCompanyName, setLoadingCompanyName] = useState('');
-  const [offloadingCompanyName, setOfflloadingCompanyName] = useState('');
+  // const [loadingDate, setLoadingDate] = useState(new Date());
+  // const [offloadingDate, setOffloadingDate] = useState(new Date());
+  // const [loadingAddress, setLoadingAddress] = useState('');
+  // const [offloadingAddress, setOffloadingAddress] = useState('');
+  // const [loadingCompanyName, setLoadingCompanyName] = useState('');
+  // const [offloadingCompanyName, setOfflloadingCompanyName] = useState('');
   const [reference, setReference] = useState('');
   const [truckPlate, setTruckPlate] = useState('');
   const [trailerPlate, setTrailerPlate] = useState('');
-  const [palletQuantityGiven, setPalletQuantityGiven] = useState<Number>(0);
-  const [palletQuantityrReceived, setPalletQuantityReceived] = useState('');
-  const [documentId, setDocumentId] = useState('');
+  const [palletQuantityGiven, setPalletQuantityGiven] = useState<Number>(
+    props.load.palletQuantityGiven,
+  );
+  const [palletQuantityrReceived, setPalletQuantityReceived] = useState(
+    props.load.palletQuantityReceived,
+  );
 
-  const [loadingStreetInfo, setLoadingStreetInfo] = useState('');
-  const [loadingZipcode, setLoadingZipcode] = useState('');
-  const [loadingCountry, setLoadingCountry] = useState('');
-  const [loadingCity, setLoadingCity] = useState('');
-  const [offloadingCity, setOffloadingCity] = useState('');
+  // const [loadingStreetInfo, setLoadingStreetInfo] = useState('');
+  // const [loadingZipcode, setLoadingZipcode] = useState('');
+  // const [loadingCountry, setLoadingCountry] = useState('');
+  // const [loadingCity, setLoadingCity] = useState('');
+  // const [offloadingCity, setOffloadingCity] = useState('');
 
-  const [offlloadingStreetInfo, setOffloadingStreetInfo] = useState('');
+  // const [offlloadingStreetInfo, setOffloadingStreetInfo] = useState('');
   const [offloadingZipcode, setOffloadingZipcode] = useState('');
   const [offloadingCountry, setOffloadingCountry] = useState('');
   const [errors, setErrors] = useState<Errors | undefined>([]);
   const [loadList, setLoadList] = useState([]);
   const [addressList, setAddressList] = useState<Address[]>([]);
   const [truckList, setTruckList] = useState<Truck[]>([]);
+  // const [difference , setDifference] = useState(props.load.palletQuantityGiven)
+
+  const difference =
+    Number(palletQuantityGiven) - Number(palletQuantityrReceived);
+  console.log('not a number??', props.load.palletQuantityGiven);
 
   if ('error' in props) {
     return (
@@ -110,7 +118,9 @@ export default function AllLoads(props: Props) {
           <>
             <div key={load.id} css={loadPreview}>
               <div>{load.reference} ref</div>
-              <div>{load.palletQuantityGiven} pal</div>
+              <div>Given :{load.palletQuantityGiven} </div>
+              <div>Received :{load.palletQuantityReceived} </div>
+              <div>Diff: {difference}</div>
             </div>
           </>
         );
@@ -135,7 +145,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   // stringifyLoadsfromDB arra de object mais typeof string\\
   const loads = JSON.parse(stringifyLoadsFromDatabase);
   // loads array beau mais typeof objet\\
-
+  console.log('not a number??', loads);
   if (!session) {
     return {
       props: {

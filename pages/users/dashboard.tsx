@@ -192,80 +192,82 @@ export default function ProtectedDashboard(props: Props) {
       <h2>Here are the last loads entered:</h2>
 
       <div>
-        {loadList.map((load) => {
-          const isDisabled = idEditLoadId !== load.id;
-          // console.log(props.loads, 'iiiiiiiiii');
-          // for (let i = 0; i <= 5; i++) {
-          return (
-            <>
-              <div key={load.id} css={loadPreview}>
-                <div>{load.loadingDate} Loading date</div>
-                <div>{load.reference} ref</div>
+        {loadList
+          .filter((load) => load.palletQuantityReceived !== null)
+          .map((load) => {
+            const isDisabled = idEditLoadId !== load.id;
+            // console.log(props.loads, 'iiiiiiiiii');
+            // for (let i = 0; i <= 5; i++) {
+            return (
+              <>
+                <div key={load.id} css={loadPreview}>
+                  <div>{load.loadingDate} Loading date</div>
+                  <div>{load.reference} ref</div>
 
-                <div>
-                  {props.addresses.map((address) => {
-                    return (
-                      load.loadingPlaceId === address.id && (
-                        <div key={address.id}>
-                          Cie Name :{address.companyName}
-                        </div>
-                      )
-                    );
-                  })}
-                  {props.addresses.map((address) => {
-                    return (
-                      load.offloadingPlaceId === address.id && (
-                        <div key={address.id}>
-                          Cie Name22 :{address.companyName}
-                        </div>
-                      )
-                    );
-                  })}
+                  <div>
+                    {props.addresses.map((address) => {
+                      return (
+                        load.loadingPlaceId === address.id && (
+                          <div key={address.id}>
+                            Cie Name :{address.companyName}
+                          </div>
+                        )
+                      );
+                    })}
+                    {props.addresses.map((address) => {
+                      return (
+                        load.offloadingPlaceId === address.id && (
+                          <div key={address.id}>
+                            Cie Name22 :{address.companyName}
+                          </div>
+                        )
+                      );
+                    })}
+                  </div>
+                  <div>pal nbr given{load.palletQuantityGiven} </div>
+                  <label>
+                    pal nbr back :
+                    <input
+                      type="number"
+                      onChange={(event) =>
+                        setPalletQuantityReceived(event.currentTarget.value)
+                      }
+                      value={
+                        isDisabled
+                          ? load.palletQuantityReceived
+                          : palletReceivedOnEdit
+                      }
+                      disabled={isDisabled}
+                    ></input>
+                  </label>
+                  {isDisabled ? (
+                    <button
+                      onClick={() => {
+                        setOnEditLoadId(load.id);
+                        setPalletReceivedOnEdit(load.palletQuantityReceived);
+                      }}
+                    >
+                      Add a quantity of pallet received from offloading place
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        updateLoad(load.id).catch(() => {});
+                        setOnEditLoadId(undefined);
+                      }}
+                    >
+                      Save
+                    </button>
+                  )}
+
+                  <button onClick={() => deleteLoad(load.id).catch(() => {})}>
+                    Delete the load
+                  </button>
+                  <Link href={`/loads/${load.id}`}>To the load's details</Link>
                 </div>
-                <div>pal nbr given{load.palletQuantityGiven} </div>
-                <label>
-                  pal nbr back :
-                  <input
-                    type="number"
-                    onChange={(event) =>
-                      setPalletQuantityReceived(event.currentTarget.value)
-                    }
-                    value={
-                      isDisabled
-                        ? load.palletQuantityReceived
-                        : palletReceivedOnEdit
-                    }
-                    disabled={isDisabled}
-                  ></input>
-                </label>
-                {isDisabled ? (
-                  <button
-                    onClick={() => {
-                      setOnEditLoadId(load.id);
-                      setPalletReceivedOnEdit(load.palletQuantityReceived);
-                    }}
-                  >
-                    Add a quantity of pallet received from offloading place
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => {
-                      updateLoad(load.id).catch(() => {});
-                      setOnEditLoadId(undefined);
-                    }}
-                  >
-                    Save
-                  </button>
-                )}
-
-                <button onClick={() => deleteLoad(load.id).catch(() => {})}>
-                  Delete the load
-                </button>
-                <Link href={`/loads/${load.id}`}>To the load's details</Link>
-              </div>
-            </>
-          );
-        })}
+              </>
+            );
+          })}
       </div>
       {/*
             </div>
@@ -348,6 +350,7 @@ export default function ProtectedDashboard(props: Props) {
             // setTruckPlate('');
             // setTrailerPlate('');
             // router.push(`../loads/${props.loadId}`);
+            setIsOpen(false);
             await router.push(`/loads/${createLoadResponseBody.load.id}`);
           }}
         >
@@ -536,6 +539,7 @@ export default function ProtectedDashboard(props: Props) {
               <FaPallet /> How many pallets should we give and thus get back at
               the end of the mission
               <input
+                required
                 type="number"
                 placeholder="33"
                 min="0"
@@ -553,6 +557,7 @@ export default function ProtectedDashboard(props: Props) {
           </div>
           <div className={styles.colsubmit}>
             <button type="submit">Submit</button>
+            <button onClick={() => setIsOpen(false)}>Close</button>
           </div>
         </form>
       ) : (
