@@ -55,6 +55,17 @@ const addALoad = css`
   }
 `;
 
+const link = css`
+  color: #00b8c2;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 0.15em;
+  /* text-shadow: 1px 1px 1px black; */
+  cursor: pointer;
+  display: inline-block;
+  padding: 15px 20px;
+`;
+
 // import { CreateAddressResponseBody } from '../api/addresse';
 
 // type Props = {
@@ -595,7 +606,7 @@ export default function ProtectedDashboard(props) {
       )}
 
       <Link href="/loads/all_loads">
-        <a>To All the loads</a>
+        <a css={link}>To All the loads</a>
       </Link>
     </Layout>
   );
