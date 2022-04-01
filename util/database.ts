@@ -16,7 +16,7 @@ function connectOneTimeToDatabase() {
   let sql;
 
   if (process.env.NODE_ENV === 'production' && process.env.DATABASE_URL) {
-    sql = postgres();
+    // sql = postgres();
     sql = postgres({ ssl: { rejectUnauthorized: false } });
   } else {
     // connect only once to the databse
