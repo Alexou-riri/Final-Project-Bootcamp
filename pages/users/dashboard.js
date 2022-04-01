@@ -6,15 +6,11 @@ import {
   getValidSessionByToken,
   getAllAddresses,
   getLoads,
-  User,
-  Load,
-  Address,
-  Truck,
+
   // getAllTrucks,
   // getLoadById,
   // deleteLoad,
 } from '../../util/database';
-import { deleteLoad } from '../api/newLoad';
 import styles from './dashboard.module.css';
 import { css } from '@emotion/react';
 import { useState } from 'react';
@@ -25,7 +21,7 @@ import { AiOutlineCalendar } from 'react-icons/ai';
 import { FaWarehouse, FaPallet } from 'react-icons/fa';
 import { BsTruck } from 'react-icons/bs';
 import router from 'next/router';
-import id from 'date-fns/esm/locale/id/index.js';
+
 // import moment from 'moment';
 // moment().format();
 // import format from 'date-fns/format';
@@ -42,37 +38,37 @@ const loadPreview = css`
 // type Props = {
 //   user: User;
 // };
-type Props = {
-  userObject?: User;
-  userCompany?: string;
-  user: User;
-  loadsFromDatabase: Load[];
-  load: Load;
-  errors?: string;
-  // address: Address;
-  truck: Truck;
-  loads: Load;
-  addresses: Address[];
-};
+// type Props = {
+//   userObject?: User;
+//   userCompany?: string;
+//   user: User;
+//   loadsFromDatabase: Load[];
+//   load: Load;
+//   errors?: string;
+//   // address: Address;
+//   truck: Truck;
+//   loads: Load[];
+//   addresses: Address[];
+// };
 
-type CreateLoadResponseBody =
-  | { errors: { message: string }[] }
-  | { load: Load };
+// type CreateLoadResponseBody =
+//   | { errors: { message: string }[] }
+//   | { load: Load };
 
-type CreateAddressResponseBody =
-  | { errors: { message: string }[] }
-  | { address: Address };
+// type CreateAddressResponseBody =
+//   | { errors: { message: string }[] }
+//   | { address: Address };
 
-type CreateTruckResponseBody =
-  | { errors: { message: string }[] }
-  | { truck: Truck };
+// type CreateTruckResponseBody =
+//   | { errors: { message: string }[] }
+//   | { truck: Truck };
 
-type Errors = { message: string }[];
-// type Props = {loadsFromDatabase: Load[]}
+// type Errors = { message: string }[];
+// // type Props = {loadsFromDatabase: Load[]}
 
-export default function ProtectedDashboard(props: Props) {
-  const [loadingDate, setLoadingDate] = useState(new Date());
-  const [offloadingDate, setOffloadingDate] = useState(new Date());
+export default function ProtectedDashboard(props) {
+  const [loadingDate, setLoadingDate] = useState('');
+  const [offloadingDate, setOffloadingDate] = useState('');
   const [loadingCompanyName, setLoadingCompanyName] = useState('');
   const [offloadingCompanyName, setOfflloadingCompanyName] = useState('');
   const [reference, setReference] = useState('');
@@ -88,22 +84,32 @@ export default function ProtectedDashboard(props: Props) {
   const [offlloadingStreetInfo, setOffloadingStreetInfo] = useState('');
   const [offloadingZipcode, setOffloadingZipcode] = useState('');
   const [offloadingCountry, setOffloadingCountry] = useState('');
-  const [errors, setErrors] = useState<Errors | undefined>([]);
-  const [loadList, setLoadList] = useState<Load[]>(props.loads);
+  const [errors, setErrors] = useState(
+    // <Errors | undefined>
+    [],
+  );
+  const [loadList, setLoadList] = useState(
+    // <Load[]>
+    props.loads,
+  );
   // const [addressList, setAddressList] = useState<Address[]>([]);
   // const [truckList, setTruckList] = useState<Truck[]>([]);
-  const [palletReceivedOnEdit, setPalletReceivedOnEdit] = useState<Number>();
-  const [palletQuantityReceived, setPalletQuantityReceived] = useState<Number>(
-    props.load.palletQuantityReceived,
+  const [palletReceivedOnEdit, setPalletReceivedOnEdit] = useState(
+    // <Number | null>
+    0,
   );
-  const [palletQuantityGiven, setPalletQuantityGiven] = useState<Number>(
+  const [palletQuantityReceived, setPalletQuantityReceived] = useState(
+    // <Number | null>
+    0,
+  );
+  const [palletQuantityGiven, setPalletQuantityGiven] = useState(
     props.load.palletQuantityGiven,
   );
   const [palletQuantityReceivedTotal, setPalletQuantityReceivedTotal] =
-    useState<Number>();
-  const [palletQuantityGivenTotal, setPalletQuantityGivenTotal] =
-    useState<Number>();
+    useState();
+  const [palletQuantityGivenTotal, setPalletQuantityGivenTotal] = useState();
   const [idEditLoadId, setOnEditLoadId] = useState();
+  // <Number | undefined>
   const [isOpen, setIsOpen] = useState(false);
 
   if ('error' in props) {
@@ -114,7 +120,7 @@ export default function ProtectedDashboard(props: Props) {
     );
   }
 
-  async function updateLoad(id: Number) {
+  async function updateLoad(id) {
     const updateResponse = await fetch(`/api/pallets`, {
       method: 'PUT',
       headers: {
@@ -138,7 +144,7 @@ export default function ProtectedDashboard(props: Props) {
     setLoadList(updatedLoad);
   }
 
-  async function deleteLoad(id: number) {
+  async function deleteLoad(id) {
     const deleteResponse = await fetch(`/api/newLoad`, {
       method: 'DELETE',
       headers: {
@@ -149,8 +155,8 @@ export default function ProtectedDashboard(props: Props) {
         // loads: props.load,
       }),
     });
-    const deleteResponseBody =
-      (await deleteResponse.json()) as DeleteLoadResponseBody;
+    const deleteResponseBody = await deleteResponse.json();
+    // as DeleteLoadResponseBody;
 
     if ('error' in deleteResponseBody) {
       setErrors(deleteResponseBody.errors);
@@ -170,7 +176,7 @@ export default function ProtectedDashboard(props: Props) {
   );
   const totalReceived = props.loads.reduce(
     (prevValue, currentValue) =>
-      prevValue + currentValue.palletQuantityReceived,
+      prevValue + Number(currentValue.palletQuantityReceived),
     0,
   );
 
@@ -206,7 +212,7 @@ export default function ProtectedDashboard(props: Props) {
           .map((load) => {
             const isDisabled = idEditLoadId !== load.id;
             // console.log(props.loads, 'iiiiiiiiii');
-            // for (let i = 0; i <= 5; i++) {
+
             return (
               <>
                 <div key={load.id} css={loadPreview}>
@@ -239,7 +245,9 @@ export default function ProtectedDashboard(props: Props) {
                     <input
                       type="number"
                       onChange={(event) =>
-                        setPalletQuantityReceived(event.currentTarget.value)
+                        setPalletQuantityReceived(
+                          parseInt(event.currentTarget.value),
+                        )
                       }
                       value={
                         isDisabled
@@ -278,19 +286,7 @@ export default function ProtectedDashboard(props: Props) {
             );
           })}
       </div>
-      {/*
-            </div>
-            {/* <div data-test-id="product-quantity">
-              <button css={button} onClick={() => addProduct(props.house.id)}>
-                Buy one more
-              </button>
-              <div css={qtte}>{currentHouseObject.items}</div>
-              <button css={button} onClick={() => removeProduct()}>
-                too many?
-              </button>
-            </div> */}
-      {/* );
-      })} */}
+
       <div>{/* <p>{props.load}</p> */}</div>
       {isOpen ? (
         <form
@@ -445,6 +441,7 @@ export default function ProtectedDashboard(props: Props) {
                 value={loadingDate}
                 onChange={(event) => {
                   setLoadingDate(event.currentTarget.value);
+
                   console.log(setLoadingDate, 'PUTIN');
                 }}
               />
@@ -580,7 +577,10 @@ export default function ProtectedDashboard(props: Props) {
   );
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getServerSideProps(
+  context,
+  // : GetServerSidePropsContext
+) {
   // 1. Get a user from the cookie sessionToken
   const token = context.req.cookies.sessionToken;
 

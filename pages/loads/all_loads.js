@@ -6,10 +6,6 @@ import {
   getValidSessionByToken,
   // getAllAddresses,
   getLoads,
-  User,
-  Load,
-  Address,
-  Truck,
   // deleteLoad,
   // getAllTrucks,
   // getLoadById,
@@ -24,10 +20,10 @@ import Link from 'next/link';
 // import { AiOutlineCalendar } from 'react-icons/ai';
 // import { FaWarehouse, FaPallet } from 'react-icons/fa';
 // import { BsTruck } from 'react-icons/bs';
-import router from 'next/router';
+
 import moment from 'moment';
 moment().format();
-import format from 'date-fns/format';
+
 import Head from 'next/head';
 
 const loadPreview = css`
@@ -39,27 +35,28 @@ const loadPreview = css`
 // type Props = {
 //   user: User;
 // };
-type Props = {
-  userObject?: User;
-  userCompany?: string;
-  user: User;
-  loadsFromDatabase: Load[];
-  load: Load;
-  errors?: string;
-  truck: Truck;
-  address: Address;
-  loads: Load;
-};
+// type Props = {
+//   userObject?: User,
+//   userCompany?: string,
+//   user: User,
+//   loadsFromDatabase: Load[],
+//   load: Load,
+//   errors?: string,
+//   truck: Truck,
+//   address: Address,
+//   loads: Load,
+//   palletQuantityReceived: Number,
+// };
 
-type CreateLoadResponseBody =
-  | { errors: { message: string }[] }
-  | { load: Load }
-  | { truck: Truck };
+// type CreateLoadResponseBody =
+//   | { errors: { message: string }[] }
+//   | { load: Load }
+//   | { truck: Truck };
 
-type Errors = { message: string }[];
+// type Errors = { message: string }[];
 // type Props = {loadsFromDatabase: Load[]}
 
-export default function AllLoads(props: Props) {
+export default function AllLoads(props) {
   // const [loadingDate, setLoadingDate] = useState(new Date());
   // const [offloadingDate, setOffloadingDate] = useState(new Date());
   // const [loadingAddress, setLoadingAddress] = useState('');
@@ -69,10 +66,10 @@ export default function AllLoads(props: Props) {
   const [reference, setReference] = useState('');
   const [truckPlate, setTruckPlate] = useState('');
   const [trailerPlate, setTrailerPlate] = useState('');
-  const [palletQuantityGiven, setPalletQuantityGiven] = useState<Number>(
+  const [palletQuantityGiven, setPalletQuantityGiven] = useState(
     props.load.palletQuantityGiven,
   );
-  const [palletQuantityrReceived, setPalletQuantityReceived] = useState(
+  const [palletQuantityReceived, setPalletQuantityReceived] = useState(
     props.load.palletQuantityReceived,
   );
 
@@ -85,10 +82,10 @@ export default function AllLoads(props: Props) {
   // const [offlloadingStreetInfo, setOffloadingStreetInfo] = useState('');
   const [offloadingZipcode, setOffloadingZipcode] = useState('');
   const [offloadingCountry, setOffloadingCountry] = useState('');
-  const [errors, setErrors] = useState<Errors | undefined>([]);
-  const [loadList, setLoadList] = useState<Load[]>(props.loads);
-  const [addressList, setAddressList] = useState<Address[]>([]);
-  const [truckList, setTruckList] = useState<Truck[]>([]);
+  const [errors, setErrors] = useState();
+  const [loadList, setLoadList] = useState(props.loads);
+  // const [addressList, setAddressList] = useState([]);
+  // const [truckList, setTruckList] = useState<Truck[]>([]);
   // const [difference , setDifference] = useState(props.load.palletQuantityGiven)
 
   const difference =
@@ -97,7 +94,7 @@ export default function AllLoads(props: Props) {
   console.log('not a number??', typeof difference);
   // type number\\
 
-  async function deleteLoad(id: number) {
+  async function deleteLoad(id) {
     const deleteResponse = await fetch(`/api/newLoad`, {
       method: 'DELETE',
       headers: {
@@ -108,8 +105,8 @@ export default function AllLoads(props: Props) {
         // loads: props.load,
       }),
     });
-    const deleteResponseBody =
-      (await deleteResponse.json()) as DeleteLoadResponseBody;
+    const deleteResponseBody = await deleteResponse.json();
+    // as DeleteLoadResponseBody;
 
     if ('error' in deleteResponseBody) {
       setErrors(deleteResponseBody.errors);
@@ -136,7 +133,7 @@ export default function AllLoads(props: Props) {
       </Layout>
     );
   }
-
+  console.log(palletQuantityReceived);
   return (
     <Layout>
       <h1>All loads done in the past</h1>
@@ -150,7 +147,14 @@ export default function AllLoads(props: Props) {
               <div>{load.reference} ref</div>
               <div>Given :{load.palletQuantityGiven} </div>
               <div>Received :{load.palletQuantityReceived} </div>
-              <div>Diff: {difference}</div>
+              <div>
+                Diff:{' '}
+                {load.palletQuantityReceived != load.palletQuantityGiven ? (
+                  <p>YEP</p>
+                ) : (
+                  <p>NOPE</p>
+                )}
+              </div>
               <button onClick={() => deleteLoad(load.id).catch(() => {})}>
                 Delete the load
               </button>
@@ -166,7 +170,10 @@ export default function AllLoads(props: Props) {
   );
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getServerSideProps(
+  context,
+  // : GetServerSidePropsContext
+) {
   // 1. Get a user from the cookie sessionToken
   const token = context.req.cookies.sessionToken;
   const user = await getUserByValidSessionToken(token);

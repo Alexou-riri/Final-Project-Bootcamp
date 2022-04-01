@@ -173,7 +173,7 @@ export async function getValidSessionByToken(token: string) {
 // LOAD FUNCTION \\
 
 export type Load = {
-  loadId: number;
+  id: number;
   loadingPlaceId: number;
   offloadingPlaceId: number;
   loadingDate: Date;

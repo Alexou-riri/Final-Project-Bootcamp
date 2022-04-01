@@ -8,42 +8,34 @@ import Layout from '../../components/Layout';
 //   User,
 //   Session,
 // } from '../../util/database';
-import DatePicker from 'react-datepicker';
+
 import 'react-datepicker/dist/react-datepicker.css';
 import { useState } from 'react';
-import { AiFillPropertySafety } from 'react-icons/ai';
-import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import {
-  Address,
+  // Address,
   getAllAddresses,
   getAllTrucks,
   getLoadById,
-  // getAdressById,
-  // getLoadById,
-  // getTruckById,
-  Load,
-  Truck,
-  User,
 } from '../../util/database';
-import { Session } from 'inspector';
+// import { Session } from 'inspector';
 import Head from 'next/head';
 import Link from 'next/link';
 import { FiTruck } from 'react-icons/fi';
 
 // type Errors = { message: string }[];
-type Props = {
-  userObject?: User;
-  userCompany?: string;
-  user: User;
-  loadsFromDatabase: Load[];
-  load: Load;
-  errors?: string;
-  // address: Address;
-  trucks: Truck[];
-  addresses: Address[];
-};
+// type Props = {
+//   userObject?: User;
+//   userCompany?: string;
+//   user: User;
+//   loadsFromDatabase: Load[];
+//   load: Load;
+//   errors: { message: string }[];
+//   // address: Address;
+//   trucks: Truck[];
+//   addresses: Address[];
+// };
 
-export default function SingleLoad(props: Props) {
+export default function SingleLoad(props) {
   // const [loadingDate, setLoadingDate] = useState(new Date());
   // const [offloadingDate, setOffloadingDate] = useState(new Date());
   const [loadingAddress, setLoadingAddress] = useState('');
@@ -137,10 +129,11 @@ export default function SingleLoad(props: Props) {
   );
 }
 
-export async function getServerSideProps(
-  context: GetServerSidePropsContext,
-): Promise<GetServerSidePropsResult<{ user?: User; session?: Session }>> {
-  const loadId = context.query.loadId as string;
+export async function getServerSideProps(context) {
+  // GetServerSidePropsContext,
+  // ): Promise<GetServerSidePropsResult<{ user?: User; session?: Session }>> {
+  const loadId = context.query.loadId;
+  // as string;
 
   const load = await getLoadById(parseInt(loadId));
   console.log('putin', load);
@@ -175,7 +168,7 @@ export async function getServerSideProps(
     return {
       // notFound: true, // also works, but generates a generic error page
       props: {
-        error: 'Try again ',
+        errors: 'Try again ',
       },
     };
   }

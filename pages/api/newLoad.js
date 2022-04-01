@@ -145,37 +145,39 @@ import {
 //   | { errors: { message: string }[] }
 //   | { load: Load; address: Address; truck: Truck };
 
-export type DeleteLoadResponseBody = {
-  load: Load;
-  errors?: { message: string }[];
-};
+// export type DeleteLoadResponseBody = {
+//   load: Load;
+//   errors?: { message: string }[];
+// };
 
-type LoadsRequestBody = {
-  // load: Omit<Load, 'id'>;
-  load: Load;
-  address: Address;
-  truck: Truck;
-};
+// type LoadsRequestBody = {
+//   // load: Omit<Load, 'id'>;
+//   load: Load;
+//   address: Address;
+//   truck: Truck;
+// };
 
-type LoadsNextApiRequest = Omit<NextApiRequest, 'body'> & {
-  body: LoadsRequestBody;
-};
+// type LoadsNextApiRequest = Omit<NextApiRequest, 'body'> & {
+//   body: LoadsRequestBody;
+// };
 
-export type LoadsResponseBodyGet = {
-  loads: Load[];
-};
+// export type LoadsResponseBodyGet = {
+//   loads: Load[];
+// };
 
-export type LoadsResponseBodyPost =
-  | { error: string }
-  | { load: Load; address: Address; truck: Truck };
+// export type LoadsResponseBodyPost =
+//   | { error: string }
+//   | { load: Load; address: Address; truck: Truck };
 
-type LoadsResponseBody = LoadsResponseBodyGet | LoadsResponseBodyPost;
+// type LoadsResponseBody = LoadsResponseBodyGet | LoadsResponseBodyPost;
 
 export default async function createLoadHandler(
-  request: LoadsNextApiRequest,
-  response: NextApiResponse<LoadsResponseBody>,
+  request,
+  // LoadsNextApiRequest,
+  response,
+  // NextApiResponse<LoadsResponseBody>,
 ) {
-  console.log('query', request.query.load);
+  // console.log('query', request.query.load);
   // console.log(request.method);
   // console.log(request.body);
   // console.log('oskour');
@@ -241,7 +243,7 @@ export default async function createLoadHandler(
       request.body.truck.truckPlate,
       request.body.truck.trailerPlate,
     );
-    console.log('receivfffff', typeof request.body.load.loadingDate);
+    // console.log('receivfffff', typeof request.body.load.loadingDate);
     const formLoad = await createNewLoad(
       loadingAddress.id,
       offloadingAddress.id,
