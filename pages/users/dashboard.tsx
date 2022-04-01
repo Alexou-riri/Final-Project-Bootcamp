@@ -78,7 +78,6 @@ export default function ProtectedDashboard(props: Props) {
   const [reference, setReference] = useState('');
   const [truckPlate, setTruckPlate] = useState('');
   const [trailerPlate, setTrailerPlate] = useState('');
-  const [palletQuantityGiven, setPalletQuantityGiven] = useState<Number>();
 
   const [loadingStreetInfo, setLoadingStreetInfo] = useState('');
   const [loadingZipcode, setLoadingZipcode] = useState('');
@@ -94,7 +93,15 @@ export default function ProtectedDashboard(props: Props) {
   // const [addressList, setAddressList] = useState<Address[]>([]);
   // const [truckList, setTruckList] = useState<Truck[]>([]);
   const [palletReceivedOnEdit, setPalletReceivedOnEdit] = useState<Number>();
-  const [palletQuantityReceived, setPalletQuantityReceived] =
+  const [palletQuantityReceived, setPalletQuantityReceived] = useState<Number>(
+    props.load.palletQuantityReceived,
+  );
+  const [palletQuantityGiven, setPalletQuantityGiven] = useState<Number>(
+    props.load.palletQuantityGiven,
+  );
+  const [palletQuantityReceivedTotal, setPalletQuantityReceivedTotal] =
+    useState<Number>();
+  const [palletQuantityGivenTotal, setPalletQuantityGivenTotal] =
     useState<Number>();
   const [idEditLoadId, setOnEditLoadId] = useState();
   const [isOpen, setIsOpen] = useState(false);
@@ -167,6 +174,8 @@ export default function ProtectedDashboard(props: Props) {
     0,
   );
 
+  console.log(typeof totalGiven, 'un nomvre ou pas??');
+
   // useEffect(() => {
   //   const getLoads = async () => {
   //     const response = await fetch('/api/animals');
@@ -193,7 +202,7 @@ export default function ProtectedDashboard(props: Props) {
 
       <div>
         {loadList
-          .filter((load) => load.palletQuantityReceived !== null)
+          .filter((load) => load.palletQuantityReceived == null)
           .map((load) => {
             const isDisabled = idEditLoadId !== load.id;
             // console.log(props.loads, 'iiiiiiiiii');

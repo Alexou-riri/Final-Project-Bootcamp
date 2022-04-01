@@ -10,6 +10,7 @@ import {
   Load,
   Address,
   Truck,
+  // deleteLoad,
   // getAllTrucks,
   // getLoadById,
 } from '../../util/database';
@@ -85,14 +86,43 @@ export default function AllLoads(props: Props) {
   const [offloadingZipcode, setOffloadingZipcode] = useState('');
   const [offloadingCountry, setOffloadingCountry] = useState('');
   const [errors, setErrors] = useState<Errors | undefined>([]);
-  const [loadList, setLoadList] = useState([]);
+  const [loadList, setLoadList] = useState<Load[]>(props.loads);
   const [addressList, setAddressList] = useState<Address[]>([]);
   const [truckList, setTruckList] = useState<Truck[]>([]);
   // const [difference , setDifference] = useState(props.load.palletQuantityGiven)
 
   const difference =
-    Number(palletQuantityGiven) - Number(palletQuantityrReceived);
-  console.log('not a number??', props.load.palletQuantityGiven);
+    Number(props.load.palletQuantityGiven) -
+    Number(props.load.palletQuantityReceived);
+  console.log('not a number??', typeof difference);
+  // type number\\
+
+  async function deleteLoad(id: number) {
+    const deleteResponse = await fetch(`/api/newLoad`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        loadId: id,
+        // loads: props.load,
+      }),
+    });
+    const deleteResponseBody =
+      (await deleteResponse.json()) as DeleteLoadResponseBody;
+
+    if ('error' in deleteResponseBody) {
+      setErrors(deleteResponseBody.errors);
+      return;
+    }
+    console.log('fproutprout', deleteResponseBody);
+
+    const newLoadList = loadList.filter((load) => {
+      return deleteResponseBody.load.id !== load.id;
+    });
+
+    setLoadList(newLoadList);
+  }
 
   if ('error' in props) {
     return (
@@ -111,7 +141,7 @@ export default function AllLoads(props: Props) {
     <Layout>
       <h1>All loads done in the past</h1>
       {/* map all loads */}
-      {props.loads.map((load) => {
+      {loadList.map((load) => {
         // console.log(props.load, 'iiiiiiiiii');
 
         return (
@@ -121,6 +151,9 @@ export default function AllLoads(props: Props) {
               <div>Given :{load.palletQuantityGiven} </div>
               <div>Received :{load.palletQuantityReceived} </div>
               <div>Diff: {difference}</div>
+              <button onClick={() => deleteLoad(load.id).catch(() => {})}>
+                Delete the load
+              </button>
             </div>
           </>
         );
