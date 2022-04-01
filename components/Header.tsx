@@ -6,6 +6,7 @@ import { User } from '../util/database';
 // import { getParsedCookie } from '../util/cookies';
 import { FiLogIn } from 'react-icons/fi';
 import { CgLogOut } from 'react-icons/cg';
+import { TiUser } from 'react-icons/ti';
 
 // import logoipsum from ' ./public/Images/logoipsum.svg';
 
@@ -130,8 +131,11 @@ const login = css`
 
 const username = css`
   display: flex;
-  border: 1px solid red;
+
+  align-items: right;
+  /* border: 1px solid red; */
   justify-content: flex-start;
+  cursor: pointer;
 `;
 
 // const imageLogo = css`
@@ -143,6 +147,7 @@ const username = css`
 type Props = {
   userObject?: User;
   userCompany?: string;
+  user: User;
 };
 
 export default function Header(props: Props) {
@@ -157,14 +162,7 @@ export default function Header(props: Props) {
   // useEffect(() => {
   //   setItemQuantity(productCart.length);
   // }, [productCart]);
-
-  // const [sumCartItems, setSumCartItems] = useState(0);
-  // const currentCookies = getParsedCookie('cart');
-  // console.log('current cookie', currentCookies);
-  // useEffect(() => {
-  //   if (currentCookies !== undefined) {
-  //   }
-  // });
+  // console.log(props.userObject.company, 'kicakica');
 
   return (
     <header css={headerStyles}>
@@ -179,8 +177,10 @@ export default function Header(props: Props) {
         <div>
           {props.userObject && (
             <div css={username}>
+              <TiUser size={40} />
+
               <Link href="../users/dashboard">
-                <a css={link}>{props.userCompany}</a>
+                <a css={link}>Account</a>
               </Link>
             </div>
           )}

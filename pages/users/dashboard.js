@@ -20,6 +20,8 @@ import Link from 'next/link';
 import { AiOutlineCalendar } from 'react-icons/ai';
 import { FaWarehouse, FaPallet } from 'react-icons/fa';
 import { BsTruck } from 'react-icons/bs';
+import { FiArrowRightCircle } from 'react-icons/fi';
+import { MdOutlineCancel } from 'react-icons/md';
 import router from 'next/router';
 
 // import moment from 'moment';
@@ -27,13 +29,18 @@ import router from 'next/router';
 // import format from 'date-fns/format';
 // import { stringify } from 'querystring';
 
-const loadPreview = css`
+const eachLoad = css`
   display: flex;
   flex-direction: row;
+  gap: 20px;
   border: 1px solid red;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  background-color: white;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
 `;
 
-const addALoad = css`
+const button = css`
   cursor: pointer;
   border: 0;
   border-radius: 4px;
@@ -42,7 +49,7 @@ const addALoad = css`
   margin: 0 10px;
   width: 100px;
   padding: 10px 30px;
-  box-shadow: 0 0 10px #00b8c2;
+  box-shadow: 0 0 4px #00b8c2;
   transition: 0.4s;
   color: #00b8c2;
   background-color: rgba(255, 255, 255, 1);
@@ -50,7 +57,29 @@ const addALoad = css`
 
   &:hover {
     color: white;
-    box-shadow: 0 0 20px #00b8c2;
+    box-shadow: 0 0 4px #00b8c2;
+    background-color: #00b8c2;
+  }
+`;
+
+const buttonLoad = css`
+  cursor: pointer;
+  border: 0;
+  border-radius: 4px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin: 0 10px;
+  width: 20%;
+  padding: 10px 30px;
+  box-shadow: 0 0 4px #00b8c2;
+  transition: 0.4s;
+  color: #00b8c2;
+  background-color: rgba(255, 255, 255, 1);
+  border: 1px solid #00b8c2;
+
+  &:hover {
+    color: white;
+    box-shadow: 0 0 4px #00b8c2;
     background-color: #00b8c2;
   }
 `;
@@ -62,8 +91,13 @@ const link = css`
   letter-spacing: 0.15em;
   /* text-shadow: 1px 1px 1px black; */
   cursor: pointer;
-  display: inline-block;
+  display: flex;
+  margin-top: 100px;
   padding: 15px 20px;
+`;
+
+const loadsToCheck = css`
+  margin-top: 30px;
 `;
 
 // import { CreateAddressResponseBody } from '../api/addresse';
@@ -144,6 +178,9 @@ export default function ProtectedDashboard(props) {
   const [idEditLoadId, setOnEditLoadId] = useState();
   // <Number | undefined>
   const [isOpen, setIsOpen] = useState(false);
+  const today = new Date();
+  const alertDate = today;
+  const alertText = ' You have a load to check today!';
 
   if ('error' in props) {
     return (
@@ -213,7 +250,7 @@ export default function ProtectedDashboard(props) {
     0,
   );
 
-  console.log(typeof totalGiven, 'un nomvre ou pas??');
+  // const normalDate = toISOString(props.loads.loadingDate);
 
   // useEffect(() => {
   //   const getLoads = async () => {
@@ -232,42 +269,52 @@ export default function ProtectedDashboard(props) {
       <h1> Dashboard of {props.user.company} </h1>
       {/* <div>{props.load}</div> */}
       <h2>Pallet count:</h2>
-      <p>
+      <div
+      // {totalReceived === totalGiven ?(
+
+      // )
+
+      // }
+      >
         {totalReceived}/{totalGiven}
-      </p>
+      </div>
 
       <div></div>
-      <h2>Here are the last loads entered:</h2>
+      <h2>Here are the loads to check</h2>
 
-      <div>
+      <div css={loadsToCheck}>
         {loadList
+
           .filter((load) => load.palletQuantityReceived == null)
           .map((load) => {
+            alertDate === offloadingDate && alert(alertText);
+
             const isDisabled = idEditLoadId !== load.id;
+            console.log(loadingDate, 'dateeee svp');
             // console.log(props.loads, 'iiiiiiiiii');
 
             return (
               <>
-                <div key={load.id} css={loadPreview}>
-                  <div>{load.loadingDate} Loading date</div>
-                  <div>{load.reference} ref</div>
+                <div key={load.id} css={eachLoad}>
+                  <div>
+                    {load.loadingDate}
+                    Loading date
+                  </div>
+                  <div>{load.offloadingDate} Offloading date</div>
 
                   <div>
                     {props.addresses.map((address) => {
                       return (
                         load.loadingPlaceId === address.id && (
-                          <div key={address.id}>
-                            Cie Name :{address.companyName}
-                          </div>
+                          <div key={address.id}>{address.companyName}</div>
                         )
                       );
                     })}
+                    <p>To</p>
                     {props.addresses.map((address) => {
                       return (
                         load.offloadingPlaceId === address.id && (
-                          <div key={address.id}>
-                            Cie Name22 :{address.companyName}
-                          </div>
+                          <div key={address.id}>{address.companyName}</div>
                         )
                       );
                     })}
@@ -292,6 +339,7 @@ export default function ProtectedDashboard(props) {
                   </label>
                   {isDisabled ? (
                     <button
+                      css={buttonLoad}
                       onClick={() => {
                         setOnEditLoadId(load.id);
                         setPalletReceivedOnEdit(load.palletQuantityReceived);
@@ -301,6 +349,7 @@ export default function ProtectedDashboard(props) {
                     </button>
                   ) : (
                     <button
+                      css={buttonLoad}
                       onClick={() => {
                         updateLoad(load.id).catch(() => {});
                         setOnEditLoadId(undefined);
@@ -310,7 +359,10 @@ export default function ProtectedDashboard(props) {
                     </button>
                   )}
 
-                  <button onClick={() => deleteLoad(load.id).catch(() => {})}>
+                  <button
+                    css={buttonLoad}
+                    onClick={() => deleteLoad(load.id).catch(() => {})}
+                  >
                     Delete the load
                   </button>
                   <Link href={`/loads/${load.id}`}>To the load's details</Link>
@@ -328,41 +380,38 @@ export default function ProtectedDashboard(props) {
             event.preventDefault();
             // console.log('blablabla');
 
-            const createLoadResponse = await fetch(
-              `http://localhost:3000/api/newLoad`,
-              {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  address: {
-                    companyName: loadingCompanyName,
-                    companyName2: offloadingCompanyName,
-                    streetInfo: loadingStreetInfo,
-                    streetInfo2: offlloadingStreetInfo,
-                    zipcode: loadingZipcode,
-                    zipcode2: offloadingZipcode,
-                    city: loadingCity,
-                    city2: offloadingCity,
-                    country: loadingCountry,
-                    country2: offloadingCountry,
-                  },
-                  truck: {
-                    truckPlate: truckPlate,
-                    trailerPlate: trailerPlate,
-                  },
-                  load: {
-                    loadingDate: loadingDate,
-                    offloadingDate: offloadingDate,
-                    reference: reference,
-                    palletQuantityGiven: Number(palletQuantityGiven),
-                    // palletQuantityrReceived: null,
-                    // documentId: null,
-                  },
-                }),
+            const createLoadResponse = await fetch(`/api/newLoad`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
               },
-            );
+              body: JSON.stringify({
+                address: {
+                  companyName: loadingCompanyName,
+                  companyName2: offloadingCompanyName,
+                  streetInfo: loadingStreetInfo,
+                  streetInfo2: offlloadingStreetInfo,
+                  zipcode: loadingZipcode,
+                  zipcode2: offloadingZipcode,
+                  city: loadingCity,
+                  city2: offloadingCity,
+                  country: loadingCountry,
+                  country2: offloadingCountry,
+                },
+                truck: {
+                  truckPlate: truckPlate,
+                  trailerPlate: trailerPlate,
+                },
+                load: {
+                  loadingDate: loadingDate,
+                  offloadingDate: offloadingDate,
+                  reference: reference,
+                  palletQuantityGiven: Number(palletQuantityGiven),
+                  // palletQuantityrReceived: null,
+                  // documentId: null,
+                },
+              }),
+            });
             // Number(palletQuantityGiven);
             console.log('prouttttt');
             const createLoadResponseBody = await createLoadResponse.json();
@@ -596,17 +645,22 @@ export default function ProtectedDashboard(props) {
           </div>
           <div className={styles.colsubmit}>
             <button type="submit">Submit</button>
-            <button onClick={() => setIsOpen(false)}>Close</button>
+            <button onClick={() => setIsOpen(false)}>
+              <MdOutlineCancel size={20} />
+            </button>
           </div>
         </form>
       ) : (
-        <button css={addALoad} onClick={() => setIsOpen(true)}>
+        <button css={button} onClick={() => setIsOpen(true)}>
           ADD A LOAD
         </button>
       )}
 
       <Link href="/loads/all_loads">
-        <a css={link}>To All the loads</a>
+        <a css={link}>
+          To All the loads {''}
+          <FiArrowRightCircle size={20} />
+        </a>
       </Link>
     </Layout>
   );

@@ -28,7 +28,7 @@ const feature3 = css`
   align-items: center;
   gap: 20vw;
   margin-top: 100px;
-  /* width: 100vp; */
+  width: 90vw;
 `;
 
 const feature2 = css`
@@ -38,7 +38,7 @@ const feature2 = css`
   align-items: center;
   gap: 20vw;
 
-  /* width: 60vp; */
+  width: 90vw;
   margin-top: 100px;
 `;
 

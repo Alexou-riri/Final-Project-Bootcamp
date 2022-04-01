@@ -4,7 +4,7 @@ import {
   // getUserById,
   getUserByValidSessionToken,
   getValidSessionByToken,
-  // getAllAddresses,
+  getAllAddresses,
   getLoads,
   // deleteLoad,
   // getAllTrucks,
@@ -25,11 +25,12 @@ import moment from 'moment';
 moment().format();
 
 import Head from 'next/head';
+import { FaAddressBook } from 'react-icons/fa';
 
 const loadPreview = css`
   display: flex;
   flex-direction: row;
-  border: 1px solid red;
+  border: 1px solid black;
 `;
 
 // type Props = {
@@ -144,15 +145,39 @@ export default function AllLoads(props) {
         return (
           <>
             <div key={load.id} css={loadPreview}>
-              <div>{load.reference} ref</div>
-              <div>Given :{load.palletQuantityGiven} </div>
-              <div>Received :{load.palletQuantityReceived} </div>
+              <div>{load.loadingDate}</div>
+              <br />
+              <div>{load.offloadingDate}</div>
+
               <div>
-                Diff:{' '}
+                {props.addresses.map((address) => {
+                  return (
+                    load.loadingPlaceId === address.id && (
+                      <div key={address.id}>
+                        Cie Name :{address.companyName}
+                      </div>
+                    )
+                  );
+                })}
+
+                {props.addresses.map((address) => {
+                  return (
+                    load.offloadingPlaceId === address.id && (
+                      <div key={address.id}>
+                        Cie Name22 :{address.companyName}
+                      </div>
+                    )
+                  );
+                })}
+              </div>
+
+              <div>Pal Given :{load.palletQuantityGiven} </div>
+              <div>Pal Received :{load.palletQuantityReceived} </div>
+              <div>
                 {load.palletQuantityReceived != load.palletQuantityGiven ? (
-                  <p>YEP</p>
+                  <p>NOPE ❌ </p>
                 ) : (
-                  <p>NOPE</p>
+                  <p>YEP ✅</p>
                 )}
               </div>
               <button onClick={() => deleteLoad(load.id).catch(() => {})}>
@@ -184,6 +209,7 @@ export async function getServerSideProps(
   const stringifyLoadsFromDatabase = JSON.stringify(loadsFromDatabase);
   // stringifyLoadsfromDB arra de object mais typeof string\\
   const loads = JSON.parse(stringifyLoadsFromDatabase);
+  const addresses = await getAllAddresses();
   // loads array beau mais typeof objet\\
   console.log('not a number??', loads);
   if (!session) {
@@ -197,7 +223,12 @@ export async function getServerSideProps(
   if (user) {
     console.log(user);
     return {
-      props: { user: user, load: stringifyLoadsFromDatabase, loads: loads },
+      props: {
+        user: user,
+        load: stringifyLoadsFromDatabase,
+        loads: loads,
+        addresses: addresses,
+      },
     };
   }
   // 3. otherwise return to login page
