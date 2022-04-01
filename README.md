@@ -37,3 +37,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 users :
 baseUrl= http://localhost:3000/api/register
+
+
+Database created with DrawSql :
+<img width="866" alt="Capture d’écran 2022-04-01 à 14 46 35" src="https://user-images.githubusercontent.com/81323830/161266565-228969ed-810b-43a9-b828-8c976ecb3f76.png">
+https://drawsql.app/upleveled-11/diagrams/final-project#
