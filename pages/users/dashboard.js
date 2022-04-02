@@ -662,6 +662,13 @@ export default function ProtectedDashboard(props) {
           <FiArrowRightCircle size={20} />
         </a>
       </Link>
+
+      <Link href="/logout">
+        <a css={link}>
+          Logout{''}
+          <FiArrowRightCircle size={20} />
+        </a>
+      </Link>
     </Layout>
   );
 }

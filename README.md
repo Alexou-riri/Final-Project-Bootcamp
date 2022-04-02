@@ -30,12 +30,12 @@ Management application for transport companies, which includes the following fun
 
 ## Technologies
 
-Database created with DrawSql :
-<img width="866" alt="Capture d’écran 2022-04-01 à 14 46 35" src="https://user-images.githubusercontent.com/81323830/161266565-228969ed-810b-43a9-b828-8c976ecb3f76.png">
-https://drawsql.app/upleveled-11/diagrams/final-project#
-
 - Next.js
 - React.js
 - PostgreSQL
 - Emotion
 - Typescript
+
+- Database created with DrawSql :
+  <img width="866" alt="Capture d’écran 2022-04-01 à 14 46 35" src="https://user-images.githubusercontent.com/81323830/161266565-228969ed-810b-43a9-b828-8c976ecb3f76.png">
+  https://drawsql.app/upleveled-11/diagrams/final-project#
