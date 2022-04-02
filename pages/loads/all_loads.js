@@ -30,7 +30,14 @@ import { FaAddressBook } from 'react-icons/fa';
 const loadPreview = css`
   display: flex;
   flex-direction: row;
-  border: 1px solid black;
+  gap: 20px;
+  border: 1px solid red;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  background-color: white;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  padding: 20px;
 `;
 
 // type Props = {

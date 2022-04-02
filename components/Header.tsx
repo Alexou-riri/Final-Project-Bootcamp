@@ -151,19 +151,6 @@ type Props = {
 };
 
 export default function Header(props: Props) {
-  // const cookieValue = getParsedCookie('cart') || [];
-  // console.log('CookieValue', cookieValue);
-  // const totalQuantity = cookieValue.reduce((previousValue, currentValue) => {
-  //   return previousValue + currentValue.items;
-  // }, 0);
-  // console.log('totalQuantity', totalQuantity);
-  // const productCart = getProductCart();
-  // const [itemQuantity, setItemQuantity] = useState(null);
-  // useEffect(() => {
-  //   setItemQuantity(productCart.length);
-  // }, [productCart]);
-  // console.log(props.userObject.company, 'kicakica');
-
   return (
     <header css={headerStyles}>
       <div>
@@ -208,7 +195,6 @@ export default function Header(props: Props) {
           </Link>
           {/* menu deroulant? */}
           <Link href="/contact">
-            {/* {cart.cartItems.length > 0 ? } */}
             {/* <a>Cart - {isNaN(totalQuantity) ? '0' : totalQuantity}</a> */}
             <a css={link}>Contact</a>
           </Link>

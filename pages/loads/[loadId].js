@@ -67,42 +67,55 @@ export default function SingleLoad(props) {
   return (
     <Layout>
       <Head>
-        <title>blabla</title>
+        <title>WAMP? #{props.load.id}</title>
         <meta name="description" content={`User # is `} />
       </Head>
 
-      <div>load id: {props.load.id}</div>
+      <h1>Detail of Load Number {props.load.id}</h1>
+      <div>
+        <div>
+          {props.addresses.map((address) => {
+            return (
+              props.load.loadingPlaceId === address.id && (
+                <>
+                  <p key={address.id}>{address.companyName}</p>
+                  <p key={address.id}>{address.streetInfo}</p>
+                  <p key={address.id}>{address.zipcode}</p>
+                  <p key={address.id}>{address.city}</p>
+                  <p key={address.id}>{address.country}</p>
+                </>
+              )
+            );
+          })}
+        </div>
+        <div>
+          {
+            (props.load.loadingDate = new Date(props.load.loadingDate)
+              .toISOString()
+              .split('T')[0])
+          }
+        </div>
+      </div>
+      <div>
+        <div>
+          {props.addresses.map((address) => {
+            return (
+              props.load.offloadingPlaceId === address.id && (
+                <p key={address.id}>Cie Name :{address.companyName}</p>
+              )
+            );
+          })}
+        </div>
+        <div>
+          {
+            (props.load.offloadingDate = new Date(props.load.offloadingDate)
+              .toISOString()
+              .split('T')[0])
+          }
+        </div>
+      </div>
 
-      <div>
-        load loadingplace:
-        {props.addresses.map((address) => {
-          return (
-            props.load.loadingPlaceId === address.id && (
-              <p key={address.id}>Cie Name :{address.companyName}</p>
-            )
-          );
-        })}
-      </div>
-      <div>
-        load offloadingplace:
-        {props.addresses.map((address) => {
-          return (
-            props.load.offloadingPlaceId === address.id && (
-              <p key={address.id}>Cie Name :{address.companyName}</p>
-            )
-          );
-        })}
-      </div>
-      <div>
-        load id:{' '}
-        {
-          (props.load.loadingDate = new Date(props.load.loadingDate)
-            .toISOString()
-            .split('T')[0])
-        }
-      </div>
-      <div>load id: {props.load.offloadingDate}</div>
-      <div>load id: {props.load.reference}</div>
+      <div> {props.load.reference}</div>
       <div>
         {props.trucks.map((truck) => {
           return (

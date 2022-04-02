@@ -38,6 +38,10 @@ const eachLoad = css`
   margin-bottom: 30px;
   background-color: white;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  padding: 20px;
+  font-family: 'Oxygen' Arial, sans-serif;
+  font-weight: 600;
 `;
 
 const button = css`
@@ -98,6 +102,29 @@ const link = css`
 
 const loadsToCheck = css`
   margin-top: 30px;
+  margin: 30px;
+`;
+
+const titel = css`
+  display: flex;
+  justify-content: center;
+`;
+
+const palcount = css`
+  display: flex;
+  justify-content: center;
+`;
+
+const count = css`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: auto;
+  justify-content: center;
+  border: 1px solid black;
+  border-radius: 50%;
+  height: 140px;
+  width: 140px;
 `;
 
 // import { CreateAddressResponseBody } from '../api/addresse';
@@ -281,22 +308,23 @@ export default function ProtectedDashboard(props) {
   // console.log('addddd', props.addresses);
   return (
     <Layout {...props.userObject}>
-      <h1> Dashboard of {props.user.company} </h1>
+      <h1 css={titel}> Dashboard of {props.user.company} </h1>
 
-      <h2>Pallet count:</h2>
+      <h2 css={palcount}>Pallet count:</h2>
       <div
-      // {totalReceived === totalGiven ?(
+        css={count}
+        // {totalReceived === totalGiven ?(
 
-      // )
+        // )
 
-      // }
+        // }
       >
         {totalReceived}/{totalGiven}
       </div>
 
       <div></div>
       <h2>Here are the loads to check</h2>
-
+      {/* <Link href={`/loads/${load.id}`}> */}
       <div css={loadsToCheck}>
         {loadList
 
@@ -322,7 +350,7 @@ export default function ProtectedDashboard(props) {
                     <div>You Have a load to check today !</div>
                   )}
                 </div>
-                ;
+
                 <div key={load.id} css={eachLoad}>
                   <div>
                     {
@@ -420,6 +448,7 @@ export default function ProtectedDashboard(props) {
             );
           })}
       </div>
+      {/* </Link> */}
 
       <div>{/* <p>{props.load}</p> */}</div>
       {isOpen ? (
