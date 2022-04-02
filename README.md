@@ -1,44 +1,41 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-## Getting Started
-
-First, run the development server:
+## Pallet Management - Where Are My Pallets?
 
 ```bash
-npm run dev
-# or
-yarn dev
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Deployed Version : https://pallet-management.herokuapp.com
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Information
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Some loads require pallet change, meaning the truck gives empty pallets at the loading place, in exchange for the goods, and then will receive (the same) amount of empty pallets at the offloading place, in exchange for the goods.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+But sometimes, the offloading place 'forget' to give them back, or the driver forget them as well. Or sometimes the client doesn't know the exact amount of pallets to change, so the carrier gives more pal than he should, and than he will get back from the warehouse.
 
-## Learn More
+This website will help you follow and check the loads with exchange. The history of the loads will enable you to see, which recurrent warehouses give problem.
 
-To learn more about Next.js, take a look at the following resources:
+## Functionalities
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Management application for transport companies, which includes the following functionalities :
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Register and Login as a company
+- Create through a form, a load with important information such as dates, address of warehouses, truck number, the number of pallets changed.
+- Check out the current loads, which appear on the dashboard
+- Add the number of pallets received. When added, the load disappear and goes in the archive.
+- See the amount of total pallets received, and given (in & out)
+- See all the loads done in one archive page
+- On the archive page, be able to see which warehouses give back the wrong amount of pallets.
 
-## Deploy on Vercel
+## Screenshot
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-## Api documentation
-
-users :
-baseUrl= http://localhost:3000/api/register
-
+## Technologies
 
 Database created with DrawSql :
 <img width="866" alt="Capture d’écran 2022-04-01 à 14 46 35" src="https://user-images.githubusercontent.com/81323830/161266565-228969ed-810b-43a9-b828-8c976ecb3f76.png">
 https://drawsql.app/upleveled-11/diagrams/final-project#
+
+- Next.js
+- React.js
+- PostgreSQL
+- Emotion
+- Typescript
