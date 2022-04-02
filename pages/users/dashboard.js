@@ -39,7 +39,7 @@ const eachLoad = css`
   background-color: white;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
-  padding: 20px;
+  padding: 40px;
   font-family: 'Oxygen' Arial, sans-serif;
   font-weight: 600;
 `;
@@ -102,7 +102,7 @@ const link = css`
 
 const loadsToCheck = css`
   margin-top: 30px;
-  margin: 30px;
+  margin: 60px;
 `;
 
 const titel = css`
@@ -125,6 +125,13 @@ const count = css`
   border-radius: 50%;
   height: 140px;
   width: 140px;
+  margin-bottom: 80px;
+`;
+
+const toCheck = css`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 130px;
 `;
 
 // import { CreateAddressResponseBody } from '../api/addresse';
@@ -279,9 +286,6 @@ export default function ProtectedDashboard(props) {
     0,
   );
 
-  const loadingDateFormat = new Date(props.load.loadingDate).toLocaleDateString(
-    'en-US',
-  );
   const offloadingDateFormat = props.load.reference;
   const offloadingFormat = offloadingDate;
 
@@ -304,8 +308,6 @@ export default function ProtectedDashboard(props) {
   //   getAnimals().catch(() => {});
   // }, []);
 
-  // console.log(JSON.parse(props.load));
-  // console.log('addddd', props.addresses);
   return (
     <Layout {...props.userObject}>
       <h1 css={titel}> Dashboard of {props.user.company} </h1>
@@ -323,132 +325,138 @@ export default function ProtectedDashboard(props) {
       </div>
 
       <div></div>
-      <h2>Here are the loads to check</h2>
-      {/* <Link href={`/loads/${load.id}`}> */}
-      <div css={loadsToCheck}>
-        {loadList
+      <h2 css={toCheck}>Here are the loads to check</h2>
+      <Link href={`/loads/${load.id}`}>
+        <div css={loadsToCheck}>
+          {loadList
 
-          .filter((load) => load.palletQuantityReceived == null)
-          .map((load) => {
-            // alertDate === offloadingDate && alert(alertText);
-            // alertDate ===
-            //   new Date(load.offloadingDate).toLocaleDateString('en-US') && (
-            //   <div>You Have a load to check today !</div>
-            // );
+            .filter((load) => load.palletQuantityReceived == null)
+            .map((load) => {
+              const isDisabled = idEditLoadId !== load.id;
+              console.log(loadingDate, 'dateeee svp');
+              // console.log(props.loads, 'iiiiiiiiii');
 
-            const isDisabled = idEditLoadId !== load.id;
-            console.log(loadingDate, 'dateeee svp');
-            // console.log(props.loads, 'iiiiiiiiii');
-
-            return (
-              <>
-                <div>
-                  {today ===
-                    new Date(load.offloadingDate)
-                      .toISOString()
-                      .split('T')[0] && (
-                    <div>You Have a load to check today !</div>
-                  )}
-                </div>
-
-                <div key={load.id} css={eachLoad}>
+              return (
+                <>
                   <div>
-                    {
-                      (load.loadingDate = new Date(load.loadingDate)
+                    {new Date().toISOString().split('T')[0] ===
+                      new Date(load.offloadingDate)
                         .toISOString()
-                        .split('T')[0])
-                    }
-                    Loading date
-                  </div>
-                  <div>
-                    {
-                      (load.offloadingDate = new Date(load.offloadingDate)
-                        .toISOString()
-                        .split('T')[0])
-                    }
-                    Offloading date
+                        .split('T')[0] && (
+                      <div>
+                        You Have a load to check today !
+                        {
+                          new Date(load.offloadingDate)
+                            .toISOString()
+                            .split('T')[0]
+                        }
+                      </div>
+                    )}
                   </div>
 
-                  <div>
-                    {props.addresses.map((address) => {
-                      return (
-                        load.loadingPlaceId === address.id && (
-                          <div key={address.id}>{address.companyName}</div>
-                        )
-                      );
-                    })}
-                    <p>To</p>
-                    {props.addresses.map((address) => {
-                      return (
-                        load.offloadingPlaceId === address.id && (
-                          <div key={address.id}>{address.companyName}</div>
-                        )
-                      );
-                    })}
-                  </div>
-                  <div>pal nbr given{load.palletQuantityGiven} </div>
-                  <label>
-                    pal nbr back :
-                    <input
-                      type="number"
-                      onChange={(event) =>
-                        setPalletQuantityReceived(
-                          parseInt(event.currentTarget.value),
-                        )
-                      }
-                      value={
-                        isDisabled
-                          ? load.palletQuantityReceived
-                          : palletReceivedOnEdit
-                      }
-                      disabled={isDisabled}
-                    ></input>
-                  </label>
-                  {isDisabled ? (
+                  <div key={load.id} css={eachLoad}>
+                    <div>
+                      {props.addresses.map((address) => {
+                        return (
+                          load.loadingPlaceId === address.id && (
+                            <>
+                              <div>
+                                {
+                                  (load.loadingDate = new Date(load.loadingDate)
+                                    .toISOString()
+                                    .split('T')[0])
+                                }
+                              </div>
+                              <div key={address.id}>{address.companyName}</div>
+                            </>
+                          )
+                        );
+                      })}
+                      <p>To</p>
+                      {props.addresses.map((address) => {
+                        return (
+                          load.offloadingPlaceId === address.id && (
+                            <>
+                              <div>
+                                {
+                                  (load.offloadingDate = new Date(
+                                    load.offloadingDate,
+                                  )
+                                    .toISOString()
+                                    .split('T')[0])
+                                }
+                              </div>
+                              <div key={address.id}>{address.companyName}</div>
+                            </>
+                          )
+                        );
+                      })}
+                    </div>
+                    <div>pal nbr given{load.palletQuantityGiven} </div>
+                    <label>
+                      pal nbr back :
+                      <input
+                        type="number"
+                        onChange={(event) =>
+                          setPalletQuantityReceived(
+                            parseInt(event.currentTarget.value),
+                          )
+                        }
+                        value={
+                          isDisabled
+                            ? load.palletQuantityReceived
+                            : palletReceivedOnEdit
+                        }
+                        disabled={isDisabled}
+                      ></input>
+                    </label>
+                    {isDisabled ? (
+                      <button
+                        css={buttonLoad}
+                        onClick={() => {
+                          setOnEditLoadId(load.id);
+                          setPalletReceivedOnEdit(load.palletQuantityReceived);
+                        }}
+                      >
+                        Add a quantity of pallet received from offloading place
+                      </button>
+                    ) : (
+                      <button
+                        css={buttonLoad}
+                        onClick={() => {
+                          updateLoad(load.id).catch(() => {});
+                          setOnEditLoadId(undefined);
+                        }}
+                      >
+                        Save
+                      </button>
+                    )}
+
                     <button
                       css={buttonLoad}
                       onClick={() => {
-                        setOnEditLoadId(load.id);
-                        setPalletReceivedOnEdit(load.palletQuantityReceived);
+                        if (
+                          window.confirm(
+                            'Are you sure you want to delete this load from your dahsboard?',
+                          )
+                        ) {
+                          deleteLoad(load.id).catch(() => {});
+                        }
+
+                        // deleteLoad(load.id).catch(() => {});
                       }}
                     >
-                      Add a quantity of pallet received from offloading place
+                      Delete the load
                     </button>
-                  ) : (
-                    <button
-                      css={buttonLoad}
-                      onClick={() => {
-                        updateLoad(load.id).catch(() => {});
-                        setOnEditLoadId(undefined);
-                      }}
-                    >
-                      Save
-                    </button>
-                  )}
-
-                  <button
-                    css={buttonLoad}
-                    onClick={() => {
-                      if (
-                        window.confirm(
-                          'Are you sure you want to delete this load from your dahsboard?',
-                        )
-                      ) {
-                        deleteLoad(load.id).catch(() => {});
-                      }
-
-                      // deleteLoad(load.id).catch(() => {});
-                    }}
-                  >
-                    Delete the load
-                  </button>
-                  <Link href={`/loads/${load.id}`}>To the load's details</Link>
-                </div>
-              </>
-            );
-          })}
-      </div>
-      {/* </Link> */}
+                    <Link href={`/loads/${load.id}`}>
+                      To the load's details
+                    </Link>
+                  </div>
+                </>
+              );
+            })}
+        </div>
+      </Link>
 
       <div>{/* <p>{props.load}</p> */}</div>
       {isOpen ? (
