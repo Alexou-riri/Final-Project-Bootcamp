@@ -178,9 +178,11 @@ export default function ProtectedDashboard(props) {
   const [idEditLoadId, setOnEditLoadId] = useState();
   // <Number | undefined>
   const [isOpen, setIsOpen] = useState(false);
-  const today = new Date();
+  const today = new Date().toISOString().split('T')[0];
   const alertDate = today;
   const alertText = ' You have a load to check today!';
+  console.log(today, 'today');
+  console.log(alertDate, 'alertdate');
 
   if ('error' in props) {
     return (
@@ -250,6 +252,19 @@ export default function ProtectedDashboard(props) {
     0,
   );
 
+  const loadingDateFormat = new Date(props.load.loadingDate).toLocaleDateString(
+    'en-US',
+  );
+  const offloadingDateFormat = props.load.reference;
+  const offloadingFormat = offloadingDate;
+
+  // const today = new Date().toLocaleDateString('en-US');
+
+  console.log(offloadingFormat, 'offloadateformat');
+
+  // const alert = window.alert('You have a load to check');
+  // setLoadingDate(dateFormat);
+
   // const normalDate = toISOString(props.loads.loadingDate);
 
   // useEffect(() => {
@@ -267,7 +282,7 @@ export default function ProtectedDashboard(props) {
   return (
     <Layout {...props.userObject}>
       <h1> Dashboard of {props.user.company} </h1>
-      {/* <div>{props.load}</div> */}
+
       <h2>Pallet count:</h2>
       <div
       // {totalReceived === totalGiven ?(
@@ -287,7 +302,11 @@ export default function ProtectedDashboard(props) {
 
           .filter((load) => load.palletQuantityReceived == null)
           .map((load) => {
-            alertDate === offloadingDate && alert(alertText);
+            // alertDate === offloadingDate && alert(alertText);
+            // alertDate ===
+            //   new Date(load.offloadingDate).toLocaleDateString('en-US') && (
+            //   <div>You Have a load to check today !</div>
+            // );
 
             const isDisabled = idEditLoadId !== load.id;
             console.log(loadingDate, 'dateeee svp');
@@ -295,12 +314,32 @@ export default function ProtectedDashboard(props) {
 
             return (
               <>
+                <div>
+                  {today ===
+                    new Date(load.offloadingDate)
+                      .toISOString()
+                      .split('T')[0] && (
+                    <div>You Have a load to check today !</div>
+                  )}
+                </div>
+                ;
                 <div key={load.id} css={eachLoad}>
                   <div>
-                    {load.loadingDate}
+                    {
+                      (load.loadingDate = new Date(load.loadingDate)
+                        .toISOString()
+                        .split('T')[0])
+                    }
                     Loading date
                   </div>
-                  <div>{load.offloadingDate} Offloading date</div>
+                  <div>
+                    {
+                      (load.offloadingDate = new Date(load.offloadingDate)
+                        .toISOString()
+                        .split('T')[0])
+                    }
+                    Offloading date
+                  </div>
 
                   <div>
                     {props.addresses.map((address) => {
@@ -361,7 +400,17 @@ export default function ProtectedDashboard(props) {
 
                   <button
                     css={buttonLoad}
-                    onClick={() => deleteLoad(load.id).catch(() => {})}
+                    onClick={() => {
+                      if (
+                        window.confirm(
+                          'Are you sure you want to delete this load from your dahsboard?',
+                        )
+                      ) {
+                        deleteLoad(load.id).catch(() => {});
+                      }
+
+                      // deleteLoad(load.id).catch(() => {});
+                    }}
                   >
                     Delete the load
                   </button>
@@ -521,11 +570,17 @@ export default function ProtectedDashboard(props) {
                 type="date"
                 placeholder="dd/mm/yyyy"
                 value={loadingDate}
+                min={new Date().toISOString().split('T')[0]}
                 onChange={(event) => {
                   setLoadingDate(event.currentTarget.value);
-
-                  console.log(setLoadingDate, 'PUTIN');
+                  console.log('date', event.currentTarget.value);
                 }}
+
+                // onChange={(event) => {
+                //   setLoadingDate(event.currentTarget.value);
+
+                //   console.log(setLoadingDate, 'PUTIN');
+                // }}
               />
             </label>
           </div>

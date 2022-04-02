@@ -93,7 +93,14 @@ export default function SingleLoad(props) {
           );
         })}
       </div>
-      <div>load id: {props.load.loadingDate}</div>
+      <div>
+        load id:{' '}
+        {
+          (props.load.loadingDate = new Date(props.load.loadingDate)
+            .toISOString()
+            .split('T')[0])
+        }
+      </div>
       <div>load id: {props.load.offloadingDate}</div>
       <div>load id: {props.load.reference}</div>
       <div>
