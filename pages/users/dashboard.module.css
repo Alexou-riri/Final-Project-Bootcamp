@@ -5,6 +5,21 @@ body {
   background: #ecf3f3;
 } */
 
+.labelForm {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+
+.input {
+  border-radius: 10px;
+  width: 60px;
+  height: 30px;
+  margin-left: 30px;
+  background-color: rgba(205, 244, 246, 0.307);
+}
+
 .form {
   display: block;
   margin: 30px;
@@ -85,6 +100,9 @@ body {
 form > div.colsubmit {
   text-align: center;
   padding: 20px;
+  display: flex;
+
+  justify-content: space-around;
 }
 
 form > div.colsubmit button {
@@ -94,16 +112,18 @@ form > div.colsubmit button {
   color: #fff;
   padding: 1em;
   display: block;
-  width: 100%;
+  width: 50%;
   cursor: pointer;
-  border: 0;
-  border-radius: 5px;
+  border: 10px;
+  border-radius: 10px;
   text-transform: uppercase;
+  border: 1px solid #00b8c2;
+  justify-content: space-around;
 }
 
 @media (min-width: 800px) {
   form > div.colsubmit button {
-    width: 30%;
+    width: 15%;
     margin: 0 auto;
   }
 }
