@@ -393,7 +393,7 @@ export default function ProtectedDashboard(props) {
   // }, []);
 
   return (
-    <Layout {...props.userObject}>
+    <Layout userObject={props.userObject}>
       <h1 css={titel}> Dashboard of {props.user.company} </h1>
 
       <h2 css={palcount}>Pallet count:</h2>

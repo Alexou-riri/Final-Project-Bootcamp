@@ -17,6 +17,7 @@ import { useState } from 'react';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import Link from 'next/link';
+import { FaWarehouse } from 'react-icons/fa';
 // import { AiOutlineCalendar } from 'react-icons/ai';
 // import { FaWarehouse, FaPallet } from 'react-icons/fa';
 // import { BsTruck } from 'react-icons/bs';
@@ -28,16 +29,39 @@ import Head from 'next/head';
 import { FaAddressBook } from 'react-icons/fa';
 
 const loadPreview = css`
+  margin-top: 30px;
+  margin: 100px;
+`;
+
+const eachLoad = css`
   display: flex;
   flex-direction: row;
   gap: 20px;
-  border: 1px solid red;
+  border: 1px solid #00b8c2;
   margin-top: 30px;
   margin-bottom: 30px;
   background-color: white;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
-  padding: 20px;
+  padding: 40px;
+  font-family: 'Oxygen' Arial, sans-serif;
+  font-weight: 600;
+  align-items: center;
+  justify-content: space-evenly;
+`;
+
+const pal = css`
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+  margin-left: 60px;
+  margin-right: 60px;
+  gap: 20px;
+`;
+
+const given = css`
+  margin-left: 50px;
 `;
 
 // type Props = {
@@ -145,55 +169,84 @@ export default function AllLoads(props) {
   return (
     <Layout>
       <h1>All loads done in the past</h1>
-      {/* map all loads */}
-      {loadList.map((load) => {
-        // console.log(props.load, 'iiiiiiiiii');
+      <div css={loadPreview}>
+        {loadList
+          .filter((load) => load.palletQuantityReceived !== null)
+          .map((load) => {
+            // console.log(props.load, 'iiiiiiiiii');
 
-        return (
-          <>
-            <div key={load.id} css={loadPreview}>
-              <div>{load.loadingDate}</div>
-              <br />
-              <div>{load.offloadingDate}</div>
+            return (
+              <>
+                <div key={load.id} css={eachLoad}>
+                  <div>
+                    {props.addresses.map((address) => {
+                      return (
+                        load.loadingPlaceId === address.id && (
+                          <>
+                            <div>
+                              {
+                                (load.loadingDate = new Date(load.loadingDate)
+                                  .toISOString()
+                                  .split('T')[0])
+                              }
+                            </div>
+                            <div key={address.id}>
+                              {' '}
+                              <FaWarehouse size={20} /> {address.companyName}
+                            </div>
+                          </>
+                        )
+                      );
+                    })}
+                    <p>To</p>
+                    {props.addresses.map((address) => {
+                      return (
+                        load.offloadingPlaceId === address.id && (
+                          <>
+                            <div>
+                              {
+                                (load.offloadingDate = new Date(
+                                  load.offloadingDate,
+                                )
+                                  .toISOString()
+                                  .split('T')[0])
+                              }
+                            </div>
+                            <div key={address.id}>
+                              {' '}
+                              <FaWarehouse size={20} /> {address.companyName}
+                            </div>
+                          </>
+                        )
+                      );
+                    })}
+                  </div>
+                  <div css={pal}>
+                    <div>
+                      Pallets given:
+                      <span css={given}>{load.palletQuantityGiven} </span>
+                    </div>
+                    <div>
+                      Pallets received:
+                      <span css={given}>{load.palletQuantityReceived} </span>
+                    </div>
+                  </div>
 
-              <div>
-                {props.addresses.map((address) => {
-                  return (
-                    load.loadingPlaceId === address.id && (
-                      <div key={address.id}>
-                        Cie Name :{address.companyName}
-                      </div>
-                    )
-                  );
-                })}
-
-                {props.addresses.map((address) => {
-                  return (
-                    load.offloadingPlaceId === address.id && (
-                      <div key={address.id}>
-                        Cie Name22 :{address.companyName}
-                      </div>
-                    )
-                  );
-                })}
-              </div>
-
-              <div>Pal Given :{load.palletQuantityGiven} </div>
-              <div>Pal Received :{load.palletQuantityReceived} </div>
-              <div>
-                {load.palletQuantityReceived != load.palletQuantityGiven ? (
-                  <p>NOPE ❌ </p>
-                ) : (
-                  <p>YEP ✅</p>
-                )}
-              </div>
-              <button onClick={() => deleteLoad(load.id).catch(() => {})}>
-                Delete the load
-              </button>
-            </div>
-          </>
-        );
-      })}
+                  <div>
+                    {load.palletQuantityReceived != load.palletQuantityGiven ? (
+                      <p>NOPE ❌ </p>
+                    ) : (
+                      <p>YEP ✅</p>
+                    )}
+                  </div>
+                  <button onClick={() => deleteLoad(load.id).catch(() => {})}>
+                    Delete the load
+                  </button>
+                </div>
+              </>
+            );
+          })}
+      </div>
       );
       <Link href="/users/dashboard">
         <a>Back at the dashboard</a>
