@@ -21,6 +21,7 @@ import {
 import Head from 'next/head';
 import Link from 'next/link';
 import { FiTruck } from 'react-icons/fi';
+import { css } from '@emotion/react';
 
 // type Errors = { message: string }[];
 // type Props = {
@@ -34,6 +35,35 @@ import { FiTruck } from 'react-icons/fi';
 //   trucks: Truck[];
 //   addresses: Address[];
 // };
+
+const address = css`
+  display: inline-flex;
+  flex-direction: column;
+`;
+
+const truckRef = css`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 100px;
+`;
+const load = css`
+  display: flex;
+  flex-direction: column;
+`;
+
+const addresses = css`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+`;
+
+const pallet = css`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 100px;
+`;
 
 export default function SingleLoad(props) {
   // const [loadingDate, setLoadingDate] = useState(new Date());
@@ -73,71 +103,78 @@ export default function SingleLoad(props) {
 
       <h1>Detail of Load Number {props.load.id}</h1>
       <div>
-        <div>
-          {props.addresses.map((address) => {
-            return (
-              props.load.loadingPlaceId === address.id && (
-                <>
-                  <p key={address.id}>{address.companyName}</p>
-                  <p key={address.id}>{address.streetInfo}</p>
-                  <p key={address.id}>{address.zipcode}</p>
-                  <p key={address.id}>{address.city}</p>
-                  <p key={address.id}>{address.country}</p>
-                </>
-              )
-            );
-          })}
+        <div css={addresses}>
+          <div css={address}>
+            <div>
+              {
+                (props.load.loadingDate = new Date(props.load.loadingDate)
+                  .toISOString()
+                  .split('T')[0])
+              }
+            </div>
+            <div css={load}>
+              {props.addresses.map((address) => {
+                return (
+                  props.load.loadingPlaceId === address.id && (
+                    <>
+                      <td key={address.id}>company{address.companyName}</td>
+                      <td key={address.id}>srreet{address.streetInfo}</td>
+                      <td key={address.id}>zip{address.zipcode}</td>
+                      <td key={address.id}>city{address.city}</td>
+                      <td key={address.id}>country{address.country}</td>
+                    </>
+                  )
+                );
+              })}
+            </div>
+          </div>
+          <div css={address}>
+            <div>
+              {
+                (props.load.offloadingDate = new Date(props.load.offloadingDate)
+                  .toISOString()
+                  .split('T')[0])
+              }
+            </div>
+            <div css={load}>
+              {props.addresses.map((address) => {
+                return (
+                  props.load.offloadingPlaceId === address.id && (
+                    <>
+                      <td key={address.id}>Cie Name :{address.companyName}</td>
+                      <td key={address.id}>street{address.streetInfo}</td>
+                      <td key={address.id}>zip{address.zipcode}</td>
+                      <td key={address.id}>city{address.city}</td>
+                      <td key={address.id}>country{address.country}</td>
+                    </>
+                  )
+                );
+              })}
+            </div>
+          </div>
+        </div>
+        <div css={truckRef}>
+          <div> ref{props.load.reference}</div>
+          <div>
+            {props.trucks.map((truck) => {
+              return (
+                props.load.truckId === truck.id && (
+                  <>
+                    <td key={truck.id}>truck :{truck.truckPlate}</td>
+                    <td key={truck.id}>trailer :{truck.trailerPlate}</td>
+                  </>
+                )
+              );
+            })}
+          </div>
+        </div>
+        <div css={pallet}>
+          <div>Pallet given: {props.load.palletQuantityGiven}</div>
+          <div>Pal received: {props.load.palletQuantityReceived}</div>
         </div>
         <div>
-          {
-            (props.load.loadingDate = new Date(props.load.loadingDate)
-              .toISOString()
-              .split('T')[0])
-          }
+          <button>Add the pallet note</button>
         </div>
-      </div>
-      <div>
-        <div>
-          {props.addresses.map((address) => {
-            return (
-              props.load.offloadingPlaceId === address.id && (
-                <p key={address.id}>Cie Name :{address.companyName}</p>
-              )
-            );
-          })}
-        </div>
-        <div>
-          {
-            (props.load.offloadingDate = new Date(props.load.offloadingDate)
-              .toISOString()
-              .split('T')[0])
-          }
-        </div>
-      </div>
-
-      <div> {props.load.reference}</div>
-      <div>
-        {props.trucks.map((truck) => {
-          return (
-            props.load.truckId === truck.id && (
-              <p key={truck.id}>truck plate :{truck.truckPlate}</p>
-            )
-          );
-        })}
-      </div>
-      <div>
-        {props.trucks.map((truck) => {
-          return (
-            props.load.truckId === truck.id && (
-              <p key={truck.id}>trailer plate :{truck.trailerPlate}</p>
-            )
-          );
-        })}
-      </div>
-      <div>Pallet given: {props.load.palletQuantityGiven}</div>
-      <div>Pal received: {props.load.palletQuantityReceived}</div>
-      <div>
-        <button>Add the pallet note</button>
       </div>
 
       <div>

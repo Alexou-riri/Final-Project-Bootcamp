@@ -18,6 +18,9 @@ import { useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import Link from 'next/link';
 import { FaWarehouse } from 'react-icons/fa';
+import { BiDetail } from 'react-icons/bi';
+import { FiMinusCircle } from 'react-icons/fi';
+import { IconContext } from 'react-icons';
 // import { AiOutlineCalendar } from 'react-icons/ai';
 // import { FaWarehouse, FaPallet } from 'react-icons/fa';
 // import { BsTruck } from 'react-icons/bs';
@@ -31,6 +34,26 @@ import { FaAddressBook } from 'react-icons/fa';
 const loadPreview = css`
   margin-top: 30px;
   margin: 100px;
+`;
+const link = css`
+  color: #00b8c2;
+  text-transform: uppercase;
+  text-decoration: none;
+  /* letter-spacing: 0.15em; */
+  /* text-shadow: 1px 1px 1px black; */
+  cursor: pointer;
+  display: flex;
+  /* margin-top: 100px; */
+  padding: 15px 20px;
+  transition: 0.4s;
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
+const details = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const eachLoad = css`
@@ -62,6 +85,40 @@ const pal = css`
 
 const given = css`
   margin-left: 50px;
+`;
+
+const titel = css`
+  display: flex;
+  justify-content: center;
+`;
+const image = css`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  margin-top: 60px;
+  /* border: 1px solid red; */
+`;
+
+const button = css`
+  cursor: pointer;
+  border: 0;
+  border-radius: 4px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin: 0 10px;
+  width: 100px;
+  padding: 10px 30px;
+  box-shadow: 0 0 4px #00b8c2;
+  transition: 0.4s;
+  color: #00b8c2;
+  background-color: rgba(255, 255, 255, 1);
+  border: 1px solid #00b8c2;
+
+  &:hover {
+    transform: scale(1.25);
+  }
 `;
 
 // type Props = {
@@ -167,8 +224,9 @@ export default function AllLoads(props) {
   }
   console.log(palletQuantityReceived);
   return (
-    <Layout>
-      <h1>All loads done in the past</h1>
+    <Layout userObject={props.userObject}>
+      <h1 css={titel}>All loads done in the past</h1>
+      <img css={image} src="/chore.svg" alt="loads finished" height={300} />
       <div css={loadPreview}>
         {loadList
           .filter((load) => load.palletQuantityReceived !== null)
@@ -239,17 +297,23 @@ export default function AllLoads(props) {
                       <p>YEP ✅</p>
                     )}
                   </div>
-                  <button onClick={() => deleteLoad(load.id).catch(() => {})}>
+                  {/* <button onClick={() => deleteLoad(load.id).catch(() => {})}>
                     Delete the load
-                  </button>
+                  </button> */}
+                  <div css={details}>
+                    <Link href={`/loads/${load.id}`}>
+                      <a css={link}>To the load's details</a>
+                    </Link>
+                    <BiDetail size={30} />
+                  </div>
                 </div>
               </>
             );
           })}
       </div>
-      );
+
       <Link href="/users/dashboard">
-        <a>Back at the dashboard</a>
+        <a css={button}>Back to the dashboard</a>
       </Link>
     </Layout>
   );

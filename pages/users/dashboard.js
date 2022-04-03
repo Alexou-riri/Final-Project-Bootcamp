@@ -119,11 +119,6 @@ const loadsToCheck = css`
   margin: 100px;
 `;
 
-const titel = css`
-  display: flex;
-  justify-content: center;
-`;
-
 const palcount = css`
   display: flex;
   justify-content: center;
@@ -213,9 +208,37 @@ const danger = css`
 
 const buttonEnd = css`
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: flex-start;
+
   margin-top: 30px;
+`;
+const titel = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid violet; */
+`;
+
+const header = css`
+  /* display: inline;
+  flex-direction: row; */
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid red; */
+  width: 100%;
+
+  h1 {
+    display: flex;
+    justify-content: center;
+    margin-right: auto;
+    /* border: 1px solid green; */
+  }
+
+  a {
+    /* border: 1px solid green; */
+    margin-left: auto;
+    width: 12%;
+  }
 `;
 
 // import { CreateAddressResponseBody } from '../api/addresse';
@@ -394,8 +417,24 @@ export default function ProtectedDashboard(props) {
 
   return (
     <Layout userObject={props.userObject}>
-      <h1 css={titel}> Dashboard of {props.user.company} </h1>
+      <div css={header}>
+        <div css={titel}>
+          <Link href="/loads/all_loads">
+            <a css={link}>
+              To All the loads {''}
+              <FiArrowRightCircle size={20} />
+            </a>
+          </Link>
 
+          {/* <Link href="/logout">
+          <a css={link}>
+            Logout{''}
+            <FiArrowRightCircle size={20} />
+          </a>
+        </Link> */}
+        </div>
+        <h1> Dashboard of {props.user.company} </h1>
+      </div>
       <h2 css={palcount}>Pallet count:</h2>
       <div
         css={count}
@@ -408,7 +447,6 @@ export default function ProtectedDashboard(props) {
         {totalReceived}/{totalGiven}
       </div>
 
-      <div></div>
       <h2 css={toCheck}>Here are the loads to check</h2>
       <div css={image}>
         <img src="/checking.svg" alt="checking boxes" height={300} />
@@ -833,21 +871,6 @@ export default function ProtectedDashboard(props) {
             <AiOutlinePlusCircle size={20} /> {''}ADD A LOAD
           </button>
         )}
-      </div>
-      <div css={buttonEnd}>
-        <Link href="/loads/all_loads">
-          <a css={link}>
-            To All the loads {''}
-            <FiArrowRightCircle size={20} />
-          </a>
-        </Link>
-
-        <Link href="/logout">
-          <a css={link}>
-            Logout{''}
-            <FiArrowRightCircle size={20} />
-          </a>
-        </Link>
       </div>
     </Layout>
   );

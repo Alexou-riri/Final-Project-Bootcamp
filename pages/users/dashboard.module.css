@@ -106,19 +106,19 @@ form > div.colsubmit {
 }
 
 form > div.colsubmit button {
-  border: 1px solid #e4e4e4;
-  background: #a3cece;
-  font-size: 14px;
-  color: #fff;
-  padding: 1em;
-  display: block;
-  width: 50%;
   cursor: pointer;
-  border: 10px;
-  border-radius: 10px;
+  border: 0;
+  border-radius: 4px;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
+  margin: 0 10px;
+  width: 20%;
+  padding: 10px 30px;
+  box-shadow: 0 0 4px #00b8c2;
+  transition: 0.4s;
+  color: #00b8c2;
+  background-color: rgba(255, 255, 255, 1);
   border: 1px solid #00b8c2;
-  justify-content: space-around;
 }
 
 @media (min-width: 800px) {
@@ -129,7 +129,7 @@ form > div.colsubmit button {
 }
 
 form > div.colsubmit button:hover {
-  background: #92bdbd;
+  transform: scale(1.1);
 }
 
 .form > div > label > select {
