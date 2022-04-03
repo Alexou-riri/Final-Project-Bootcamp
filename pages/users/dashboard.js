@@ -107,6 +107,13 @@ const link = css`
   }
 `;
 
+const image = css`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
+
 const loadsToCheck = css`
   margin-top: 30px;
   margin: 100px;
@@ -403,6 +410,9 @@ export default function ProtectedDashboard(props) {
 
       <div></div>
       <h2 css={toCheck}>Here are the loads to check</h2>
+      <div css={image}>
+        <img src="/checking.svg" alt="checking boxes" height={300} />
+      </div>
       {/* <Link href={`/loads/${load.id}`}> */}
       <div css={loadsToCheck}>
         {loadList

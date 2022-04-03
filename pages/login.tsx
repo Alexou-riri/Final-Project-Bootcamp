@@ -18,6 +18,7 @@ const form = css`
   margin-right: 40%;
   padding: 2rem;
   border-radius: 10px;
+  /* background-image: url(pal_closeup.jpg) */
 `;
 const label = css`
   display: flex;

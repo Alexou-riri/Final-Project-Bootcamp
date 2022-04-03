@@ -8,10 +8,37 @@ import {
   User,
   Session,
 } from '../../util/database';
+import { css } from '@emotion/react';
 
 type Props = {
   user?: User;
 };
+
+const welcome = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  img {
+    margin-top: 60px;
+  }
+`;
+
+const link = css`
+  color: #00b8c2;
+  text-transform: uppercase;
+  text-decoration: none;
+  /* letter-spacing: 0.15em; */
+  /* text-shadow: 1px 1px 1px black; */
+  cursor: pointer;
+  display: flex;
+  /* margin-top: 100px; */
+  padding: 15px 20px;
+  transition: 0.4s;
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
 
 export default function UserDetail(props: Props) {
   if (!props.user) {
@@ -40,15 +67,18 @@ export default function UserDetail(props: Props) {
           content={`User #${props.user.id} is from the company ${props.user.company}`}
         />
       </Head>
-      <h1>
-        Welcome {''}
-        {props.user.company} from {props.user.company}
-      </h1>
-      <div>id: {props.user.id}</div>
-      <div>
-        <Link href="/users/dashboard">
-          <a>To your dashboard -</a>
-        </Link>{' '}
+      <div css={welcome}>
+        <h1>
+          Company {''}
+          {props.user.company}
+        </h1>
+        {/* <div>id: {props.user.id}</div> */}
+        <div>
+          <Link href="/users/dashboard">
+            <a css={link}>- To your dashboard -</a>
+          </Link>{' '}
+        </div>
+        <img src="/looking_information.svg" alt="go to the dashboard" />
       </div>
     </Layout>
   );
