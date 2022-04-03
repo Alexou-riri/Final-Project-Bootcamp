@@ -52,11 +52,50 @@ const register = css`
 const form = css`
   border: 1px solid black;
   box-shadow: 0px 1px 12px rgba(0, 0, 0, 0.25);
-  margin-bottom: 26rem;
+  margin-bottom: 10rem;
   margin-left: 40%;
   margin-right: 40%;
   padding: 2rem;
   border-radius: 10px;
+  background-color: #00b8c232;
+  select {
+    border: none;
+  }
+
+  input {
+    border: none;
+    outline: none;
+  }
+  ::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, 0.65);
+  }
+  ::-webkit-input-placeholder .input-line:focus + ::input-placeholder {
+    color: #fff;
+  }
+  .input-line:focus {
+    outline: none;
+    border-color: #fff;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+  }
+  .input-line {
+    background: none;
+    margin-bottom: 10px;
+    line-height: 2.4em;
+    color: black;
+    font-family: 'Oxygen';
+    font-weight: 500;
+    letter-spacing: 0px;
+    letter-spacing: 0.02rem;
+    font-size: 19px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.65);
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+  }
+  .full-width {
+    width: 100%;
+  }
 `;
 
 const select = css`
@@ -71,6 +110,12 @@ const option = css`
   color: red;
 `;
 
+const image = css`
+  display: flex;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+`;
 // const form = css`
 //   border: 1px solid black;
 // `;
@@ -172,16 +217,18 @@ export default function Register(props: Props) {
         }}
       >
         <label css={label}>
-          Company Name :
           <input
+            className="input-line full-width"
+            placeholder="Company Name"
             value={company}
             onChange={(event) => setCompany(event.currentTarget.value)}
           />
         </label>
 
         <label css={label}>
-          Password :
           <input
+            className="input-line full-width"
+            placeholder="Password"
             type="password"
             value={password}
             onChange={(event) => setPassword(event.currentTarget.value)}
@@ -194,8 +241,9 @@ export default function Register(props: Props) {
         </div>
 
         <label htmlFor="userPermission" css={label}>
-          Please choose:
           <select
+            className="input-line full-width"
+            placeholder="Please choose"
             css={select}
             id="userPermission"
             value={userPermission}
@@ -210,15 +258,9 @@ export default function Register(props: Props) {
           </select>
         </label>
 
-        {/* <label css={label}>
-          Company:
-          <input
-            value={company}
-            onChange={(event) => setCompany(event.currentTarget.value)}
-          />
-        </label> */}
         <button css={register}>Sign Up</button>
       </form>
+      <img src="/register.svg" alt="register" css={image} />
     </Layout>
   );
 }

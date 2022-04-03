@@ -49,7 +49,7 @@
   /* justify-content: center; */
   /* flex-wrap: wrap; */
   flex-direction: column;
-  max-width: 80vw;
+  max-width: 100vw;
 }
 
 .card {
@@ -58,19 +58,21 @@
   text-align: center;
   color: inherit;
   text-decoration: none;
-  border: 1px solid #4a849b;
+  border: 1px solid #4a849b68;
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
   background: #ffffff;
   box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.25);
   width: 400px;
+  transition: 0.4s;
 }
 
 .card:hover,
 .card:focus,
 .card:active {
-  color: #00a5d3;
-  border-color: #00a5d3;
+  color: #008c93fe;
+  border-color: #008c93fe;
+  transform: scale(1.05);
 }
 
 .card h2 {

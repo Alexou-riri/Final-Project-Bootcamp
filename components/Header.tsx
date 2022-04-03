@@ -167,7 +167,7 @@ export default function Header(props: Props) {
               <TiUser size={40} />
 
               <Link href="../users/dashboard">
-                <a css={link}>Account</a>
+                <a css={link}>Dashboard</a>
               </Link>
             </div>
           )}
