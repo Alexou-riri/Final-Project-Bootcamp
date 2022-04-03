@@ -196,6 +196,7 @@ const checkToday = css`
   justify-content: center;
   font-size: 30px;
   color: #a82f63;
+  flex-direction: column;
 `;
 
 const danger = css`
@@ -209,6 +210,7 @@ const buttonEnd = css`
   align-items: center;
   margin-top: 30px;
 `;
+
 // import { CreateAddressResponseBody } from '../api/addresse';
 
 // type Props = {
@@ -418,17 +420,15 @@ export default function ProtectedDashboard(props) {
                     new Date(load.offloadingDate)
                       .toISOString()
                       .split('T')[0] && (
-                    <div css={danger}>
-                      <CgDanger />
-                      {''}
-                      You Have a load to check today ! {''}
-                      <CgDanger />
-                      {/* {
-                        new Date(load.offloadingDate)
-                          .toISOString()
-                          .split('T')[0]
-                      } */}
-                    </div>
+                    <>
+                      <div css={danger}>
+                        <CgDanger />
+                        {''}
+                        You Have a load to check today ! {''}
+                        <CgDanger />
+                      </div>
+                      <div className={styles.arrow}></div>
+                    </>
                   )}
                 </div>
 
