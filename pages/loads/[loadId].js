@@ -39,6 +39,7 @@ import { css } from '@emotion/react';
 const address = css`
   display: inline-flex;
   flex-direction: column;
+  border: 1px solid black;
 `;
 
 const truckRef = css`
@@ -46,16 +47,19 @@ const truckRef = css`
   flex-direction: row;
   justify-content: space-around;
   margin-top: 100px;
+  border: 1px solid black;
 `;
 const load = css`
   display: flex;
   flex-direction: column;
+  border: 1px solid black;
 `;
 
 const addresses = css`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  border: 1px solid black;
 `;
 
 const pallet = css`
@@ -63,6 +67,7 @@ const pallet = css`
   flex-direction: row;
   justify-content: space-around;
   margin-top: 100px;
+  border: 1px solid black;
 `;
 
 export default function SingleLoad(props) {

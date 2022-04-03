@@ -288,6 +288,8 @@ export default function ProtectedDashboard(props) {
   const [loadingCountry, setLoadingCountry] = useState('');
   const [loadingCity, setLoadingCity] = useState('');
   const [offloadingCity, setOffloadingCity] = useState('');
+  const [totalPalGiven, setTotalPalGiven] = useState('');
+  const [totalPalReceived, setTotalPalReceived] = useState('');
 
   const [offlloadingStreetInfo, setOffloadingStreetInfo] = useState('');
   const [offloadingZipcode, setOffloadingZipcode] = useState('');
@@ -332,7 +334,9 @@ export default function ProtectedDashboard(props) {
       </main>
     );
   }
-
+  function refreshPage() {
+    window.location.reload(false);
+  }
   async function updateLoad(id) {
     const updateResponse = await fetch(`/api/pallets`, {
       method: 'PUT',
@@ -447,7 +451,7 @@ export default function ProtectedDashboard(props) {
         {totalReceived}/{totalGiven}
       </div>
 
-      <h2 css={toCheck}>Here are the loads to check</h2>
+      <h2 css={toCheck}>Current Load without </h2>
       <div css={image}>
         <img src="/checking.svg" alt="checking boxes" height={300} />
       </div>
@@ -564,6 +568,7 @@ export default function ProtectedDashboard(props) {
                       onClick={() => {
                         updateLoad(load.id).catch(() => {});
                         setOnEditLoadId(undefined);
+                        refreshPage();
                       }}
                     >
                       Save
