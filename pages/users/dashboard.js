@@ -1,15 +1,10 @@
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import Layout from '../../components/Layout';
 import {
-  // getUserById,
   getUserByValidSessionToken,
   getValidSessionByToken,
   getAllAddresses,
   getLoads,
-
-  // getAllTrucks,
-  // getLoadById,
-  // deleteLoad,
 } from '../../util/database';
 import styles from './dashboard.module.css';
 import { css } from '@emotion/react';
@@ -26,11 +21,6 @@ import { BiDetail } from 'react-icons/bi';
 import { CgDanger } from 'react-icons/cg';
 import router from 'next/router';
 import Head from 'next/head';
-
-// import moment from 'moment';
-// moment().format();
-// import format from 'date-fns/format';
-// import { stringify } from 'querystring';
 
 const eachLoad = css`
   display: flex;
