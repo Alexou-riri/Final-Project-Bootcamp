@@ -168,20 +168,10 @@ export default function AllLoads(props) {
     props.load.palletQuantityReceived,
   );
 
-  // const [loadingStreetInfo, setLoadingStreetInfo] = useState('');
-  // const [loadingZipcode, setLoadingZipcode] = useState('');
-  // const [loadingCountry, setLoadingCountry] = useState('');
-  // const [loadingCity, setLoadingCity] = useState('');
-  // const [offloadingCity, setOffloadingCity] = useState('');
-
-  // const [offlloadingStreetInfo, setOffloadingStreetInfo] = useState('');
   const [offloadingZipcode, setOffloadingZipcode] = useState('');
   const [offloadingCountry, setOffloadingCountry] = useState('');
   const [errors, setErrors] = useState();
   const [loadList, setLoadList] = useState(props.loads);
-  // const [addressList, setAddressList] = useState([]);
-  // const [truckList, setTruckList] = useState<Truck[]>([]);
-  // const [difference , setDifference] = useState(props.load.palletQuantityGiven)
 
   const difference =
     Number(props.load.palletQuantityGiven) -
