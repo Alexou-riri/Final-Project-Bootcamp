@@ -575,7 +575,7 @@ export default function ProtectedDashboard(props) {
                       css={buttonLoad}
                       onClick={() => {
                         updateLoad(load.id).catch(() => {});
-                        setOnEditLoadId(undefined);
+                        setOnEditLoadId(load.id);
                         // refreshPage();
                       }}
                     >
