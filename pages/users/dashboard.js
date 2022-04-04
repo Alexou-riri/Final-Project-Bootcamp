@@ -672,15 +672,7 @@ export default function ProtectedDashboard(props) {
               // setLoadList(createdLoad);
 
               setLoadingCompanyName('');
-              // setCompanyName2('');
-              // setLoadingAddress('');
-              // setOffloadingAddress('');
-              // // setOffloadingDate();
-              // // setLoadingDate();
-              // setReference('');
-              // setPalletNumber('');
-              // setTruckPlate('');
-              // setTrailerPlate('');
+
               // router.push(`../loads/${props.loadId}`);
               setIsOpen(false);
               await router.push(`/loads/${createLoadResponseBody.load.id}`);
