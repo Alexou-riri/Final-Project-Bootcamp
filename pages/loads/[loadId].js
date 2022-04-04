@@ -101,6 +101,7 @@ const details = css`
   /* border: 1px solid green; */
   height: 60vh;
   width: 30vw;
+  font-weight: 300;
 `;
 const titel = css`
   display: flex;
@@ -184,6 +185,7 @@ const back = css`
   align-items: center;
   justify-content: space-evenly;
   border: 1px solid black;
+  gap: 10px;
 
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
@@ -389,14 +391,23 @@ export default function SingleLoad(props) {
               </div>
             </div>
             <div css={truckRef}>
-              <div css={ref}>ref{props.load.reference}</div>
+              <div css={ref}>
+                ref: {''}
+                {props.load.reference}
+              </div>
               <div css={truck}>
                 {props.trucks.map((truck) => {
                   return (
                     props.load.truckId === truck.id && (
                       <>
-                        <td key={truck.id}>truck :{truck.truckPlate}</td>
-                        <td key={truck.id}>trailer :{truck.trailerPlate}</td>
+                        <td key={truck.id}>
+                          truck:{''}
+                          {truck.truckPlate}
+                        </td>
+                        <td key={truck.id}>
+                          trailer:{''}
+                          {truck.trailerPlate}
+                        </td>
                       </>
                     )
                   );
@@ -405,10 +416,10 @@ export default function SingleLoad(props) {
             </div>
             <div css={pallet}>
               <div css={given}>
-                <p>Pallet given:</p> <p>{props.load.palletQuantityGiven}</p>
+                <p>Pallet given: </p> <p>{props.load.palletQuantityGiven}</p>
               </div>
               <div css={back}>
-                <p> Pal received:</p>
+                <p> Pal received: </p>{' '}
                 <p>
                   {' '}
                   {props.load.palletQuantityReceived !== null
