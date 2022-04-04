@@ -375,16 +375,6 @@ export default function ProtectedDashboard(props) {
 
   // const normalDate = toISOString(props.loads.loadingDate);
 
-  // useEffect(() => {
-  //   const getLoads = async () => {
-  //     const response = await fetch('/api/animals');
-  //     const animalArray = await response.json();
-  //     setAnimals(animalArray);
-  //   };
-
-  //   getAnimals().catch(() => {});
-  // }, []);
-
   return (
     <Layout userObject={props.userObject}>
       <Head>
@@ -398,13 +388,6 @@ export default function ProtectedDashboard(props) {
               <FiArrowRightCircle size={20} />
             </a>
           </Link>
-
-          {/* <Link href="/logout">
-          <a css={link}>
-            Logout{''}
-            <FiArrowRightCircle size={20} />
-          </a>
-        </Link> */}
         </div>
         <h1> Dashboard of {props.user.company} </h1>
       </div>
