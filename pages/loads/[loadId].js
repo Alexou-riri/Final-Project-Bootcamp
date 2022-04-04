@@ -343,11 +343,11 @@ export default function SingleLoad(props) {
                     return (
                       props.load.loadingPlaceId === address.id && (
                         <>
-                          <td key={address.id}>company{address.companyName}</td>
-                          <td key={address.id}>srreet{address.streetInfo}</td>
-                          <td key={address.id}>zip{address.zipcode}</td>
-                          <td key={address.id}>city{address.city}</td>
-                          <td key={address.id}>country{address.country}</td>
+                          <td key={address.id}>{address.companyName}</td>
+                          <td key={address.id}>{address.streetInfo}</td>
+                          <td key={address.id}>{address.zipcode}</td>
+                          <td key={address.id}>{address.city}</td>
+                          <td key={address.id}>{address.country}</td>
                         </>
                       )
                     );
@@ -369,13 +369,11 @@ export default function SingleLoad(props) {
                     return (
                       props.load.offloadingPlaceId === address.id && (
                         <>
-                          <td key={address.id}>
-                            Cie Name :{address.companyName}
-                          </td>
-                          <td key={address.id}>street{address.streetInfo}</td>
-                          <td key={address.id}>zip{address.zipcode}</td>
-                          <td key={address.id}>city{address.city}</td>
-                          <td key={address.id}>country{address.country}</td>
+                          <td key={address.id}>{address.companyName}</td>
+                          <td key={address.id}>{address.streetInfo}</td>
+                          <td key={address.id}>{address.zipcode}</td>
+                          <td key={address.id}>{address.city}</td>
+                          <td key={address.id}>{address.country}</td>
                         </>
                       )
                     );
