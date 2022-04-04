@@ -33,7 +33,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   return {
     redirect: {
-      destination: '/',
+      destination: '/about',
       permanent: false,
     },
   };

@@ -20,7 +20,7 @@ import {
 // import { Session } from 'inspector';
 import Head from 'next/head';
 import Link from 'next/link';
-import { FiTruck } from 'react-icons/fi';
+import { FiTruck, FiArrowRightCircle } from 'react-icons/fi';
 import { css } from '@emotion/react';
 
 // type Errors = { message: string }[];
@@ -36,11 +36,54 @@ import { css } from '@emotion/react';
 //   addresses: Address[];
 // };
 
+const image = css`
+  /* display: flex; */
+  border: solid 1.5em rgba(#000, 0.2);
+  border-radius: 10px;
+`;
+
+const card = css`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  /* height: 60vh; */
+`;
+
+const img = css`
+  filter: opacity(0.7);
+  img {
+    border-radius: 10px;
+  }
+`;
+const loadId = css`
+  /* position: flex;
+  align-items: center;
+  z-index: 2; */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 60px;
+
+  text-shadow: #fff 1px 0 10px;
+`;
+
+const idCard = css`
+  position: relative;
+  text-align: center;
+  /* justify-content: center; */
+`;
+
 const tableau = css`
   display: flex;
-  flex-direction: column;
-  gap: 100px;
-  margin: 100px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  gap: 160px;
+  margin: 30px;
   border: 1px solid #00b8c2;
   background-color: white;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
@@ -50,9 +93,19 @@ const tableau = css`
   font-weight: 600;
   font-size: 20px;
 `;
+
+const details = css`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* border: 1px solid green; */
+  height: 60vh;
+  width: 30vw;
+`;
 const titel = css`
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-bottom: 100px;
 `;
 
@@ -141,7 +194,27 @@ const pallet = css`
   /* margin-top: 100px; */
   /* border: 1px solid black; */
 `;
+const header = css`
+  justify-content: center;
+  align-items: center;
 
+  width: 100%;
+  h1 {
+    display: flex;
+    justify-content: center;
+    margin-right: auto;
+    /* border: 1px solid green; */
+  }
+  a {
+    /* border: 1px solid green; */
+    margin-left: auto;
+    margin-right: 60px;
+    display: flex;
+    justify-content: space-between;
+
+    width: 14%;
+  }
+`;
 const link = css`
   color: #00b8c2;
   text-transform: uppercase;
@@ -151,13 +224,49 @@ const link = css`
   cursor: pointer;
   display: flex;
   justify-content: right;
-  margin-right: 60px;
+  /* margin-right: 60px;
+  width: 90vw; */
+  padding-right: 15px 20px;
+  /* border: 1px solid green; */
+  /* margin-right: 60px; */
   /* margin-top: 100px; */
   /* padding: 15px 20px; */
   transition: 0.4s;
   &:hover {
     transform: scale(1.05);
   }
+`;
+const addDoc = css`
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+  margin: auto;
+  cursor: pointer;
+  border: 0;
+  border-radius: 4px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  /* margin: 0 10px; */
+  width: 20%;
+  padding: 10px 60px;
+  box-shadow: 0 0 4px #00b8c2;
+  transition: 0.4s;
+  color: #00b8c2;
+  background-color: rgba(255, 255, 255, 1);
+  border: 1px solid #00b8c2;
+
+  &:hover {
+    /* color: white;
+    box-shadow: 0 0 4px #00b8c2;
+    background-color: #00b8c2; */
+    transform: scale(1.05);
+  }
+`;
+
+const button = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default function SingleLoad(props) {
@@ -193,89 +302,115 @@ export default function SingleLoad(props) {
     <Layout userObject={props.userObject}>
       <Head>
         <title>WAMP? #{props.load.id}</title>
-        <meta name="description" content={`User # is `} />
+        <meta name="description" content={`Load # is `} />
       </Head>
-      <div>
-        <Link href="/users/dashboard">
-          <a css={link}>Back To the dashboard -</a>
-        </Link>{' '}
+
+      <div css={header}>
+        <div css={titel}>
+          <Link href="/users/dashboard">
+            <a css={link}>
+              Back To the dashboard <FiArrowRightCircle size={20} />
+            </a>
+          </Link>{' '}
+        </div>
       </div>
-      <h1 css={titel}>Detail of Load Number {props.load.id}</h1>
-      <div css={tableau}>
-        <div css={addresses}>
-          <div css={address}>
-            <div>
-              {
-                (props.load.loadingDate = new Date(props.load.loadingDate)
-                  .toISOString()
-                  .split('T')[0])
-              }
+      <div css={card}>
+        <div css={tableau}>
+          <div css={idCard}>
+            <div css={img} id="bg">
+              <img
+                src="/pal_closeup.jpg"
+                alt="Closeup of pallets"
+                height={700}
+                width={500}
+                // css={image}
+              />
             </div>
-            <div css={load}>
-              {props.addresses.map((address) => {
-                return (
-                  props.load.loadingPlaceId === address.id && (
-                    <>
-                      <td key={address.id}>company{address.companyName}</td>
-                      <td key={address.id}>srreet{address.streetInfo}</td>
-                      <td key={address.id}>zip{address.zipcode}</td>
-                      <td key={address.id}>city{address.city}</td>
-                      <td key={address.id}>country{address.country}</td>
-                    </>
-                  )
-                );
-              })}
-            </div>
+            <div css={loadId}> Load #{props.load.id}</div>
           </div>
-          <div css={address}>
-            <div>
-              {
-                (props.load.offloadingDate = new Date(props.load.offloadingDate)
-                  .toISOString()
-                  .split('T')[0])
-              }
+          <div css={details}>
+            <div css={addresses}>
+              <div css={address}>
+                <div>
+                  {
+                    (props.load.loadingDate = new Date(props.load.loadingDate)
+                      .toISOString()
+                      .split('T')[0])
+                  }
+                </div>
+                <div css={load}>
+                  {props.addresses.map((address) => {
+                    return (
+                      props.load.loadingPlaceId === address.id && (
+                        <>
+                          <td key={address.id}>company{address.companyName}</td>
+                          <td key={address.id}>srreet{address.streetInfo}</td>
+                          <td key={address.id}>zip{address.zipcode}</td>
+                          <td key={address.id}>city{address.city}</td>
+                          <td key={address.id}>country{address.country}</td>
+                        </>
+                      )
+                    );
+                  })}
+                </div>
+              </div>
+              <div css={address}>
+                <div>
+                  {
+                    (props.load.offloadingDate = new Date(
+                      props.load.offloadingDate,
+                    )
+                      .toISOString()
+                      .split('T')[0])
+                  }
+                </div>
+                <div css={load}>
+                  {props.addresses.map((address) => {
+                    return (
+                      props.load.offloadingPlaceId === address.id && (
+                        <>
+                          <td key={address.id}>
+                            Cie Name :{address.companyName}
+                          </td>
+                          <td key={address.id}>street{address.streetInfo}</td>
+                          <td key={address.id}>zip{address.zipcode}</td>
+                          <td key={address.id}>city{address.city}</td>
+                          <td key={address.id}>country{address.country}</td>
+                        </>
+                      )
+                    );
+                  })}
+                </div>
+              </div>
             </div>
-            <div css={load}>
-              {props.addresses.map((address) => {
-                return (
-                  props.load.offloadingPlaceId === address.id && (
-                    <>
-                      <td key={address.id}>Cie Name :{address.companyName}</td>
-                      <td key={address.id}>street{address.streetInfo}</td>
-                      <td key={address.id}>zip{address.zipcode}</td>
-                      <td key={address.id}>city{address.city}</td>
-                      <td key={address.id}>country{address.country}</td>
-                    </>
-                  )
-                );
-              })}
+            <div css={truckRef}>
+              <div css={ref}>ref{props.load.reference}</div>
+              <div css={truck}>
+                {props.trucks.map((truck) => {
+                  return (
+                    props.load.truckId === truck.id && (
+                      <>
+                        <td key={truck.id}>truck :{truck.truckPlate}</td>
+                        <td key={truck.id}>trailer :{truck.trailerPlate}</td>
+                      </>
+                    )
+                  );
+                })}
+              </div>
+            </div>
+            <div css={pallet}>
+              <div css={given}>
+                Pallet given: {props.load.palletQuantityGiven}
+              </div>
+              <div css={back}>
+                Pal received: {props.load.palletQuantityReceived}
+              </div>
+            </div>
+            <div css={button}>
+              <button css={addDoc}>Add the pallet note</button>
             </div>
           </div>
         </div>
-        <div css={truckRef}>
-          <div css={ref}>ref{props.load.reference}</div>
-          <div css={truck}>
-            {props.trucks.map((truck) => {
-              return (
-                props.load.truckId === truck.id && (
-                  <>
-                    <td key={truck.id}>truck :{truck.truckPlate}</td>
-                    <td key={truck.id}>trailer :{truck.trailerPlate}</td>
-                  </>
-                )
-              );
-            })}
-          </div>
-        </div>
-        <div css={pallet}>
-          <div css={given}>Pallet given: {props.load.palletQuantityGiven}</div>
-          <div css={back}>
-            Pal received: {props.load.palletQuantityReceived}
-          </div>
-        </div>
-        {/* <div>
-          <button>Add the pallet note</button>
-        </div> */}
       </div>
     </Layout>
   );

@@ -221,6 +221,9 @@ export default function AllLoads(props) {
   console.log(palletQuantityReceived);
   return (
     <Layout userObject={props.userObject}>
+      <Head>
+        <title>WAMP? Archive</title>
+      </Head>
       <h1 css={titel}>All loads done in the past</h1>
       <img css={image} src="/chore.svg" alt="loads finished" height={300} />
       <div css={loadPreview}>
@@ -288,14 +291,14 @@ export default function AllLoads(props) {
 
                   <div>
                     {load.palletQuantityReceived != load.palletQuantityGiven ? (
-                      <p>NOPE ❌ </p>
+                      <p>MISSING ❌ </p>
                     ) : (
-                      <p>YEP ✅</p>
+                      <p> ✅</p>
                     )}
                   </div>
-                  {/* <button onClick={() => deleteLoad(load.id).catch(() => {})}>
+                  <button onClick={() => deleteLoad(load.id).catch(() => {})}>
                     Delete the load
-                  </button> */}
+                  </button>
                   <div css={details}>
                     <Link href={`/loads/${load.id}`}>
                       <a css={link}>To the load's details</a>

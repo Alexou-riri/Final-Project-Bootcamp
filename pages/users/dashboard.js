@@ -429,6 +429,9 @@ export default function ProtectedDashboard(props) {
 
   return (
     <Layout userObject={props.userObject}>
+      <Head>
+        <title>WAMP? {props.user.company}</title>
+      </Head>
       <div css={header}>
         <div css={titel}>
           <Link href="/loads/all_loads">
@@ -576,7 +579,7 @@ export default function ProtectedDashboard(props) {
                       onClick={() => {
                         updateLoad(load.id).catch(() => {});
                         setOnEditLoadId(load.id);
-                        // refreshPage();
+                        refreshPage();
                       }}
                     >
                       Save

@@ -18,9 +18,16 @@ const welcome = css`
   display: flex;
   flex-direction: column;
   align-items: center;
+  h1 {
+    font-size: 40px;
+  }
+
+  a {
+    font-size: 20px;
+  }
 
   img {
-    margin-top: 60px;
+    margin-top: 80px;
   }
 `;
 
@@ -72,7 +79,7 @@ export default function UserDetail(props: Props) {
           Company {''}
           {props.user.company}
         </h1>
-        {/* <div>id: {props.user.id}</div> */}
+
         <div>
           <Link href="/users/dashboard">
             <a css={link}>- To your dashboard -</a>
