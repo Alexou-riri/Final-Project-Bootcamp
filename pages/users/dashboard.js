@@ -95,6 +95,7 @@ const buttonLoad = css`
 const link = css`
   color: #00b8c2;
   text-transform: uppercase;
+  font-weight: 400;
   text-decoration: none;
   /* letter-spacing: 0.15em; */
   /* text-shadow: 1px 1px 1px black; */
@@ -579,7 +580,7 @@ export default function ProtectedDashboard(props) {
                       css={buttonLoad}
                       onClick={() => {
                         updateLoad(load.id).catch(() => {});
-                        setOnEditLoadId(load.id);
+                        setOnEditLoadId(undefined);
                         refreshPage();
                       }}
                     >
