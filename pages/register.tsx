@@ -137,51 +137,6 @@ export default function Register(props: Props) {
 
   const [userPermission, setUserPermission] = useState(1);
 
-  // const formSubmit = async (event: any) => {
-  //   event.preventDefault();
-  //   if (role === 'client') {
-  //     const createUserResponse = await fetch('/api/register', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         password: password,
-  //         company: company,
-  //         // role: client,
-  //       }),
-  //     });
-
-  //     const createUserResponseBody = await createUserResponse.json();
-  //     if ('errors' in createUserResponseBody) {
-  //       setErrors(createUserResponseBody.errors);
-  //       return;
-  //     }
-  //     props.refreshUserProfile();
-  //     await router.push('/login');
-  //   } else {
-  //     event.preventDefault();
-  //     const createUserResponse = await fetch('/api/register', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         password: password,
-  //         company: company,
-  //         // role: sub,
-  //       }),
-  //     });
-  //     const createUserResponseBody = await createUserResponse.json();
-  //     if ('errors' in createUserResponseBody) {
-  //       setErrors(createUserResponseBody.errors);
-  //       return;
-  //     }
-  //     props.refreshUserProfile();
-  //     await router.push('/login');
-  //   }
-  // };
-
   return (
     <Layout userObject={props.userObject}>
       <Head>
