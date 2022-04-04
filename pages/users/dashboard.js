@@ -64,7 +64,7 @@ const button = css`
   border: 1px solid #00b8c2;
 
   &:hover {
-    transform: scale(1.25);
+    transform: scale(1.05);
   }
 `;
 
@@ -87,7 +87,7 @@ const buttonLoad = css`
     /* color: white;
     box-shadow: 0 0 4px #00b8c2;
     background-color: #00b8c2; */
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
 `;
 
@@ -103,7 +103,7 @@ const link = css`
   padding: 15px 20px;
   transition: 0.4s;
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
 `;
 
@@ -132,8 +132,8 @@ const count = css`
   justify-content: center;
   border: 1px solid black;
   border-radius: 50%;
-  height: 220px;
-  width: 220px;
+  height: 260px;
+  width: 260px;
   margin-bottom: 80px;
   background-color: white;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
@@ -151,7 +151,11 @@ const pal = css`
   display: flex;
   flex-direction: column;
   align-items: left;
-  justify-content: center;
+  justify-content: space-evenly;
+  border: 1px solid black;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  padding: 30px;
   margin-left: 60px;
   margin-right: 60px;
   gap: 20px;
@@ -181,15 +185,15 @@ const addLoad = css`
     gap: 20px;
     animation: 0.4s;
     &:hover {
-      transform: scale(1.1);
+      transform: scale(1.05);
     }
   }
 `;
-const buttonForm = css`
-  width: 10vw;
+const addressLogo = css`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  /* border: 1px solid green; */
 `;
 const checkToday = css`
   display: flex;
@@ -237,7 +241,11 @@ const header = css`
   a {
     /* border: 1px solid green; */
     margin-left: auto;
-    width: 12%;
+    margin-right: 30px;
+    display: flex;
+    justify-content: space-between;
+
+    width: 10%;
   }
 `;
 
@@ -451,7 +459,7 @@ export default function ProtectedDashboard(props) {
         {totalReceived}/{totalGiven}
       </div>
 
-      <h2 css={toCheck}>Current Load without </h2>
+      <h2 css={toCheck}>Current Loads without informed amount </h2>
       <div css={image}>
         <img src="/checking.svg" alt="checking boxes" height={300} />
       </div>
@@ -497,7 +505,7 @@ export default function ProtectedDashboard(props) {
                                   .split('T')[0])
                               }
                             </div>
-                            <div key={address.id}>
+                            <div key={address.id} css={addressLogo}>
                               {' '}
                               <FaWarehouse size={20} /> {address.companyName}
                             </div>
@@ -519,7 +527,7 @@ export default function ProtectedDashboard(props) {
                                   .split('T')[0])
                               }
                             </div>
-                            <div key={address.id}>
+                            <div key={address.id} css={addressLogo}>
                               {' '}
                               <FaWarehouse size={20} /> {address.companyName}
                             </div>

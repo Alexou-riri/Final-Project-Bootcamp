@@ -100,6 +100,12 @@ const image = css`
   margin-top: 60px;
   /* border: 1px solid red; */
 `;
+const addressLogo = css`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* border: 1px solid green; */
+`;
 
 const button = css`
   cursor: pointer;
@@ -248,7 +254,7 @@ export default function AllLoads(props) {
                                   .split('T')[0])
                               }
                             </div>
-                            <div key={address.id}>
+                            <div key={address.id} css={addressLogo}>
                               {' '}
                               <FaWarehouse size={20} /> {address.companyName}
                             </div>
@@ -270,7 +276,7 @@ export default function AllLoads(props) {
                                   .split('T')[0])
                               }
                             </div>
-                            <div key={address.id}>
+                            <div css={addressLogo} key={address.id}>
                               {' '}
                               <FaWarehouse size={20} /> {address.companyName}
                             </div>

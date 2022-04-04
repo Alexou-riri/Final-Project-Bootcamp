@@ -36,38 +36,128 @@ import { css } from '@emotion/react';
 //   addresses: Address[];
 // };
 
+const tableau = css`
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+  margin: 100px;
+  border: 1px solid #00b8c2;
+  background-color: white;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  padding: 140px;
+  font-family: 'Oxygen' Arial, sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+`;
+const titel = css`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 100px;
+`;
+
 const address = css`
   display: inline-flex;
   flex-direction: column;
+  align-items: center;
   border: 1px solid black;
+  gap: 10px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  padding: 30px;
 `;
 
 const truckRef = css`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  margin-top: 100px;
-  border: 1px solid black;
+  /* margin-top: 100px; */
+  /* border: 1px solid black; */
 `;
+
+const ref = css`
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid black;
+  gap: 10px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  padding: 30px;
+`;
+
+const truck = css`
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid black;
+  gap: 10px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  padding: 30px;
+`;
+
 const load = css`
   display: flex;
   flex-direction: column;
-  border: 1px solid black;
+  /* border: 1px solid black; */
+  justify-content: center;
+  align-items: center;
 `;
 
 const addresses = css`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  /* border: 1px solid black; */
+`;
+
+const given = css`
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
   border: 1px solid black;
+  gap: 10px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  padding: 30px;
+`;
+
+const back = css`
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid black;
+  gap: 10px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  padding: 30px;
 `;
 
 const pallet = css`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  margin-top: 100px;
-  border: 1px solid black;
+  /* margin-top: 100px; */
+  /* border: 1px solid black; */
+`;
+
+const link = css`
+  color: #00b8c2;
+  text-transform: uppercase;
+  text-decoration: none;
+  /* letter-spacing: 0.15em; */
+  /* text-shadow: 1px 1px 1px black; */
+  cursor: pointer;
+  display: flex;
+  justify-content: right;
+  margin-right: 60px;
+  /* margin-top: 100px; */
+  /* padding: 15px 20px; */
+  transition: 0.4s;
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
 
 export default function SingleLoad(props) {
@@ -100,14 +190,18 @@ export default function SingleLoad(props) {
   }
 
   return (
-    <Layout>
+    <Layout userObject={props.userObject}>
       <Head>
         <title>WAMP? #{props.load.id}</title>
         <meta name="description" content={`User # is `} />
       </Head>
-
-      <h1>Detail of Load Number {props.load.id}</h1>
       <div>
+        <Link href="/users/dashboard">
+          <a css={link}>Back To the dashboard -</a>
+        </Link>{' '}
+      </div>
+      <h1 css={titel}>Detail of Load Number {props.load.id}</h1>
+      <div css={tableau}>
         <div css={addresses}>
           <div css={address}>
             <div>
@@ -159,8 +253,8 @@ export default function SingleLoad(props) {
           </div>
         </div>
         <div css={truckRef}>
-          <div> ref{props.load.reference}</div>
-          <div>
+          <div css={ref}>ref{props.load.reference}</div>
+          <div css={truck}>
             {props.trucks.map((truck) => {
               return (
                 props.load.truckId === truck.id && (
@@ -174,18 +268,14 @@ export default function SingleLoad(props) {
           </div>
         </div>
         <div css={pallet}>
-          <div>Pallet given: {props.load.palletQuantityGiven}</div>
-          <div>Pal received: {props.load.palletQuantityReceived}</div>
+          <div css={given}>Pallet given: {props.load.palletQuantityGiven}</div>
+          <div css={back}>
+            Pal received: {props.load.palletQuantityReceived}
+          </div>
         </div>
-        <div>
+        {/* <div>
           <button>Add the pallet note</button>
-        </div>
-      </div>
-
-      <div>
-        <Link href="/users/dashboard">
-          <a>Back To thr dashboard -</a>
-        </Link>{' '}
+        </div> */}
       </div>
     </Layout>
   );
