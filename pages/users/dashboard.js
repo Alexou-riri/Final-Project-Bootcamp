@@ -25,6 +25,7 @@ import { MdOutlineCancel } from 'react-icons/md';
 import { BiDetail } from 'react-icons/bi';
 import { CgDanger } from 'react-icons/cg';
 import router from 'next/router';
+import Head from 'next/head';
 
 // import moment from 'moment';
 // moment().format();
