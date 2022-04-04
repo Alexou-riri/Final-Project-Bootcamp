@@ -87,11 +87,10 @@ const link = css`
   text-transform: uppercase;
   font-weight: 400;
   text-decoration: none;
-  /* letter-spacing: 0.15em; */
-  /* text-shadow: 1px 1px 1px black; */
+
   cursor: pointer;
   display: flex;
-  /* margin-top: 100px; */
+
   padding: 15px 20px;
   transition: 0.4s;
   &:hover {
@@ -240,39 +239,6 @@ const header = css`
     width: 10%;
   }
 `;
-
-// import { CreateAddressResponseBody } from '../api/addresse';
-
-// type Props = {
-//   user: User;
-// };
-// type Props = {
-//   userObject?: User;
-//   userCompany?: string;
-//   user: User;
-//   loadsFromDatabase: Load[];
-//   load: Load;
-//   errors?: string;
-//   // address: Address;
-//   truck: Truck;
-//   loads: Load[];
-//   addresses: Address[];
-// };
-
-// type CreateLoadResponseBody =
-//   | { errors: { message: string }[] }
-//   | { load: Load };
-
-// type CreateAddressResponseBody =
-//   | { errors: { message: string }[] }
-//   | { address: Address };
-
-// type CreateTruckResponseBody =
-//   | { errors: { message: string }[] }
-//   | { truck: Truck };
-
-// type Errors = { message: string }[];
-// // type Props = {loadsFromDatabase: Load[]}
 
 export default function ProtectedDashboard(props) {
   const [loadingDate, setLoadingDate] = useState('');
