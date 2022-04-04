@@ -96,7 +96,7 @@ const eachLoad = css`
 const pal = css`
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: center;
   justify-content: center;
   margin-left: 60px;
   margin-right: 60px;
@@ -123,7 +123,9 @@ const image = css`
 const addressLogo = css`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  width: 160px;
+  justify-content: left;
+  gap: 10px;
   /* border: 1px solid green; */
 `;
 

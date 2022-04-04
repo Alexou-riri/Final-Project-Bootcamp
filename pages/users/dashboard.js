@@ -183,8 +183,9 @@ const addLoad = css`
 const addressLogo = css`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  /* border: 1px solid green; */
+  width: 160px;
+  justify-content: left;
+  gap: 10px;
 `;
 const checkToday = css`
   display: flex;
