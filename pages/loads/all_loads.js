@@ -19,7 +19,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import Link from 'next/link';
 import { FaWarehouse } from 'react-icons/fa';
 import { BiDetail } from 'react-icons/bi';
-import { FiMinusCircle } from 'react-icons/fi';
+import { FiMinusCircle, FiArrowLeftCircle } from 'react-icons/fi';
 import { IconContext } from 'react-icons';
 // import { AiOutlineCalendar } from 'react-icons/ai';
 // import { FaWarehouse, FaPallet } from 'react-icons/fa';
@@ -39,6 +39,7 @@ const link = css`
   color: #00b8c2;
   text-transform: uppercase;
   text-decoration: none;
+  font-weight: 400;
   /* letter-spacing: 0.15em; */
   /* text-shadow: 1px 1px 1px black; */
   cursor: pointer;
@@ -50,10 +51,29 @@ const link = css`
     transform: scale(1.1);
   }
 `;
+
 const details = css`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const header = css`
+  /* display: inline;
+  flex-direction: row; */
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid red; */
+  width: 100%;
+
+  a {
+    margin-right: auto;
+    margin-left: 30px;
+    display: flex;
+    justify-content: space-around;
+    width: 10%;
+    gap: 10px;
+  }
 `;
 
 const eachLoad = css`
@@ -123,7 +143,7 @@ const button = css`
   border: 1px solid #00b8c2;
 
   &:hover {
-    transform: scale(1.25);
+    transform: scale(1.15);
   }
 `;
 
@@ -224,7 +244,15 @@ export default function AllLoads(props) {
       <Head>
         <title>WAMP? Archive</title>
       </Head>
-      <h1 css={titel}>All loads done in the past</h1>
+      <div css={header}>
+        <Link href="/users/dashboard">
+          <a css={link}>
+            <FiArrowLeftCircle size={20} /> Back to the dashboard
+          </a>
+        </Link>
+
+        <h1 css={titel}>All loads done in the past</h1>
+      </div>
       <img css={image} src="/chore.svg" alt="loads finished" height={300} />
       <div css={loadPreview}>
         {loadList
@@ -310,10 +338,6 @@ export default function AllLoads(props) {
             );
           })}
       </div>
-
-      <Link href="/users/dashboard">
-        <a css={button}>Back to the dashboard</a>
-      </Link>
     </Layout>
   );
 }

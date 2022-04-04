@@ -167,29 +167,36 @@ const addresses = css`
 
 const given = css`
   display: inline-flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  justify-content: space-evenly;
   border: 1px solid black;
   gap: 10px;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
-  padding: 30px;
+  width: fit-content;
+  padding: 10px;
 `;
 
 const back = css`
-  display: inline-flex;
-  flex-direction: column;
+  display: flex;
+  flex-direction: row;
   align-items: center;
+  justify-content: space-evenly;
   border: 1px solid black;
-  gap: 10px;
+
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
-  padding: 30px;
+  width: fit-content;
+  padding: 10px;
 `;
 
 const pallet = css`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
   justify-content: space-around;
   /* margin-top: 100px; */
   /* border: 1px solid black; */
@@ -398,10 +405,16 @@ export default function SingleLoad(props) {
             </div>
             <div css={pallet}>
               <div css={given}>
-                Pallet given: {props.load.palletQuantityGiven}
+                <p>Pallet given:</p> <p>{props.load.palletQuantityGiven}</p>
               </div>
               <div css={back}>
-                Pal received: {props.load.palletQuantityReceived}
+                <p> Pal received:</p>
+                <p>
+                  {' '}
+                  {props.load.palletQuantityReceived !== null
+                    ? props.load.palletQuantityReceived
+                    : 'No information yet'}
+                </p>
               </div>
             </div>
             <div css={button}>
