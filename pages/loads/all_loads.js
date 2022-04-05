@@ -326,9 +326,9 @@ export default function AllLoads(props) {
                       <p> ✅</p>
                     )}
                   </div>
-                  <button onClick={() => deleteLoad(load.id).catch(() => {})}>
+                  {/* <button onClick={() => deleteLoad(load.id).catch(() => {})}>
                     Delete the load
-                  </button>
+                  </button> */}
                   <div css={details}>
                     <Link href={`/loads/${load.id}`}>
                       <a css={link}>To the load's details</a>

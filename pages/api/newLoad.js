@@ -137,52 +137,12 @@ import {
 //   userId: number;
 // };
 
-// type CreateLoadNextApiRequest = Omit<NextApiRequest, 'body'> & {
-//   body: CreateLoadRequestBody;
-// };
-
-// export type CreateLoadResponseBody =
-//   | { errors: { message: string }[] }
-//   | { load: Load; address: Address; truck: Truck };
-
-// export type DeleteLoadResponseBody = {
-//   load: Load;
-//   errors?: { message: string }[];
-// };
-
-// type LoadsRequestBody = {
-//   // load: Omit<Load, 'id'>;
-//   load: Load;
-//   address: Address;
-//   truck: Truck;
-// };
-
-// type LoadsNextApiRequest = Omit<NextApiRequest, 'body'> & {
-//   body: LoadsRequestBody;
-// };
-
-// export type LoadsResponseBodyGet = {
-//   loads: Load[];
-// };
-
-// export type LoadsResponseBodyPost =
-//   | { error: string }
-//   | { load: Load; address: Address; truck: Truck };
-
-// type LoadsResponseBody = LoadsResponseBodyGet | LoadsResponseBodyPost;
-
 export default async function createLoadHandler(
   request,
   // LoadsNextApiRequest,
   response,
   // NextApiResponse<LoadsResponseBody>,
 ) {
-  // console.log('query', request.query.load);
-  // console.log(request.method);
-  // console.log(request.body);
-  // console.log('oskour');
-  // console.log('is this the idddd', request.query.load.loadId);
-
   // const loadId = Number(request.query.load.loadId);
 
   if (request.method === 'GET') {
@@ -237,8 +197,6 @@ export default async function createLoadHandler(
       request.body.address.country2,
     );
 
-    // console.log(loadingAddress);
-    // console.log(offloadingAddress);
     const formTruck = await createTruck(
       request.body.truck.truckPlate,
       request.body.truck.trailerPlate,
