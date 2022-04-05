@@ -28,14 +28,11 @@ Management application for transport companies, which includes the following fun
 
 ## Screenshot
 
-![Screenshot 1](./public/Screenshot1.PNG)
-
-![Screenshot 2](./public/Screenshot2.PNG)
-
-![Screenshot 3](./public/Screenshot3.PNG)
-
-![Screenshot 4](./public/Screenshot4.PNG)
-![Screenshot 5](./public/Screenshot5.PNG)
+<img src="/Screenshot1.png" width="866" />
+<img src="/Screenshot2.png" width="866" />
+<img src="/Screenshot3.png" width="866" />
+<img src="/Screenshot4.png" width="866" />
+<img src="/Screenshot5.png"width="866" />
 
 ## Technologies
 
