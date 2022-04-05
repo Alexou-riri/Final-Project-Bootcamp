@@ -27,12 +27,13 @@ Management application for transport companies, which includes the following fun
 - On the archive page, be able to see which warehouses give back the wrong amount of pallets.
 
 ## Screenshot
+<img width="1401" alt="Screenshot1" src="https://user-images.githubusercontent.com/81323830/161772025-5db218ac-03d1-457d-a5b8-d8e10abdc210.png">
+<img width="1346" alt="Screenshot2" src="https://user-images.githubusercontent.com/81323830/161772052-e92c93fa-cd16-40a7-892b-840cb77caf7c.png">
+<img width="1346" alt="Screenshot3" src="https://user-images.githubusercontent.com/81323830/161772058-a01b1b7e-6313-4875-b964-3e335ea4487e.png">
+<img width="1173" alt="Screenshot4" src="https://user-images.githubusercontent.com/81323830/161772063-5c461d42-91fd-4816-a521-a501b068fe5d.png">
+<img width="1175" alt="Screenshot5" src="https://user-images.githubusercontent.com/81323830/161772078-97d22612-52ed-4f68-90db-1bb6f48d0385.png">
 
-<img src="/Screenshot1.png" width="866" />
-<img src="/Screenshot2.png" width="866" />
-<img src="/Screenshot3.png" width="866" />
-<img src="/Screenshot4.png" width="866" />
-<img src="/Screenshot5.png"width="866" />
+
 
 ## Technologies
 
