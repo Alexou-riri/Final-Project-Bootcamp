@@ -445,11 +445,11 @@ export async function getServerSideProps(context) {
   // as string;
 
   const load = await getLoadById(parseInt(loadId));
-  console.log('putin', load);
+
   const loadById = JSON.stringify(load);
-  console.log('putin2', loadById);
+
   const parsedLoadById = JSON.parse(loadById);
-  console.log('putin3', parsedLoadById);
+
   // const addressId = context.query.addressId;
   const trucks = await getAllTrucks();
   const addresses = await getAllAddresses();

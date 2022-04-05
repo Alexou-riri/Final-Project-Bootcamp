@@ -201,7 +201,7 @@ export default async function createLoadHandler(
       request.body.truck.truckPlate,
       request.body.truck.trailerPlate,
     );
-    // console.log('receivfffff', typeof request.body.load.loadingDate);
+
     const formLoad = await createNewLoad(
       loadingAddress.id,
       offloadingAddress.id,

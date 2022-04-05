@@ -291,8 +291,6 @@ export default function ProtectedDashboard(props) {
   const today = new Date().toISOString().split('T')[0];
   const alertDate = today;
   const alertText = ' You have a load to check today!';
-  console.log(today, 'today');
-  console.log(alertDate, 'alertdate');
 
   if ('error' in props) {
     return (
@@ -665,7 +663,6 @@ export default function ProtectedDashboard(props) {
                   value={loadingCountry}
                   onChange={(event) => {
                     setLoadingCountry(event.target.value);
-                    console.log(typeof loadingCountry);
                   }}
                 />
               </label>
@@ -689,9 +686,6 @@ export default function ProtectedDashboard(props) {
 
                   // onChange={(event) => {
                   //   setLoadingDate(event.currentTarget.value);
-
-                  //   console.log(setLoadingDate, 'PUTIN');
-                  // }}
                 />
               </label>
             </div>
@@ -844,17 +838,6 @@ export async function getServerSideProps(
   // stringifyLoadsfromDB arra de object mais typeof string\\
   const loads = JSON.parse(stringifyLoadsFromDatabase);
   // loads array beau mais typeof objet\\
-
-  // console.log(stringifyLoadsFromDatabase, 'iiii');
-  // console.log(Array.isArray(loads));
-
-  // const resultLoad = Object.keys(loads).map((key) => {
-  //   return { [key]: loads[key as keyof typeof loads] };
-  // });
-
-  // console.log(typeof loads, 'ntm');
-
-  // const loads = await getLoadById(loadId);
 
   // console.log(loads, 'iii');
   // const truck = await getAllTrucks();
