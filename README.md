@@ -28,6 +28,15 @@ Management application for transport companies, which includes the following fun
 
 ## Screenshot
 
+![Screenshot 1](./public/Screenshot1.PNG)
+
+![Screenshot 2](./public/Screenshot2.PNG)
+
+![Screenshot 3](./public/Screenshot3.PNG)
+
+![Screenshot 4](./public/Screenshot4.PNG)
+![Screenshot 5](./public/Screenshot5.PNG)
+
 ## Technologies
 
 - Next.js
