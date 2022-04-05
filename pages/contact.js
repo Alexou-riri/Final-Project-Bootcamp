@@ -59,7 +59,7 @@ export default function Contact(props) {
         <meta name="theme-color" content="#ffffff" />
       </Head>
       <div css={header}>
-        <h1>Dont hesitate to contact me</h1>
+        <h1>How to contact me</h1>
         <h2>Alexandra Rieux</h2>
       </div>
       <div css={contact}>
